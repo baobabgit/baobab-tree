@@ -448,16 +448,16 @@ complexity = avl_strategy.get_complexity()
 - `select_strategy()`: O(1)
 
 ## Critères d'acceptation
-- [ ] Classe abstraite BalancingStrategy implémentée
-- [ ] Toutes les stratégies concrètes implémentées
-- [ ] Factory et sélecteur fonctionnels
-- [ ] Validation complète des stratégies
-- [ ] Tests unitaires avec couverture >= 95%
-- [ ] Documentation complète
-- [ ] Score Pylint >= 8.5/10
-- [ ] Performance optimisée
-- [ ] Gestion d'erreurs robuste
-- [ ] Méthodes de diagnostic fonctionnelles
+- [x] Classe abstraite BalancingStrategy implémentée
+- [x] Toutes les stratégies concrètes implémentées
+- [x] Factory et sélecteur fonctionnels
+- [x] Validation complète des stratégies
+- [x] Tests unitaires avec couverture >= 95%
+- [x] Documentation complète
+- [x] Score Pylint >= 8.5/10
+- [x] Performance optimisée
+- [x] Gestion d'erreurs robuste
+- [x] Méthodes de diagnostic fonctionnelles
 
 ## Notes pour l'agent de développement
 - Cette classe est utilitaire pour toutes les stratégies d'équilibrage

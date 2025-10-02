@@ -46,6 +46,10 @@ from .core.exceptions import (
     InvalidRotationError,
     MissingChildError,
     RotationValidationError,
+    BalancingStrategyError,
+    InvalidStrategyError,
+    StrategyApplicationError,
+    StrategyValidationError,
 )
 from .core.tree_node import TreeNode
 
@@ -67,6 +71,13 @@ from .balanced.rotations import (
     RotationFactory,
     RotationSelector,
 )
+from .balanced.balancing_strategy import BalancingStrategy
+from .balanced.avl_balancing_strategy import AVLBalancingStrategy
+from .balanced.red_black_balancing_strategy import RedBlackBalancingStrategy
+from .balanced.splay_balancing_strategy import SplayBalancingStrategy
+from .balanced.treap_balancing_strategy import TreapBalancingStrategy
+from .balanced.balancing_strategy_factory import BalancingStrategyFactory
+from .balanced.balancing_strategy_selector import BalancingStrategySelector
 
 # Arbres n-aires
 from .nary.btree import BTree
@@ -112,6 +123,10 @@ __all__ = [
     "InvalidRotationError",
     "MissingChildError",
     "RotationValidationError",
+    "BalancingStrategyError",
+    "InvalidStrategyError",
+    "StrategyApplicationError",
+    "StrategyValidationError",
     
     # Classes principales
     "TreeNode",
@@ -129,6 +144,13 @@ __all__ = [
     "RightLeftRotation",
     "RotationFactory",
     "RotationSelector",
+    "BalancingStrategy",
+    "AVLBalancingStrategy",
+    "RedBlackBalancingStrategy",
+    "SplayBalancingStrategy",
+    "TreapBalancingStrategy",
+    "BalancingStrategyFactory",
+    "BalancingStrategySelector",
     "BTree",
     "BTreeNode",
     "UtilityOperations",

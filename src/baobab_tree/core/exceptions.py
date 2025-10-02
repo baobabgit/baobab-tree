@@ -1213,3 +1213,193 @@ class RotationValidationError(TreeRotationError):
         """
         base_msg = super().__str__()
         return f"{base_msg} (Validation phase: {self.validation_phase})"
+
+
+class BalancingStrategyError(Exception):
+    """
+    Exception de base pour toutes les erreurs liées aux stratégies d'équilibrage.
+
+    Cette exception sert de classe de base pour toutes les erreurs spécifiques
+    aux stratégies d'équilibrage, permettant une gestion d'erreurs hiérarchique.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param strategy_type: Type de stratégie qui a causé l'erreur (optionnel)
+    :type strategy_type: str, optional
+    :param operation: Opération qui a causé l'erreur (optionnel)
+    :type operation: str, optional
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: BinaryTreeNode, optional
+    """
+
+    def __init__(self, message: str, strategy_type: str = None, operation: str = None, node=None):
+        """
+        Initialise l'exception BalancingStrategyError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param strategy_type: Type de stratégie qui a causé l'erreur (optionnel)
+        :type strategy_type: str, optional
+        :param operation: Opération qui a causé l'erreur (optionnel)
+        :type operation: str, optional
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: BinaryTreeNode, optional
+        """
+        super().__init__(message)
+        self.message = message
+        self.strategy_type = strategy_type
+        self.operation = operation
+        self.node = node
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur la stratégie, l'opération et le nœud si disponibles
+        :rtype: str
+        """
+        result = self.message
+        if self.strategy_type is not None:
+            result += f" (Strategy: {self.strategy_type})"
+        if self.operation is not None:
+            result += f" (Operation: {self.operation})"
+        if self.node is not None:
+            result += f" (Node: {self.node})"
+        return result
+
+
+class InvalidStrategyError(BalancingStrategyError):
+    """
+    Exception levée lors d'une stratégie d'équilibrage invalide.
+
+    Cette exception est levée quand une stratégie d'équilibrage n'est pas
+    valide ou ne peut pas être appliquée dans le contexte donné.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param strategy_type: Type de stratégie invalide
+    :type strategy_type: str
+    :param reason: Raison de l'invalidité de la stratégie
+    :type reason: str
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: BinaryTreeNode, optional
+    """
+
+    def __init__(self, message: str, strategy_type: str, reason: str, node=None):
+        """
+        Initialise l'exception InvalidStrategyError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param strategy_type: Type de stratégie invalide
+        :type strategy_type: str
+        :param reason: Raison de l'invalidité de la stratégie
+        :type reason: str
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: BinaryTreeNode, optional
+        """
+        super().__init__(message, strategy_type, "strategy_validation", node)
+        self.reason = reason
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur la raison de l'invalidité
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        return f"{base_msg} (Reason: {self.reason})"
+
+
+class StrategyApplicationError(BalancingStrategyError):
+    """
+    Exception levée lors d'une erreur d'application de stratégie.
+
+    Cette exception est levée quand l'application d'une stratégie d'équilibrage
+    échoue ou produit un résultat invalide.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param strategy_type: Type de stratégie qui a échoué
+    :type strategy_type: str
+    :param application_step: Étape d'application qui a échoué
+    :type application_step: str
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: BinaryTreeNode, optional
+    """
+
+    def __init__(self, message: str, strategy_type: str, application_step: str, node=None):
+        """
+        Initialise l'exception StrategyApplicationError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param strategy_type: Type de stratégie qui a échoué
+        :type strategy_type: str
+        :param application_step: Étape d'application qui a échoué
+        :type application_step: str
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: BinaryTreeNode, optional
+        """
+        super().__init__(message, strategy_type, "strategy_application", node)
+        self.application_step = application_step
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur l'étape d'application
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        return f"{base_msg} (Application step: {self.application_step})"
+
+
+class StrategyValidationError(BalancingStrategyError):
+    """
+    Exception levée lors de l'échec de validation d'une stratégie.
+
+    Cette exception est levée quand une stratégie d'équilibrage ne passe pas
+    les validations pré-application ou post-application.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param strategy_type: Type de stratégie qui a échoué la validation
+    :type strategy_type: str
+    :param validation_phase: Phase de validation ('before' ou 'after')
+    :type validation_phase: str
+    :param validation_rule: Règle de validation qui a échoué
+    :type validation_rule: str
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: BinaryTreeNode, optional
+    """
+
+    def __init__(self, message: str, strategy_type: str, validation_phase: str, validation_rule: str, node=None):
+        """
+        Initialise l'exception StrategyValidationError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param strategy_type: Type de stratégie qui a échoué la validation
+        :type strategy_type: str
+        :param validation_phase: Phase de validation ('before' ou 'after')
+        :type validation_phase: str
+        :param validation_rule: Règle de validation qui a échoué
+        :type validation_rule: str
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: BinaryTreeNode, optional
+        """
+        super().__init__(message, strategy_type, "strategy_validation", node)
+        self.validation_phase = validation_phase
+        self.validation_rule = validation_rule
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur la phase et la règle de validation
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        return f"{base_msg} (Validation phase: {self.validation_phase}, Rule: {self.validation_rule})"
