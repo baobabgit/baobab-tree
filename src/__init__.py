@@ -19,6 +19,13 @@ from .exceptions import (
     HeightMismatchError,
     AVLNodeError,
     HeightCalculationError,
+    BTreeError,
+    InvalidOrderError,
+    NodeFullError,
+    NodeUnderflowError,
+    SplitError,
+    MergeError,
+    RedistributionError,
 )
 
 from .interfaces import (
@@ -67,6 +74,10 @@ from .avl_operations import AVLOperations
 from .search_operations import SearchOperations
 from .utility_operations import UtilityOperations
 
+# Classes B-tree
+from .btree import BTree
+from .btree_node import BTreeNode
+
 __version__ = "0.1.0"
 __author__ = "Tree Library Team"
 
@@ -86,6 +97,13 @@ __all__ = [
     "HeightMismatchError",
     "AVLNodeError",
     "HeightCalculationError",
+    "BTreeError",
+    "InvalidOrderError",
+    "NodeFullError",
+    "NodeUnderflowError",
+    "SplitError",
+    "MergeError",
+    "RedistributionError",
     # Interfaces
     "Comparable",
     "TreeInterface",
@@ -99,6 +117,9 @@ __all__ = [
     "AVLNode",
     "AVLTree",
     "AVLRotations",
+    # Classes B-tree
+    "BTree",
+    "BTreeNode",
     # Classes de parcours
     "TreeTraversal",
     "PreorderTraversal",

@@ -531,3 +531,300 @@ class HeightCalculationError(AVLNodeError):
         :type node: AVLNode, optional
         """
         super().__init__(message, "height_calculation", node)
+
+
+class BTreeError(Exception):
+    """
+    Exception de base pour toutes les erreurs liées aux B-trees.
+
+    Cette exception sert de classe de base pour toutes les erreurs spécifiques
+    aux B-trees, permettant une gestion d'erreurs hiérarchique.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param operation: Opération qui a causé l'erreur (optionnel)
+    :type operation: str, optional
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: BTreeNode, optional
+    """
+
+    def __init__(self, message: str, operation: str = None, node=None):
+        """
+        Initialise l'exception BTreeError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param operation: Opération qui a causé l'erreur (optionnel)
+        :type operation: str, optional
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: BTreeNode, optional
+        """
+        super().__init__(message)
+        self.message = message
+        self.operation = operation
+        self.node = node
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur l'opération et le nœud si disponibles
+        :rtype: str
+        """
+        result = self.message
+        if self.operation is not None:
+            result += f" (Operation: {self.operation})"
+        if self.node is not None:
+            result += f" (Node: {self.node})"
+        return result
+
+
+class InvalidOrderError(BTreeError):
+    """
+    Exception levée lors d'un ordre invalide pour un B-tree.
+
+    Cette exception est levée quand l'ordre spécifié pour un B-tree
+    n'est pas valide (doit être >= 2).
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param order: Ordre invalide spécifié
+    :type order: int
+    """
+
+    def __init__(self, message: str, order: int):
+        """
+        Initialise l'exception InvalidOrderError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param order: Ordre invalide spécifié
+        :type order: int
+        """
+        super().__init__(message, "order_validation")
+        self.order = order
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur l'ordre invalide
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        return f"{base_msg} (Order: {self.order})"
+
+
+class NodeFullError(BTreeError):
+    """
+    Exception levée lors d'une tentative d'insertion dans un nœud plein.
+
+    Cette exception est levée quand on tente d'insérer une clé dans
+    un nœud qui est déjà plein (contient le maximum de clés).
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param node: Nœud plein concerné par l'erreur
+    :type node: BTreeNode
+    :param key: Clé qui ne peut pas être insérée
+    :type key: Any
+    """
+
+    def __init__(self, message: str, node, key):
+        """
+        Initialise l'exception NodeFullError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param node: Nœud plein concerné par l'erreur
+        :type node: BTreeNode
+        :param key: Clé qui ne peut pas être insérée
+        :type key: Any
+        """
+        super().__init__(message, "insertion", node)
+        self.key = key
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur la clé
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        return f"{base_msg} (Key: {self.key})"
+
+
+class NodeUnderflowError(BTreeError):
+    """
+    Exception levée lors d'un nœud avec trop peu de clés.
+
+    Cette exception est levée quand un nœud contient moins de clés
+    que le minimum requis pour maintenir les propriétés B-tree.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param node: Nœud avec sous-débit concerné par l'erreur
+    :type node: BTreeNode
+    :param key_count: Nombre de clés actuelles dans le nœud
+    :type key_count: int
+    :param minimum_required: Nombre minimum de clés requis
+    :type minimum_required: int
+    """
+
+    def __init__(self, message: str, node, key_count: int, minimum_required: int):
+        """
+        Initialise l'exception NodeUnderflowError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param node: Nœud avec sous-débit concerné par l'erreur
+        :type node: BTreeNode
+        :param key_count: Nombre de clés actuelles dans le nœud
+        :type key_count: int
+        :param minimum_required: Nombre minimum de clés requis
+        :type minimum_required: int
+        """
+        super().__init__(message, "underflow_check", node)
+        self.key_count = key_count
+        self.minimum_required = minimum_required
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur les comptes de clés
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        return f"{base_msg} (Current: {self.key_count}, Required: {self.minimum_required})"
+
+
+class SplitError(BTreeError):
+    """
+    Exception levée lors d'une erreur de division d'un nœud.
+
+    Cette exception est levée quand la division d'un nœud ne peut pas
+    être effectuée correctement ou produit un résultat invalide.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param node: Nœud qui ne peut pas être divisé
+    :type node: BTreeNode
+    :param reason: Raison de l'échec de la division
+    :type reason: str
+    """
+
+    def __init__(self, message: str, node, reason: str):
+        """
+        Initialise l'exception SplitError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param node: Nœud qui ne peut pas être divisé
+        :type node: BTreeNode
+        :param reason: Raison de l'échec de la division
+        :type reason: str
+        """
+        super().__init__(message, "node_split", node)
+        self.reason = reason
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur la raison de l'échec
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        return f"{base_msg} (Reason: {self.reason})"
+
+
+class MergeError(BTreeError):
+    """
+    Exception levée lors d'une erreur de fusion de nœuds.
+
+    Cette exception est levée quand la fusion de nœuds ne peut pas
+    être effectuée correctement ou produit un résultat invalide.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param node1: Premier nœud à fusionner
+    :type node1: BTreeNode
+    :param node2: Deuxième nœud à fusionner
+    :type node2: BTreeNode
+    :param reason: Raison de l'échec de la fusion
+    :type reason: str
+    """
+
+    def __init__(self, message: str, node1, node2, reason: str):
+        """
+        Initialise l'exception MergeError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param node1: Premier nœud à fusionner
+        :type node1: BTreeNode
+        :param node2: Deuxième nœud à fusionner
+        :type node2: BTreeNode
+        :param reason: Raison de l'échec de la fusion
+        :type reason: str
+        """
+        super().__init__(message, "node_merge", node1)
+        self.node2 = node2
+        self.reason = reason
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur la raison de l'échec
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        return f"{base_msg} (Node2: {self.node2}, Reason: {self.reason})"
+
+
+class RedistributionError(BTreeError):
+    """
+    Exception levée lors d'une erreur de redistribution des clés.
+
+    Cette exception est levée quand la redistribution des clés entre
+    nœuds frères ne peut pas être effectuée correctement.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param source_node: Nœud source pour la redistribution
+    :type source_node: BTreeNode
+    :param target_node: Nœud cible pour la redistribution
+    :type target_node: BTreeNode
+    :param reason: Raison de l'échec de la redistribution
+    :type reason: str
+    """
+
+    def __init__(self, message: str, source_node, target_node, reason: str):
+        """
+        Initialise l'exception RedistributionError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param source_node: Nœud source pour la redistribution
+        :type source_node: BTreeNode
+        :param target_node: Nœud cible pour la redistribution
+        :type target_node: BTreeNode
+        :param reason: Raison de l'échec de la redistribution
+        :type reason: str
+        """
+        super().__init__(message, "key_redistribution", source_node)
+        self.target_node = target_node
+        self.reason = reason
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur la raison de l'échec
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        return f"{base_msg} (Target: {self.target_node}, Reason: {self.reason})"
