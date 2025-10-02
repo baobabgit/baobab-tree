@@ -303,3 +303,163 @@ class InvalidOperationError(BSTError):
         :type operation: str
         """
         super().__init__(message, operation)
+
+
+class AVLError(Exception):
+    """
+    Exception de base pour toutes les erreurs liées aux arbres AVL.
+
+    Cette exception sert de classe de base pour toutes les erreurs spécifiques
+    aux arbres AVL, permettant une gestion d'erreurs hiérarchique.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param operation: Opération qui a causé l'erreur (optionnel)
+    :type operation: str, optional
+    """
+
+    def __init__(self, message: str, operation: str = None):
+        """
+        Initialise l'exception AVLError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param operation: Opération qui a causé l'erreur (optionnel)
+        :type operation: str, optional
+        """
+        super().__init__(message)
+        self.message = message
+        self.operation = operation
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur l'opération si disponible
+        :rtype: str
+        """
+        if self.operation is not None:
+            return f"{self.message} (Operation: {self.operation})"
+        return self.message
+
+
+class InvalidBalanceFactorError(AVLError):
+    """
+    Exception levée lors d'un facteur d'équilibre invalide.
+
+    Cette exception est levée quand un facteur d'équilibre AVL est en dehors
+    de la plage valide [-1, 0, 1].
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param balance_factor: Facteur d'équilibre invalide
+    :type balance_factor: int
+    :param operation: Opération qui a causé l'erreur
+    :type operation: str
+    """
+
+    def __init__(self, message: str, balance_factor: int, operation: str = "balance_check"):
+        """
+        Initialise l'exception InvalidBalanceFactorError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param balance_factor: Facteur d'équilibre invalide
+        :type balance_factor: int
+        :param operation: Opération qui a causé l'erreur
+        :type operation: str
+        """
+        super().__init__(message, operation)
+        self.balance_factor = balance_factor
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur le facteur d'équilibre
+        :rtype: str
+        """
+        return f"{self.message} (Balance factor: {self.balance_factor})"
+
+
+class RotationError(AVLError):
+    """
+    Exception levée lors d'une erreur de rotation AVL.
+
+    Cette exception est levée quand une rotation AVL échoue ou est tentée
+    dans des conditions invalides.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param rotation_type: Type de rotation qui a échoué
+    :type rotation_type: str
+    :param operation: Opération qui a causé l'erreur
+    :type operation: str
+    """
+
+    def __init__(self, message: str, rotation_type: str, operation: str = "rotation"):
+        """
+        Initialise l'exception RotationError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param rotation_type: Type de rotation qui a échoué
+        :type rotation_type: str
+        :param operation: Opération qui a causé l'erreur
+        :type operation: str
+        """
+        super().__init__(message, operation)
+        self.rotation_type = rotation_type
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur le type de rotation
+        :rtype: str
+        """
+        return f"{self.message} (Rotation type: {self.rotation_type})"
+
+
+class HeightMismatchError(AVLError):
+    """
+    Exception levée lors d'une incohérence de hauteur AVL.
+
+    Cette exception est levée quand les hauteurs calculées ne correspondent
+    pas aux attentes de l'algorithme AVL.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param expected_height: Hauteur attendue
+    :type expected_height: int
+    :param actual_height: Hauteur calculée
+    :type actual_height: int
+    :param operation: Opération qui a causé l'erreur
+    :type operation: str
+    """
+
+    def __init__(self, message: str, expected_height: int, actual_height: int, operation: str = "height_check"):
+        """
+        Initialise l'exception HeightMismatchError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param expected_height: Hauteur attendue
+        :type expected_height: int
+        :param actual_height: Hauteur calculée
+        :type actual_height: int
+        :param operation: Opération qui a causé l'erreur
+        :type operation: str
+        """
+        super().__init__(message, operation)
+        self.expected_height = expected_height
+        self.actual_height = actual_height
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur les hauteurs
+        :rtype: str
+        """
+        return f"{self.message} (Expected: {self.expected_height}, Actual: {self.actual_height})"

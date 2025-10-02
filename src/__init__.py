@@ -13,6 +13,10 @@ from .exceptions import (
     DuplicateValueError,
     ValueNotFoundError,
     InvalidOperationError,
+    AVLError,
+    InvalidBalanceFactorError,
+    RotationError,
+    HeightMismatchError,
 )
 
 from .interfaces import (
@@ -26,6 +30,8 @@ from .interfaces import (
 from .tree_node import TreeNode
 from .binary_tree_node import BinaryTreeNode
 from .binary_search_tree import BinarySearchTree
+from .avl_node import AVLNode
+from .avl_tree import AVLTree
 from .bst_iterators import (
     PreorderIterator,
     InorderIterator,
@@ -46,6 +52,10 @@ __all__ = [
     "DuplicateValueError",
     "ValueNotFoundError",
     "InvalidOperationError",
+    "AVLError",
+    "InvalidBalanceFactorError",
+    "RotationError",
+    "HeightMismatchError",
     # Interfaces
     "Comparable",
     "TreeInterface",
@@ -56,6 +66,8 @@ __all__ = [
     "TreeNode",
     "BinaryTreeNode",
     "BinarySearchTree",
+    "AVLNode",
+    "AVLTree",
     # Itérateurs
     "PreorderIterator",
     "InorderIterator",
