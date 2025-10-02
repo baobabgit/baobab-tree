@@ -17,6 +17,8 @@ from .exceptions import (
     InvalidBalanceFactorError,
     RotationError,
     HeightMismatchError,
+    AVLNodeError,
+    HeightCalculationError,
 )
 
 from .interfaces import (
@@ -82,6 +84,8 @@ __all__ = [
     "InvalidBalanceFactorError",
     "RotationError",
     "HeightMismatchError",
+    "AVLNodeError",
+    "HeightCalculationError",
     # Interfaces
     "Comparable",
     "TreeInterface",
