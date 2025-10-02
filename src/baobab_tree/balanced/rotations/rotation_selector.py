@@ -48,11 +48,11 @@ class RotationSelector:
         :raises InvalidRotationError: Si aucune rotation appropriée ne peut être sélectionnée
         """
         if node is None:
-            raise InvalidRotationError("Cannot select rotation for None node")
+            raise InvalidRotationError("Cannot select rotation for None node", "none", node)
 
         if not isinstance(context, dict):
             raise InvalidRotationError(
-                f"Context must be a dictionary, got {type(context).__name__}"
+                f"Context must be a dictionary, got {type(context).__name__}", "none", node
             )
 
         # Analyser le déséquilibre
@@ -193,7 +193,7 @@ class RotationSelector:
 
         if rotation_type == "none":
             raise InvalidRotationError(
-                f"No rotation needed for imbalance type '{imbalance_type}'"
+                f"No rotation needed for imbalance type '{imbalance_type}'", "none", None
             )
 
         return rotation_type

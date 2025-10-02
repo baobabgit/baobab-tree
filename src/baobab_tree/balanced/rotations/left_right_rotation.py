@@ -87,10 +87,71 @@ class LeftRightRotation(TreeRotation):
 
         # Effectuer la rotation gauche-droite
         # 1. Effectuer une rotation gauche sur l'enfant gauche
-        new_left_child = self._left_rotation.rotate(left_child)
+        # Sauvegarder les références importantes
+        parent = node.parent
+        left_child_right = left_child.right
+        left_child_left = left_child.left
+        left_child_right_left = left_child_right.left
+        left_child_right_right = left_child_right.right
 
-        # 2. Effectuer une rotation droite sur le nœud
-        new_root = self._right_rotation.rotate(node)
+        # Nettoyer toutes les relations
+        node._left = None
+        node._children = []
+        node._parent = None
+
+        left_child._right = None
+        left_child._children = []
+        left_child._parent = None
+
+        left_child_right._left = None
+        left_child_right._right = None
+        left_child_right._children = []
+        left_child_right._parent = None
+
+        # Établir les nouvelles relations après rotation gauche-droite
+        # left_child_right devient la nouvelle racine
+        # left_child devient son enfant gauche
+        # node devient son enfant droit
+
+        # left_child_right.left = left_child
+        left_child_right._left = left_child
+        left_child_right._children.append(left_child)
+        left_child._parent = left_child_right
+
+        # left_child.left = left_child_right_left (préserver)
+        if left_child_right_left is not None:
+            left_child._left = left_child_right_left
+            left_child._children.append(left_child_right_left)
+            left_child_right_left._parent = left_child
+
+        # left_child.right = left_child_right_right (préserver)
+        if left_child_right_right is not None:
+            left_child._right = left_child_right_right
+            left_child._children.append(left_child_right_right)
+            left_child_right_right._parent = left_child
+
+        # left_child_right.right = node
+        left_child_right._right = node
+        left_child_right._children.append(node)
+        node._parent = left_child_right
+
+        # node.left = None (pas d'enfant gauche après rotation)
+        # node.right reste inchangé (préserver)
+        # Mais nous devons mettre à jour les enfants de node
+        if node.right is not None:
+            node._children.append(node.right)
+
+        # Mettre à jour les références parent
+        if parent is not None:
+            if parent.left is node:
+                parent._left = left_child_right
+            elif parent.right is node:
+                parent._right = left_child_right
+            parent._children = [child for child in parent._children if child is not node]
+            parent._children.append(left_child_right)
+            left_child_right._parent = parent
+
+        new_root = left_child_right
 
         # Validation post-rotation
         if not self.validate_after_rotation(new_root):

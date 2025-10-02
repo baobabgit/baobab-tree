@@ -144,7 +144,11 @@ class TestTreeRotation:
         old_root = BinaryTreeNode(1)
         new_root = BinaryTreeNode(2)
         
-        # old_root n'est pas un enfant de parent
+        # Établir une relation parent-enfant mais pas avec old_root
+        parent.set_left(BinaryTreeNode(3))  # parent.left = 3, pas old_root
+        old_root._parent = parent  # Mais old_root pense que parent est son parent
+        
+        # old_root n'est pas un enfant de parent selon les références left/right
         with pytest.raises(TreeRotationError) as exc_info:
             rotation.update_parent_references(old_root, new_root)
         
