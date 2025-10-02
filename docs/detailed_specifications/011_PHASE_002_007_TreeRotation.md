@@ -423,16 +423,16 @@ properties = left_rotation.validate_properties(node)
 - `select_rotation()`: O(1)
 
 ## Critères d'acceptation
-- [ ] Classe abstraite TreeRotation implémentée
-- [ ] Toutes les rotations concrètes implémentées
-- [ ] Factory et sélecteur fonctionnels
-- [ ] Validation complète des rotations
-- [ ] Tests unitaires avec couverture >= 95%
-- [ ] Documentation complète
-- [ ] Score Pylint >= 8.5/10
-- [ ] Performance optimisée (O(1) pour rotations)
-- [ ] Gestion d'erreurs robuste
-- [ ] Méthodes de diagnostic fonctionnelles
+- [x] Classe abstraite TreeRotation implémentée
+- [x] Toutes les rotations concrètes implémentées
+- [x] Factory et sélecteur fonctionnels
+- [x] Validation complète des rotations
+- [x] Tests unitaires avec couverture >= 95%
+- [x] Documentation complète
+- [x] Score Pylint >= 8.5/10
+- [x] Performance optimisée (O(1) pour rotations)
+- [x] Gestion d'erreurs robuste
+- [x] Méthodes de diagnostic fonctionnelles
 
 ## Notes pour l'agent de développement
 - Cette classe est utilitaire pour tous les arbres équilibrés

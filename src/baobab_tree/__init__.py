@@ -42,6 +42,10 @@ from .core.exceptions import (
     ColorViolationError,
     PathViolationError,
     RedBlackBalancingError,
+    TreeRotationError,
+    InvalidRotationError,
+    MissingChildError,
+    RotationValidationError,
 )
 from .core.tree_node import TreeNode
 
@@ -54,6 +58,15 @@ from .balanced.avl_tree import AVLTree
 from .balanced.avl_node import AVLNode
 from .balanced.red_black_tree import RedBlackTree
 from .balanced.red_black_node import RedBlackNode, Color
+from .balanced.rotations import (
+    TreeRotation,
+    LeftRotation,
+    RightRotation,
+    LeftRightRotation,
+    RightLeftRotation,
+    RotationFactory,
+    RotationSelector,
+)
 
 # Arbres n-aires
 from .nary.btree import BTree
@@ -95,6 +108,10 @@ __all__ = [
     "ColorViolationError",
     "PathViolationError",
     "RedBlackBalancingError",
+    "TreeRotationError",
+    "InvalidRotationError",
+    "MissingChildError",
+    "RotationValidationError",
     
     # Classes principales
     "TreeNode",
@@ -105,6 +122,13 @@ __all__ = [
     "RedBlackTree",
     "RedBlackNode",
     "Color",
+    "TreeRotation",
+    "LeftRotation",
+    "RightRotation",
+    "LeftRightRotation",
+    "RightLeftRotation",
+    "RotationFactory",
+    "RotationSelector",
     "BTree",
     "BTreeNode",
     "UtilityOperations",
