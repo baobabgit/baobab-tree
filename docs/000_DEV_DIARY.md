@@ -1,5 +1,101 @@
 # Journal de développement
 
+## 2024-12-19 14:30 - Implémentation complète de la spécification BinarySearchTree
+
+### Description
+Implémentation complète de la classe BinarySearchTree selon la spécification détaillée 002_PHASE_001_BinarySearchTree.md, incluant toutes les méthodes principales, les itérateurs, les opérations avancées et les tests unitaires complets.
+
+### Justification
+La classe BinarySearchTree est critique pour la Phase 1 et sert de base fondamentale pour le développement de l'arbre AVL. Elle doit fournir toutes les opérations de base nécessaires pour manipuler un arbre binaire de recherche avec une API complète et robuste.
+
+### Méthode
+- Implémentation de la classe BinarySearchTree avec constructeur et attributs de base
+- Développement des méthodes principales : insert, delete, search, contains, clear, is_empty
+- Implémentation des méthodes d'accès : get_root, get_size, get_height, get_min, get_max
+- Création des méthodes de validation : is_valid, is_balanced, get_balance_factor
+- Développement des méthodes de parcours : preorder, inorder, postorder, level_order (récursives et itératives)
+- Implémentation des méthodes utilitaires : find_successor, find_predecessor, find_floor, find_ceiling
+- Création des méthodes de plage : range_query, count_range
+- Ajout des exceptions spécifiques au BST : BSTError, DuplicateValueError, ValueNotFoundError, InvalidOperationError
+- Développement des itérateurs BST : PreorderIterator, InorderIterator, PostorderIterator, LevelOrderIterator
+- Création de tests unitaires complets (31 tests pour BinarySearchTree, 12 tests pour les itérateurs)
+- Résolution des problèmes de références circulaires dans la création des nœuds
+- Correction des algorithmes de suppression pour les nœuds avec deux enfants
+- Utilisation de `from __future__ import annotations` pour la compatibilité des types
+
+### Fichiers modifiés
+- src/binary_search_tree.py (créé)
+- src/bst_iterators.py (créé)
+- src/exceptions.py (modifié - ajout des exceptions BST)
+- src/__init__.py (modifié - ajout des exports)
+- tests/test_binary_search_tree.py (créé)
+- tests/test_bst_iterators.py (créé)
+- scripts/examples/bst_example.py (créé)
+- scripts/examples/bst_demo.py (créé)
+
+### Résultats
+- ✅ Tous les tests passent (43/43)
+- ✅ 31 tests pour BinarySearchTree - 100% de réussite
+- ✅ 12 tests pour les itérateurs - 100% de réussite
+- ✅ Documentation complète en reStructuredText
+- ✅ Gestion d'erreurs robuste avec exceptions spécifiques
+- ✅ Support des comparateurs personnalisés
+- ✅ Complexités temporelles respectées (O(h) pour insert/delete/search, O(n) pour parcours)
+- ✅ API complète avec toutes les méthodes requises
+- ✅ Itérateurs fonctionnels pour tous les types de parcours
+- ✅ Opérations avancées (successeur, prédécesseur, plancher, plafond)
+- ✅ Requêtes de plage efficaces
+
+### Critères d'acceptation validés
+- [x] Classe BinarySearchTree implémentée
+- [x] Toutes les méthodes principales fonctionnelles
+- [x] Propriétés BST respectées
+- [x] Tests unitaires avec couverture complète
+- [x] Documentation complète
+- [x] Gestion des erreurs robuste
+- [x] Performance validée
+- [x] Itérateurs fonctionnels
+- [x] Opérations avancées implémentées
+
+### Prochaines étapes
+- Implémentation de la spécification AVLTree (Phase 2)
+- Développement des algorithmes d'équilibrage
+- Implémentation des rotations AVL
+- Tests de performance sur de gros volumes de données
+
+## 2024-12-19 14:45 - Finalisation de la documentation et des exemples
+
+### Description
+Finalisation de la documentation complète et création d'exemples d'utilisation pratiques pour la classe BinarySearchTree.
+
+### Justification
+Il est nécessaire de fournir une documentation exhaustive et des exemples concrets pour faciliter l'utilisation de la classe BinarySearchTree et démontrer toutes ses fonctionnalités.
+
+### Méthode
+- Création d'exemples d'utilisation détaillés dans scripts/examples/
+- Démonstration de toutes les fonctionnalités principales
+- Exemples avec différents types de données (entiers, chaînes)
+- Tests de performance sur de gros volumes
+- Documentation des cas d'usage avancés
+- Exemples de gestion d'erreurs
+
+### Fichiers modifiés
+- scripts/examples/bst_example.py (créé)
+- scripts/examples/bst_demo.py (créé)
+- scripts/examples/bst_example_simple.py (créé)
+
+### Résultats
+- ✅ Exemples d'utilisation complets
+- ✅ Démonstration de toutes les fonctionnalités
+- ✅ Tests de performance inclus
+- ✅ Gestion d'erreurs illustrée
+- ✅ Documentation pratique pour les utilisateurs
+
+### Prochaines étapes
+- Implémentation de la Phase 2 (AVLTree)
+- Optimisation des performances
+- Tests d'intégration complets
+
 ## 2024-12-19 - Initialisation du projet
 
 ### Description
