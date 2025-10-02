@@ -59,7 +59,7 @@ class TestPreorderIterator:
         right = BinaryTreeNode(3)
         root.set_left(left)
         root.set_right(right)
-        
+
         iterator = PreorderIterator(root)
         result = list(iterator)
         assert result == [1, 2, 3]
@@ -77,12 +77,12 @@ class TestPreorderIterator:
         right = BinaryTreeNode(3)
         left_left = BinaryTreeNode(4)
         left_right = BinaryTreeNode(5)
-        
+
         root.set_left(left)
         root.set_right(right)
         left.set_left(left_left)
         left.set_right(left_right)
-        
+
         iterator = PreorderIterator(root)
         result = list(iterator)
         assert result == [1, 2, 4, 5, 3]
@@ -144,7 +144,7 @@ class TestInorderIterator:
         right = BinaryTreeNode(3)
         root.set_left(left)
         root.set_right(right)
-        
+
         iterator = InorderIterator(root)
         result = list(iterator)
         assert result == [2, 1, 3]
@@ -162,12 +162,12 @@ class TestInorderIterator:
         right = BinaryTreeNode(3)
         left_left = BinaryTreeNode(4)
         left_right = BinaryTreeNode(5)
-        
+
         root.set_left(left)
         root.set_right(right)
         left.set_left(left_left)
         left.set_right(left_right)
-        
+
         iterator = InorderIterator(root)
         result = list(iterator)
         assert result == [4, 2, 5, 1, 3]
@@ -221,7 +221,7 @@ class TestPostorderIterator:
         right = BinaryTreeNode(3)
         root.set_left(left)
         root.set_right(right)
-        
+
         iterator = PostorderIterator(root)
         result = list(iterator)
         assert result == [2, 3, 1]
@@ -239,12 +239,12 @@ class TestPostorderIterator:
         right = BinaryTreeNode(3)
         left_left = BinaryTreeNode(4)
         left_right = BinaryTreeNode(5)
-        
+
         root.set_left(left)
         root.set_right(right)
         left.set_left(left_left)
         left.set_right(left_right)
-        
+
         iterator = PostorderIterator(root)
         result = list(iterator)
         assert result == [4, 5, 2, 3, 1]
@@ -297,7 +297,7 @@ class TestLevelOrderIterator:
         right = BinaryTreeNode(3)
         root.set_left(left)
         root.set_right(right)
-        
+
         iterator = LevelOrderIterator(root)
         result = list(iterator)
         assert result == [1, 2, 3]
@@ -315,12 +315,12 @@ class TestLevelOrderIterator:
         right = BinaryTreeNode(3)
         left_left = BinaryTreeNode(4)
         left_right = BinaryTreeNode(5)
-        
+
         root.set_left(left)
         root.set_right(right)
         left.set_left(left_left)
         left.set_right(left_right)
-        
+
         iterator = LevelOrderIterator(root)
         result = list(iterator)
         assert result == [1, 2, 3, 4, 5]
@@ -373,7 +373,7 @@ class TestLevelOrderWithLevelIterator:
         right = BinaryTreeNode(3)
         root.set_left(left)
         root.set_right(right)
-        
+
         iterator = LevelOrderWithLevelIterator(root)
         result = list(iterator)
         assert result == [(1, 0), (2, 1), (3, 1)]
@@ -391,12 +391,12 @@ class TestLevelOrderWithLevelIterator:
         right = BinaryTreeNode(3)
         left_left = BinaryTreeNode(4)
         left_right = BinaryTreeNode(5)
-        
+
         root.set_left(left)
         root.set_right(right)
         left.set_left(left_left)
         left.set_right(left_right)
-        
+
         iterator = LevelOrderWithLevelIterator(root)
         result = list(iterator)
         assert result == [(1, 0), (2, 1), (3, 1), (4, 2), (5, 2)]

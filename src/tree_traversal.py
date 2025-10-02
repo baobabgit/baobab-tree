@@ -305,9 +305,7 @@ class TreeTraversal(ABC, Generic[T]):
 
         return stats
 
-    def _validate_node_recursive(
-        self, node: "TreeNode", visited: set
-    ) -> bool:
+    def _validate_node_recursive(self, node: "TreeNode", visited: set) -> bool:
         """
         Valide récursivement un nœud et ses descendants.
 

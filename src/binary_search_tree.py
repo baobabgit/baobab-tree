@@ -26,7 +26,6 @@ from .exceptions import (
 from .interfaces import T
 
 
-
 class BinarySearchTree:
     """
     Arbre binaire de recherche générique.
@@ -362,7 +361,9 @@ class BinarySearchTree:
                 raise
             raise BSTError(f"Error during search: {str(e)}", "search")
 
-    def _search_recursive(self, node: Optional[BinaryTreeNode[T]], value: T) -> Optional[BinaryTreeNode[T]]:
+    def _search_recursive(
+        self, node: Optional[BinaryTreeNode[T]], value: T
+    ) -> Optional[BinaryTreeNode[T]]:
         """
         Recherche récursivement une valeur dans le sous-arbre.
 
@@ -412,10 +413,10 @@ class BinarySearchTree:
             raise BSTError(f"Error during validation: {str(e)}", "is_valid")
 
     def _is_valid_recursive(
-        self, 
-        node: Optional[BinaryTreeNode[T]], 
-        min_val: Optional[T], 
-        max_val: Optional[T]
+        self,
+        node: Optional[BinaryTreeNode[T]],
+        min_val: Optional[T],
+        max_val: Optional[T],
     ) -> bool:
         """
         Valide récursivement les propriétés BST du sous-arbre.
@@ -439,10 +440,9 @@ class BinarySearchTree:
             return False
 
         # Valider récursivement les sous-arbres
-        return (
-            self._is_valid_recursive(node.left, min_val, node.value) and
-            self._is_valid_recursive(node.right, node.value, max_val)
-        )
+        return self._is_valid_recursive(
+            node.left, min_val, node.value
+        ) and self._is_valid_recursive(node.right, node.value, max_val)
 
     def is_balanced(self) -> bool:
         """
@@ -500,8 +500,12 @@ class BinarySearchTree:
         if self._root is None:
             return 0
 
-        left_height = self._root.left.get_height() if self._root.left is not None else -1
-        right_height = self._root.right.get_height() if self._root.right is not None else -1
+        left_height = (
+            self._root.left.get_height() if self._root.left is not None else -1
+        )
+        right_height = (
+            self._root.right.get_height() if self._root.right is not None else -1
+        )
 
         return right_height - left_height
 
@@ -663,7 +667,9 @@ class BinarySearchTree:
         try:
             node = self.search(value)
             if node is None:
-                raise ValueNotFoundError(f"Value {value} not found", value, "find_successor")
+                raise ValueNotFoundError(
+                    f"Value {value} not found", value, "find_successor"
+                )
 
             # Si le nœud a un sous-arbre droit, le successeur est le minimum de ce sous-arbre
             if node.right is not None:
@@ -698,7 +704,9 @@ class BinarySearchTree:
         try:
             node = self.search(value)
             if node is None:
-                raise ValueNotFoundError(f"Value {value} not found", value, "find_predecessor")
+                raise ValueNotFoundError(
+                    f"Value {value} not found", value, "find_predecessor"
+                )
 
             # Si le nœud a un sous-arbre gauche, le prédécesseur est le maximum de ce sous-arbre
             if node.left is not None:
@@ -716,7 +724,9 @@ class BinarySearchTree:
         except Exception as e:
             if isinstance(e, BSTError):
                 raise
-            raise BSTError(f"Error during predecessor search: {str(e)}", "find_predecessor")
+            raise BSTError(
+                f"Error during predecessor search: {str(e)}", "find_predecessor"
+            )
 
     def _find_max_node(self, node: BinaryTreeNode[T]) -> BinaryTreeNode[T]:
         """
@@ -748,7 +758,9 @@ class BinarySearchTree:
                 raise
             raise BSTError(f"Error during floor search: {str(e)}", "find_floor")
 
-    def _find_floor_recursive(self, node: Optional[BinaryTreeNode[T]], value: T) -> Optional[T]:
+    def _find_floor_recursive(
+        self, node: Optional[BinaryTreeNode[T]], value: T
+    ) -> Optional[T]:
         """
         Trouve récursivement la plus grande valeur inférieure ou égale.
 
@@ -790,7 +802,9 @@ class BinarySearchTree:
                 raise
             raise BSTError(f"Error during ceiling search: {str(e)}", "find_ceiling")
 
-    def _find_ceiling_recursive(self, node: Optional[BinaryTreeNode[T]], value: T) -> Optional[T]:
+    def _find_ceiling_recursive(
+        self, node: Optional[BinaryTreeNode[T]], value: T
+    ) -> Optional[T]:
         """
         Trouve récursivement la plus petite valeur supérieure ou égale.
 
@@ -840,11 +854,7 @@ class BinarySearchTree:
             raise BSTError(f"Error during range query: {str(e)}", "range_query")
 
     def _range_query_recursive(
-        self, 
-        node: Optional[BinaryTreeNode[T]], 
-        min_val: T, 
-        max_val: T, 
-        result: List[T]
+        self, node: Optional[BinaryTreeNode[T]], min_val: T, max_val: T, result: List[T]
     ) -> None:
         """
         Effectue récursivement la requête de plage.
@@ -862,8 +872,10 @@ class BinarySearchTree:
             return
 
         # Si la valeur du nœud est dans la plage, l'ajouter
-        if (self._comparator(node.value, min_val) >= 0 and 
-            self._comparator(node.value, max_val) <= 0):
+        if (
+            self._comparator(node.value, min_val) >= 0
+            and self._comparator(node.value, max_val) <= 0
+        ):
             result.append(node.value)
 
         # Explorer le sous-arbre gauche si nécessaire
@@ -897,10 +909,7 @@ class BinarySearchTree:
             raise BSTError(f"Error during range count: {str(e)}", "count_range")
 
     def _count_range_recursive(
-        self, 
-        node: Optional[BinaryTreeNode[T]], 
-        min_val: T, 
-        max_val: T
+        self, node: Optional[BinaryTreeNode[T]], min_val: T, max_val: T
     ) -> int:
         """
         Compte récursivement le nombre de valeurs dans la plage.
@@ -920,8 +929,10 @@ class BinarySearchTree:
         count = 0
 
         # Si la valeur du nœud est dans la plage, l'ajouter au compte
-        if (self._comparator(node.value, min_val) >= 0 and 
-            self._comparator(node.value, max_val) <= 0):
+        if (
+            self._comparator(node.value, min_val) >= 0
+            and self._comparator(node.value, max_val) <= 0
+        ):
             count += 1
 
         # Explorer le sous-arbre gauche si nécessaire

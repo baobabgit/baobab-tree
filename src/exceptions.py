@@ -303,3 +303,177 @@ class InvalidOperationError(BSTError):
         :type operation: str
         """
         super().__init__(message, operation)
+
+
+class AVLError(Exception):
+    """
+    Exception de base pour toutes les erreurs liées aux arbres AVL.
+
+    Cette exception sert de classe de base pour toutes les erreurs spécifiques
+    aux arbres AVL, permettant une gestion d'erreurs hiérarchique.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param operation: Opération qui a causé l'erreur (optionnel)
+    :type operation: str, optional
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: AVLNode, optional
+    """
+
+    def __init__(self, message: str, operation: str = None, node=None):
+        """
+        Initialise l'exception AVLError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param operation: Opération qui a causé l'erreur (optionnel)
+        :type operation: str, optional
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: AVLNode, optional
+        """
+        super().__init__(message)
+        self.message = message
+        self.operation = operation
+        self.node = node
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur l'opération et le nœud si disponibles
+        :rtype: str
+        """
+        result = self.message
+        if self.operation is not None:
+            result += f" (Operation: {self.operation})"
+        if self.node is not None:
+            result += f" (Node: {self.node})"
+        return result
+
+
+class InvalidBalanceFactorError(AVLError):
+    """
+    Exception levée lors d'un facteur d'équilibre invalide.
+
+    Cette exception est levée quand le facteur d'équilibre d'un nœud AVL
+    n'est pas dans la plage valide [-1, 0, 1].
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param balance_factor: Facteur d'équilibre invalide
+    :type balance_factor: int
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: AVLNode, optional
+    """
+
+    def __init__(self, message: str, balance_factor: int, node=None):
+        """
+        Initialise l'exception InvalidBalanceFactorError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param balance_factor: Facteur d'équilibre invalide
+        :type balance_factor: int
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: AVLNode, optional
+        """
+        super().__init__(message, "balance_factor_validation", node)
+        self.balance_factor = balance_factor
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur le facteur d'équilibre
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        return f"{base_msg} (Balance factor: {self.balance_factor})"
+
+
+class RotationError(AVLError):
+    """
+    Exception levée lors d'une erreur de rotation AVL.
+
+    Cette exception est levée quand une rotation ne peut pas être effectuée
+    ou quand elle produit un résultat invalide.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param rotation_type: Type de rotation qui a échoué
+    :type rotation_type: str
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: AVLNode, optional
+    """
+
+    def __init__(self, message: str, rotation_type: str, node=None):
+        """
+        Initialise l'exception RotationError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param rotation_type: Type de rotation qui a échoué
+        :type rotation_type: str
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: AVLNode, optional
+        """
+        super().__init__(message, "rotation", node)
+        self.rotation_type = rotation_type
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur le type de rotation
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        return f"{base_msg} (Rotation type: {self.rotation_type})"
+
+
+class HeightMismatchError(AVLError):
+    """
+    Exception levée lors d'une incohérence de hauteur.
+
+    Cette exception est levée quand la hauteur calculée ne correspond pas
+    à la hauteur mise en cache ou quand il y a une incohérence dans les
+    calculs de hauteur.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param calculated_height: Hauteur calculée
+    :type calculated_height: int
+    :param cached_height: Hauteur mise en cache
+    :type cached_height: int
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: AVLNode, optional
+    """
+
+    def __init__(
+        self, message: str, calculated_height: int, cached_height: int, node=None
+    ):
+        """
+        Initialise l'exception HeightMismatchError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param calculated_height: Hauteur calculée
+        :type calculated_height: int
+        :param cached_height: Hauteur mise en cache
+        :type cached_height: int
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: AVLNode, optional
+        """
+        super().__init__(message, "height_validation", node)
+        self.calculated_height = calculated_height
+        self.cached_height = cached_height
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur les hauteurs
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        return f"{base_msg} (Calculated: {self.calculated_height}, Cached: {self.cached_height})"
