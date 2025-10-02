@@ -868,3 +868,175 @@ class ValidationError(BalancingError):
     def __init__(self, message: str, validation_type: str, node=None):
         super().__init__(message, "validation", node)
         self.validation_type = validation_type
+
+
+class RedBlackTreeError(Exception):
+    """
+    Exception de base pour toutes les erreurs liées aux arbres rouge-noir.
+
+    Cette exception sert de classe de base pour toutes les erreurs spécifiques
+    aux arbres rouge-noir, permettant une gestion d'erreurs hiérarchique.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param operation: Opération qui a causé l'erreur (optionnel)
+    :type operation: str, optional
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: RedBlackNode, optional
+    """
+
+    def __init__(self, message: str, operation: str = None, node=None):
+        """
+        Initialise l'exception RedBlackTreeError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param operation: Opération qui a causé l'erreur (optionnel)
+        :type operation: str, optional
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: RedBlackNode, optional
+        """
+        super().__init__(message)
+        self.message = message
+        self.operation = operation
+        self.node = node
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur l'opération et le nœud si disponibles
+        :rtype: str
+        """
+        result = self.message
+        if self.operation is not None:
+            result += f" (Operation: {self.operation})"
+        if self.node is not None:
+            result += f" (Node: {self.node})"
+        return result
+
+
+class ColorViolationError(RedBlackTreeError):
+    """
+    Exception levée lors d'une violation des propriétés de couleur.
+
+    Cette exception est levée quand les propriétés de couleur des arbres
+    rouge-noir ne sont pas respectées.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param color_property: Propriété de couleur violée
+    :type color_property: str
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: RedBlackNode, optional
+    """
+
+    def __init__(self, message: str, color_property: str, node=None):
+        """
+        Initialise l'exception ColorViolationError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param color_property: Propriété de couleur violée
+        :type color_property: str
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: RedBlackNode, optional
+        """
+        super().__init__(message, "color_violation", node)
+        self.color_property = color_property
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur la propriété de couleur
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        return f"{base_msg} (Color property: {self.color_property})"
+
+
+class PathViolationError(RedBlackTreeError):
+    """
+    Exception levée lors d'une violation de la propriété de chemin.
+
+    Cette exception est levée quand la propriété de chemin des arbres
+    rouge-noir n'est pas respectée (tous les chemins ont le même nombre
+    de nœuds noirs).
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param path_count: Nombre de nœuds noirs dans le chemin
+    :type path_count: int
+    :param expected_count: Nombre attendu de nœuds noirs
+    :type expected_count: int
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: RedBlackNode, optional
+    """
+
+    def __init__(self, message: str, path_count: int, expected_count: int, node=None):
+        """
+        Initialise l'exception PathViolationError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param path_count: Nombre de nœuds noirs dans le chemin
+        :type path_count: int
+        :param expected_count: Nombre attendu de nœuds noirs
+        :type expected_count: int
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: RedBlackNode, optional
+        """
+        super().__init__(message, "path_violation", node)
+        self.path_count = path_count
+        self.expected_count = expected_count
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur les comptes de chemins
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        return f"{base_msg} (Path count: {self.path_count}, Expected: {self.expected_count})"
+
+
+class RedBlackBalancingError(RedBlackTreeError):
+    """
+    Exception levée lors d'une erreur d'équilibrage rouge-noir.
+
+    Cette exception est levée quand les algorithmes d'équilibrage des arbres
+    rouge-noir échouent ou produisent des résultats invalides.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param balancing_operation: Opération d'équilibrage qui a échoué
+    :type balancing_operation: str
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: RedBlackNode, optional
+    """
+
+    def __init__(self, message: str, balancing_operation: str, node=None):
+        """
+        Initialise l'exception RedBlackBalancingError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param balancing_operation: Opération d'équilibrage qui a échoué
+        :type balancing_operation: str
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: RedBlackNode, optional
+        """
+        super().__init__(message, "red_black_balancing", node)
+        self.balancing_operation = balancing_operation
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur l'opération d'équilibrage
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        return f"{base_msg} (Balancing operation: {self.balancing_operation})"

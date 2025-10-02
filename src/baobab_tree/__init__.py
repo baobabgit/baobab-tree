@@ -38,6 +38,10 @@ from .core.exceptions import (
     InvalidOrderError,
     NodeFullError,
     NodeUnderflowError,
+    RedBlackTreeError,
+    ColorViolationError,
+    PathViolationError,
+    RedBlackBalancingError,
 )
 from .core.tree_node import TreeNode
 
@@ -48,6 +52,8 @@ from .binary.binary_search_tree import BinarySearchTree
 # Arbres équilibrés
 from .balanced.avl_tree import AVLTree
 from .balanced.avl_node import AVLNode
+from .balanced.red_black_tree import RedBlackTree
+from .balanced.red_black_node import RedBlackNode, Color
 
 # Arbres n-aires
 from .nary.btree import BTree
@@ -85,6 +91,10 @@ __all__ = [
     "InvalidOrderError",
     "NodeFullError",
     "NodeUnderflowError",
+    "RedBlackTreeError",
+    "ColorViolationError",
+    "PathViolationError",
+    "RedBlackBalancingError",
     
     # Classes principales
     "TreeNode",
@@ -92,6 +102,9 @@ __all__ = [
     "BinarySearchTree",
     "AVLTree",
     "AVLNode",
+    "RedBlackTree",
+    "RedBlackNode",
+    "Color",
     "BTree",
     "BTreeNode",
     "UtilityOperations",
