@@ -76,6 +76,9 @@ class AVLNode(BinaryTreeNode):
         # Hauteur mise en cache pour optimiser les calculs
         self._cached_height: int = 0
 
+        # Mettre à jour les métadonnées AVL après initialisation
+        self._update_avl_metadata()
+
     @classmethod
     def from_copy(cls, other: "AVLNode[T]") -> "AVLNode[T]":
         """
@@ -167,7 +170,7 @@ class AVLNode(BinaryTreeNode):
         """
         if self._left is None:
             return -1
-        return self._left.get_height()
+        return self._left._cached_height
 
     def get_right_height(self) -> int:
         """
@@ -178,7 +181,7 @@ class AVLNode(BinaryTreeNode):
         """
         if self._right is None:
             return -1
-        return self._right.get_height()
+        return self._right._cached_height
 
     def update_balance_factor(self) -> None:
         """
@@ -190,8 +193,8 @@ class AVLNode(BinaryTreeNode):
         :return: None
         :rtype: None
         """
-        left_height = self._left.get_height() if self._left is not None else -1
-        right_height = self._right.get_height() if self._right is not None else -1
+        left_height = self._left._cached_height if self._left is not None else -1
+        right_height = self._right._cached_height if self._right is not None else -1
 
         self._balance_factor = right_height - left_height
 
@@ -207,8 +210,8 @@ class AVLNode(BinaryTreeNode):
         if self.is_leaf():
             self._cached_height = 0
         else:
-            left_height = self._left.get_height() if self._left is not None else -1
-            right_height = self._right.get_height() if self._right is not None else -1
+            left_height = self._left._cached_height if self._left is not None else -1
+            right_height = self._right._cached_height if self._right is not None else -1
             self._cached_height = 1 + max(left_height, right_height)
 
     def update_all(self) -> None:
@@ -297,6 +300,7 @@ class AVLNode(BinaryTreeNode):
 
         super().set_left(node)
         self._update_avl_metadata()
+        self._update_ancestors_metadata()
 
     def set_right(self, node: Optional["AVLNode"]) -> None:
         """
@@ -316,6 +320,7 @@ class AVLNode(BinaryTreeNode):
 
         super().set_right(node)
         self._update_avl_metadata()
+        self._update_ancestors_metadata()
 
     def _update_avl_metadata(self) -> None:
         """
@@ -326,6 +331,18 @@ class AVLNode(BinaryTreeNode):
         """
         self.update_height()
         self.update_balance_factor()
+
+    def _update_ancestors_metadata(self) -> None:
+        """
+        Met à jour les métadonnées AVL pour tous les ancêtres.
+
+        :return: None
+        :rtype: None
+        """
+        current = self.parent
+        while current is not None:
+            current._update_avl_metadata()
+            current = current.parent
 
     def get_height(self) -> int:
         """

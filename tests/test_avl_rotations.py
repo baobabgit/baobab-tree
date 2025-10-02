@@ -408,3 +408,446 @@ class TestAVLRotations:
         assert new_parent.parent is grandparent
         assert new_parent.right is parent
         assert parent.parent is new_parent
+
+    def test_select_rotation_left(self):
+        """Test de sélection de rotation gauche."""
+        node = AVLNode(50)
+        node.set_right(AVLNode(70))
+        node.right.set_right(AVLNode(80))
+
+        rotation_func = AVLRotations.select_rotation(node)
+        assert rotation_func == AVLRotations.rotate_left
+
+    def test_select_rotation_right(self):
+        """Test de sélection de rotation droite."""
+        node = AVLNode(50)
+        node.set_left(AVLNode(30))
+        node.left.set_left(AVLNode(20))
+
+        rotation_func = AVLRotations.select_rotation(node)
+        assert rotation_func == AVLRotations.rotate_right
+
+    def test_select_rotation_left_right(self):
+        """Test de sélection de rotation gauche-droite."""
+        node = AVLNode(50)
+        node.set_left(AVLNode(30))
+        node.left.set_right(AVLNode(40))
+        node.left.right.set_right(AVLNode(45))
+
+        rotation_func = AVLRotations.select_rotation(node)
+        assert rotation_func == AVLRotations.rotate_left_right
+
+    def test_select_rotation_right_left(self):
+        """Test de sélection de rotation droite-gauche."""
+        node = AVLNode(50)
+        node.set_right(AVLNode(70))
+        node.right.set_left(AVLNode(60))
+        node.right.left.set_left(AVLNode(55))
+
+        rotation_func = AVLRotations.select_rotation(node)
+        assert rotation_func == AVLRotations.rotate_right_left
+
+    def test_select_rotation_none(self):
+        """Test de sélection de rotation quand aucune n'est nécessaire."""
+        node = AVLNode(50)
+        node.set_left(AVLNode(30))
+        node.set_right(AVLNode(70))
+
+        rotation_func = AVLRotations.select_rotation(node)
+        # Devrait retourner une fonction identité
+        result = rotation_func(node)
+        assert result is node
+
+    def test_select_rotation_with_null_node(self):
+        """Test de sélection de rotation avec nœud null."""
+        with pytest.raises(RotationError) as exc_info:
+            AVLRotations.select_rotation(None)
+
+        assert "Cannot select rotation for null node" in str(exc_info.value)
+
+    def test_analyze_imbalance_balanced(self):
+        """Test d'analyse de déséquilibre pour un nœud équilibré."""
+        node = AVLNode(50)
+        node.set_left(AVLNode(30))
+        node.set_right(AVLNode(70))
+
+        analysis = AVLRotations.analyze_imbalance(node)
+        
+        assert analysis["node_value"] == 50
+        assert analysis["balance_factor"] == 0
+        assert analysis["is_balanced"] is True
+        assert analysis["rotation_type"] == "none"
+        assert analysis["left_child_info"] is not None
+        assert analysis["right_child_info"] is not None
+
+    def test_analyze_imbalance_left_heavy(self):
+        """Test d'analyse de déséquilibre pour un nœud déséquilibré à gauche."""
+        node = AVLNode(50)
+        node.set_left(AVLNode(30))
+        node.left.set_left(AVLNode(20))
+
+        analysis = AVLRotations.analyze_imbalance(node)
+        
+        assert analysis["node_value"] == 50
+        assert analysis["is_left_heavy"] is True
+        assert analysis["rotation_type"] == "right"
+        assert analysis["left_child_info"] is not None
+        assert analysis["right_child_info"] is None
+
+    def test_analyze_imbalance_right_heavy(self):
+        """Test d'analyse de déséquilibre pour un nœud déséquilibré à droite."""
+        node = AVLNode(50)
+        node.set_right(AVLNode(70))
+        node.right.set_right(AVLNode(80))
+
+        analysis = AVLRotations.analyze_imbalance(node)
+        
+        assert analysis["node_value"] == 50
+        assert analysis["is_right_heavy"] is True
+        assert analysis["rotation_type"] == "left"
+        assert analysis["left_child_info"] is None
+        assert analysis["right_child_info"] is not None
+
+    def test_analyze_imbalance_with_null_node(self):
+        """Test d'analyse de déséquilibre avec nœud null."""
+        with pytest.raises(RotationError) as exc_info:
+            AVLRotations.analyze_imbalance(None)
+
+        assert "Cannot analyze imbalance for null node" in str(exc_info.value)
+
+    def test_validate_before_rotation_left(self):
+        """Test de validation pré-rotation gauche."""
+        node = AVLNode(50)
+        node.set_right(AVLNode(70))
+
+        assert AVLRotations.validate_before_rotation(node, "left") is True
+
+    def test_validate_before_rotation_right(self):
+        """Test de validation pré-rotation droite."""
+        node = AVLNode(50)
+        node.set_left(AVLNode(30))
+
+        assert AVLRotations.validate_before_rotation(node, "right") is True
+
+    def test_validate_before_rotation_left_right(self):
+        """Test de validation pré-rotation gauche-droite."""
+        node = AVLNode(50)
+        node.set_left(AVLNode(30))
+        node.left.set_right(AVLNode(40))
+
+        assert AVLRotations.validate_before_rotation(node, "left_right") is True
+
+    def test_validate_before_rotation_right_left(self):
+        """Test de validation pré-rotation droite-gauche."""
+        node = AVLNode(50)
+        node.set_right(AVLNode(70))
+        node.right.set_left(AVLNode(60))
+
+        assert AVLRotations.validate_before_rotation(node, "right_left") is True
+
+    def test_validate_before_rotation_invalid(self):
+        """Test de validation pré-rotation invalide."""
+        node = AVLNode(50)
+
+        assert AVLRotations.validate_before_rotation(node, "left") is False
+        assert AVLRotations.validate_before_rotation(node, "right") is False
+
+    def test_validate_before_rotation_with_null_node(self):
+        """Test de validation pré-rotation avec nœud null."""
+        with pytest.raises(RotationError) as exc_info:
+            AVLRotations.validate_before_rotation(None, "left")
+
+        assert "Cannot validate rotation for null node" in str(exc_info.value)
+
+    def test_validate_after_rotation_valid(self):
+        """Test de validation post-rotation valide."""
+        node = AVLNode(50)
+        node.set_left(AVLNode(30))
+        node.set_right(AVLNode(70))
+
+        assert AVLRotations.validate_after_rotation(node) is True
+
+    def test_validate_after_rotation_invalid(self):
+        """Test de validation post-rotation invalide."""
+        node = AVLNode(50)
+        # Créer un état invalide en cassant les références parent
+        left_child = AVLNode(30)
+        node.set_left(left_child)
+        left_child.parent = None  # Casser la référence parent
+
+        assert AVLRotations.validate_after_rotation(node) is False
+
+    def test_validate_after_rotation_with_null_node(self):
+        """Test de validation post-rotation avec nœud null."""
+        with pytest.raises(RotationError) as exc_info:
+            AVLRotations.validate_after_rotation(None)
+
+        assert "Cannot validate rotation result for null node" in str(exc_info.value)
+
+    def test_update_avl_properties(self):
+        """Test de mise à jour des propriétés AVL."""
+        node = AVLNode(50)
+        node.set_left(AVLNode(30))
+        node.set_right(AVLNode(70))
+
+        # Forcer un état incohérent
+        node._balance_factor = 999
+
+        AVLRotations.update_avl_properties(node)
+
+        # Vérifier que les propriétés ont été mises à jour
+        assert node.get_balance_factor() == 0
+
+    def test_update_avl_properties_with_parent(self):
+        """Test de mise à jour des propriétés AVL avec parent."""
+        parent = AVLNode(100)
+        child = AVLNode(50)
+        parent.set_left(child)
+
+        # Forcer un état incohérent
+        parent._balance_factor = 999
+        child._balance_factor = 999
+
+        AVLRotations.update_avl_properties(child)
+
+        # Vérifier que les propriétés ont été mises à jour pour l'enfant et le parent
+        assert child.get_balance_factor() == 0
+        assert parent.get_balance_factor() == 1  # Parent avec un enfant gauche
+
+    def test_update_avl_properties_with_null_node(self):
+        """Test de mise à jour des propriétés AVL avec nœud null."""
+        with pytest.raises(RotationError) as exc_info:
+            AVLRotations.update_avl_properties(None)
+
+        assert "Cannot update AVL properties for null node" in str(exc_info.value)
+
+    def test_update_parent_references(self):
+        """Test de mise à jour des références parent."""
+        grandparent = AVLNode(100)
+        old_root = AVLNode(50)
+        new_root = AVLNode(70)
+
+        grandparent.set_left(old_root)
+        old_root.set_right(new_root)
+
+        AVLRotations.update_parent_references(old_root, new_root)
+
+        # Vérifier que grandparent pointe maintenant vers new_root
+        assert grandparent.left is new_root
+        assert new_root.parent is grandparent
+
+    def test_update_parent_references_root_node(self):
+        """Test de mise à jour des références parent pour un nœud racine."""
+        old_root = AVLNode(50)
+        new_root = AVLNode(70)
+
+        old_root.set_right(new_root)
+
+        AVLRotations.update_parent_references(old_root, new_root)
+
+        # Vérifier que new_root n'a plus de parent (est devenu la racine)
+        assert new_root.parent is None
+
+    def test_update_parent_references_with_null_nodes(self):
+        """Test de mise à jour des références parent avec nœuds null."""
+        with pytest.raises(RotationError) as exc_info:
+            AVLRotations.update_parent_references(None, None)
+
+        assert "Cannot update parent references for null nodes" in str(exc_info.value)
+
+    def test_get_rotation_stats(self):
+        """Test de récupération des statistiques de rotation."""
+        root = AVLNode(50)
+        root.set_left(AVLNode(30))
+        root.set_right(AVLNode(70))
+        root.left.set_left(AVLNode(20))
+        root.right.set_right(AVLNode(80))
+
+        stats = AVLRotations.get_rotation_stats(root)
+
+        assert stats["total_nodes"] == 5
+        assert stats["balanced_nodes"] >= 0
+        assert stats["left_heavy_nodes"] >= 0
+        assert stats["right_heavy_nodes"] >= 0
+        assert "nodes_needing_left_rotation" in stats
+        assert "nodes_needing_right_rotation" in stats
+        assert "nodes_needing_left_right_rotation" in stats
+        assert "nodes_needing_right_left_rotation" in stats
+
+    def test_get_rotation_stats_single_node(self):
+        """Test de récupération des statistiques de rotation pour un seul nœud."""
+        node = AVLNode(50)
+
+        stats = AVLRotations.get_rotation_stats(node)
+
+        assert stats["total_nodes"] == 1
+        assert stats["balanced_nodes"] == 1
+        assert stats["left_heavy_nodes"] == 0
+        assert stats["right_heavy_nodes"] == 0
+
+    def test_get_rotation_stats_with_null_node(self):
+        """Test de récupération des statistiques de rotation avec nœud null."""
+        with pytest.raises(RotationError) as exc_info:
+            AVLRotations.get_rotation_stats(None)
+
+        assert "Cannot get rotation stats for null node" in str(exc_info.value)
+
+    def test_diagnose_rotation_left(self):
+        """Test de diagnostic de rotation gauche."""
+        node = AVLNode(50)
+        node.set_right(AVLNode(70))
+
+        diagnosis = AVLRotations.diagnose_rotation(node, "left")
+
+        assert diagnosis["node_value"] == 50
+        assert diagnosis["rotation_type"] == "left"
+        assert diagnosis["can_perform_rotation"] is True
+        assert diagnosis["predicted_effect"] is not None
+        assert diagnosis["predicted_effect"]["new_root"] == 70
+        assert diagnosis["predicted_effect"]["balance_improvement"] is True
+        assert len(diagnosis["recommendations"]) > 0
+
+    def test_diagnose_rotation_right(self):
+        """Test de diagnostic de rotation droite."""
+        node = AVLNode(50)
+        node.set_left(AVLNode(30))
+
+        diagnosis = AVLRotations.diagnose_rotation(node, "right")
+
+        assert diagnosis["node_value"] == 50
+        assert diagnosis["rotation_type"] == "right"
+        assert diagnosis["can_perform_rotation"] is True
+        assert diagnosis["predicted_effect"] is not None
+        assert diagnosis["predicted_effect"]["new_root"] == 30
+        assert diagnosis["predicted_effect"]["balance_improvement"] is True
+
+    def test_diagnose_rotation_invalid(self):
+        """Test de diagnostic de rotation invalide."""
+        node = AVLNode(50)
+
+        diagnosis = AVLRotations.diagnose_rotation(node, "left")
+
+        assert diagnosis["node_value"] == 50
+        assert diagnosis["rotation_type"] == "left"
+        assert diagnosis["can_perform_rotation"] is False
+        assert diagnosis["predicted_effect"] is None
+        assert "Cannot perform left rotation" in diagnosis["recommendations"][0]
+
+    def test_diagnose_rotation_with_null_node(self):
+        """Test de diagnostic de rotation avec nœud null."""
+        with pytest.raises(RotationError) as exc_info:
+            AVLRotations.diagnose_rotation(None, "left")
+
+        assert "Cannot diagnose rotation for null node" in str(exc_info.value)
+
+    def test_analyze_rotation_performance(self):
+        """Test d'analyse de performance des rotations."""
+        node = AVLNode(50)
+        node.set_left(AVLNode(30))
+        node.set_right(AVLNode(70))
+
+        performance = AVLRotations.analyze_rotation_performance(node)
+
+        assert performance["node_value"] == 50
+        assert "rotation_times" in performance
+        assert "average_rotation_time" in performance
+        assert "fastest_rotation" in performance
+        assert "slowest_rotation" in performance
+        assert "recommendations" in performance
+        assert len(performance["recommendations"]) > 0
+
+    def test_analyze_rotation_performance_with_null_node(self):
+        """Test d'analyse de performance des rotations avec nœud null."""
+        with pytest.raises(RotationError) as exc_info:
+            AVLRotations.analyze_rotation_performance(None)
+
+        assert "Cannot analyze rotation performance for null node" in str(exc_info.value)
+
+    def test_complex_rotation_workflow(self):
+        """Test d'un workflow complexe de rotation."""
+        # Créer un arbre déséquilibré
+        root = AVLNode(50)
+        root.set_right(AVLNode(70))
+        root.right.set_right(AVLNode(80))
+        root.right.right.set_right(AVLNode(90))
+
+        # Analyser le déséquilibre
+        analysis = AVLRotations.analyze_imbalance(root)
+        assert analysis["rotation_type"] == "left"
+
+        # Diagnostiquer la rotation
+        diagnosis = AVLRotations.diagnose_rotation(root, "left")
+        assert diagnosis["can_perform_rotation"] is True
+
+        # Valider avant rotation
+        assert AVLRotations.validate_before_rotation(root, "left") is True
+
+        # Effectuer la rotation
+        new_root = AVLRotations.rotate_left(root)
+
+        # Valider après rotation
+        assert AVLRotations.validate_after_rotation(new_root) is True
+
+        # Vérifier les statistiques
+        stats = AVLRotations.get_rotation_stats(new_root)
+        assert stats["total_nodes"] == 4
+
+        # Analyser la performance
+        performance = AVLRotations.analyze_rotation_performance(new_root)
+        assert performance["node_value"] == 70  # Nouvelle racine
+
+    def test_rotation_error_handling(self):
+        """Test de gestion d'erreurs dans les rotations."""
+        # Test avec nœud null
+        with pytest.raises(RotationError):
+            AVLRotations.rotate_left(None)
+
+        with pytest.raises(RotationError):
+            AVLRotations.rotate_right(None)
+
+        with pytest.raises(RotationError):
+            AVLRotations.rotate_left_right(None)
+
+        with pytest.raises(RotationError):
+            AVLRotations.rotate_right_left(None)
+
+        # Test avec enfants manquants
+        node = AVLNode(50)
+        with pytest.raises(RotationError):
+            AVLRotations.rotate_left(node)
+
+        with pytest.raises(RotationError):
+            AVLRotations.rotate_right(node)
+
+    def test_rotation_preserves_tree_structure(self):
+        """Test que les rotations préservent la structure de l'arbre."""
+        # Créer un arbre complexe
+        root = AVLNode(50)
+        root.set_left(AVLNode(30))
+        root.set_right(AVLNode(70))
+        root.left.set_left(AVLNode(20))
+        root.left.set_right(AVLNode(40))
+        root.right.set_left(AVLNode(60))
+        root.right.set_right(AVLNode(80))
+
+        # Collecter toutes les valeurs avant rotation
+        values_before = []
+
+        def collect_values(node):
+            if node:
+                values_before.append(node.value)
+                collect_values(node.left)
+                collect_values(node.right)
+
+        collect_values(root)
+
+        # Effectuer une rotation droite
+        new_root = AVLRotations.rotate_right(root)
+
+        # Collecter toutes les valeurs après rotation
+        values_after = []
+        collect_values(new_root)
+
+        # Vérifier que toutes les valeurs sont préservées
+        assert set(values_before) == set(values_after)
+        assert len(values_before) == len(values_after)
