@@ -2,7 +2,7 @@
 Module balanced - Arbres auto-équilibrés.
 
 Ce module contient les implémentations d'arbres auto-équilibrés,
-notamment les arbres AVL et rouge-noir.
+notamment les arbres AVL et rouge-noir, ainsi que les stratégies d'équilibrage.
 """
 
 from .avl_tree import AVLTree
@@ -21,6 +21,13 @@ from .rotations import (
     RotationFactory,
     RotationSelector,
 )
+from .balancing_strategy import BalancingStrategy
+from .avl_balancing_strategy import AVLBalancingStrategy
+from .red_black_balancing_strategy import RedBlackBalancingStrategy
+from .splay_balancing_strategy import SplayBalancingStrategy
+from .treap_balancing_strategy import TreapBalancingStrategy
+from .balancing_strategy_factory import BalancingStrategyFactory
+from .balancing_strategy_selector import BalancingStrategySelector
 
 __all__ = [
     "AVLTree",
@@ -38,4 +45,11 @@ __all__ = [
     "RightLeftRotation",
     "RotationFactory",
     "RotationSelector",
+    "BalancingStrategy",
+    "AVLBalancingStrategy",
+    "RedBlackBalancingStrategy",
+    "SplayBalancingStrategy",
+    "TreapBalancingStrategy",
+    "BalancingStrategyFactory",
+    "BalancingStrategySelector",
 ]
