@@ -263,15 +263,15 @@ assert avl.is_avl_valid()
 - `validate_heights()`: O(n)
 
 ## Critères d'acceptation
-- [ ] Classe AVLTree implémentée et fonctionnelle
-- [ ] Classe AVLNode implémentée et fonctionnelle
-- [ ] Toutes les rotations implémentées
-- [ ] Équilibrage automatique validé
-- [ ] Complexité O(log n) garantie
-- [ ] Tests unitaires avec couverture >= 95%
-- [ ] Tests de stress passés
-- [ ] Documentation complète
-- [ ] Score Pylint >= 8.5/10
+- [x] Classe AVLTree implémentée et fonctionnelle
+- [x] Classe AVLNode implémentée et fonctionnelle
+- [x] Toutes les rotations implémentées
+- [x] Équilibrage automatique validé
+- [x] Complexité O(log n) garantie
+- [x] Tests unitaires avec couverture >= 95%
+- [x] Tests de stress passés
+- [x] Documentation complète
+- [x] Score Pylint >= 8.5/10
 
 ## Notes pour l'agent de développement
 - Cette classe est CRITIQUE pour l'interpréteur
