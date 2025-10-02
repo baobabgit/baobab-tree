@@ -21,15 +21,16 @@ from ..core.exceptions import (
 from ..core.interfaces import T
 
 if TYPE_CHECKING:
-    from .red_black_node import RedBlackNode
+    pass  # Forward reference handled by string annotations
 
 
 class Color(Enum):
     """
     Énumération des couleurs pour les nœuds rouge-noir.
-    
+
     Les nœuds rouge-noir peuvent être soit rouges, soit noirs.
     """
+
     RED = "red"
     BLACK = "black"
 
@@ -84,9 +85,13 @@ class RedBlackNode(BinaryTreeNode):
         :raises NodeValidationError: Si la validation échoue
         """
         super().__init__(value, parent, left, right, metadata)
-        
+
         # Couleur du nœud
         self._color: Color = color
+        # Hauteur noire mise en cache
+        self._black_height: Optional[int] = None
+        # Indicateur si le nœud est une sentinelle
+        self._is_nil: bool = False
 
     @property
     def color(self) -> Color:
@@ -329,7 +334,7 @@ class RedBlackNode(BinaryTreeNode):
         try:
             # Calculer le nombre de nœuds noirs sur chaque chemin
             black_counts = self._get_black_counts()
-            
+
             # Vérifier que tous les chemins ont le même nombre
             return len(set(black_counts)) <= 1
         except Exception:
@@ -346,12 +351,12 @@ class RedBlackNode(BinaryTreeNode):
             return [1 if self.is_black() else 0]
 
         counts = []
-        
+
         # Compter les nœuds noirs sur les chemins des enfants
         if self._left is not None:
             left_counts = self._left._get_black_counts()
             counts.extend(left_counts)
-        
+
         if self._right is not None:
             right_counts = self._right._get_black_counts()
             counts.extend(right_counts)
@@ -590,3 +595,381 @@ class RedBlackNode(BinaryTreeNode):
                 self._color,
             )
         )
+
+    @classmethod
+    def create_nil_node(cls) -> "RedBlackNode[T]":
+        """
+        Crée un nœud sentinelle (NIL) noir.
+
+        Cette méthode crée un nœud spécial utilisé comme sentinelle dans
+        les arbres rouge-noir. Les nœuds sentinelles sont toujours noirs
+        et ont une valeur None.
+
+        :return: Nouveau nœud sentinelle noir
+        :rtype: RedBlackNode[T]
+        """
+        nil_node = cls(value=None, color=Color.BLACK)
+        nil_node._is_nil = True
+        nil_node._black_height = 0
+        return nil_node
+
+    @classmethod
+    def from_copy(cls, other: "RedBlackNode[T]") -> "RedBlackNode[T]":
+        """
+        Crée une copie profonde d'un nœud rouge-noir.
+
+        Cette méthode crée une copie complètement indépendante du nœud
+        et de tous ses descendants, avec les mêmes valeurs et couleurs
+        mais sans références partagées.
+
+        :param other: Nœud rouge-noir à copier
+        :type other: RedBlackNode[T]
+        :return: Nouveau nœud rouge-noir copié
+        :rtype: RedBlackNode[T]
+        :raises RedBlackTreeError: Si la copie échoue
+        """
+        if not isinstance(other, RedBlackNode):
+            raise RedBlackTreeError(
+                f"Cannot copy non-RedBlackNode: {type(other).__name__}",
+                "from_copy",
+            )
+
+        # Créer le nœud avec la même valeur et couleur
+        new_node = cls(
+            value=other._value,
+            color=other._color,
+            metadata=other._metadata.copy() if other._metadata else None,
+        )
+
+        # Copier les propriétés spéciales
+        new_node._is_nil = other._is_nil
+        new_node._black_height = other._black_height
+
+        # Copier récursivement les enfants
+        if other._left is not None:
+            left_copy = cls.from_copy(other._left)
+            new_node.set_left(left_copy)
+
+        if other._right is not None:
+            right_copy = cls.from_copy(other._right)
+            new_node.set_right(right_copy)
+
+        return new_node
+
+    @property
+    def is_nil(self) -> bool:
+        """
+        Vérifie si le nœud est une sentinelle.
+
+        :return: True si le nœud est une sentinelle, False sinon
+        :rtype: bool
+        """
+        return self._is_nil
+
+    @property
+    def black_height(self) -> int:
+        """
+        Retourne la hauteur noire du nœud.
+
+        :return: Hauteur noire du nœud
+        :rtype: int
+        """
+        if self._black_height is None:
+            self._black_height = self.get_black_height()
+        return self._black_height
+
+    def set_color(self, color: Color) -> None:
+        """
+        Définit la couleur du nœud et met à jour les propriétés.
+
+        Cette méthode définit la couleur du nœud et invalide le cache
+        de la hauteur noire pour forcer un recalcul.
+
+        :param color: Nouvelle couleur du nœud
+        :type color: Color
+        :raises ColorViolationError: Si la couleur n'est pas valide
+        """
+        if not isinstance(color, Color):
+            raise ColorViolationError(
+                f"Invalid color type: {type(color).__name__}, expected Color",
+                "color_type",
+                self,
+            )
+
+        self._color = color
+        # Invalider le cache de la hauteur noire
+        self._black_height = None
+
+    def flip_color(self) -> None:
+        """
+        Inverse la couleur du nœud.
+
+        Cette méthode inverse la couleur du nœud (rouge ↔ noir) et
+        invalide le cache de la hauteur noire.
+
+        :raises InvalidNodeOperationError: Si le nœud est une sentinelle
+        """
+        if self._is_nil:
+            raise InvalidNodeOperationError(
+                "Cannot flip color of NIL node",
+                "flip_color",
+                self,
+            )
+
+        self._color = Color.BLACK if self._color == Color.RED else Color.RED
+        # Invalider le cache de la hauteur noire
+        self._black_height = None
+
+    def update_black_height(self) -> None:
+        """
+        Met à jour la hauteur noire du nœud.
+
+        Cette méthode recalcule et met en cache la hauteur noire du nœud
+        et propage la mise à jour vers le parent si nécessaire.
+
+        :raises RedBlackTreeError: Si le calcul échoue
+        """
+        try:
+            # Calculer la hauteur noire des enfants
+            left_height = self._left.black_height if self._left is not None else 0
+            right_height = self._right.black_height if self._right is not None else 0
+
+            # Vérifier la cohérence
+            if left_height != right_height:
+                raise RedBlackTreeError(
+                    f"Black heights inconsistent: left={left_height}, right={right_height}",
+                    "update_black_height",
+                    self,
+                )
+
+            # Ajouter 1 si le nœud est noir
+            new_height = left_height + (1 if self.is_black() else 0)
+            self._black_height = new_height
+
+            # Propager vers le parent si nécessaire
+            if self._parent is not None:
+                self._parent.update_black_height()
+
+        except Exception as e:
+            if isinstance(e, RedBlackTreeError):
+                raise
+            raise RedBlackTreeError(
+                f"Failed to update black height: {str(e)}",
+                "update_black_height",
+                self,
+            ) from e
+
+    def validate_black_height(self) -> bool:
+        """
+        Valide que la hauteur noire est correctement calculée.
+
+        Cette méthode vérifie que la hauteur noire mise en cache correspond
+        à la hauteur noire calculée récursivement.
+
+        :return: True si la hauteur noire est valide, False sinon
+        :rtype: bool
+        """
+        try:
+            # Calculer la hauteur noire réelle
+            calculated_height = self.get_black_height()
+
+            # Comparer avec la hauteur mise en cache
+            cached_height = self._black_height
+
+            # Si pas de cache, mettre à jour
+            if cached_height is None:
+                self._black_height = calculated_height
+                return True
+
+            # Vérifier la cohérence
+            return calculated_height == cached_height
+        except Exception:
+            return False
+
+    def get_node_info(self) -> dict[str, Any]:
+        """
+        Retourne les informations complètes du nœud.
+
+        Cette méthode collecte toutes les propriétés du nœud et calcule
+        les statistiques de couleur et de structure.
+
+        :return: Dictionnaire contenant toutes les informations du nœud
+        :rtype: dict[str, Any]
+        """
+        info = {
+            "value": self._value,
+            "color": self._color.value,
+            "is_red": self.is_red(),
+            "is_black": self.is_black(),
+            "is_nil": self._is_nil,
+            "is_leaf": self.is_leaf(),
+            "is_root": self.is_root(),
+            "depth": self.get_depth(),
+            "height": self.get_height(),
+            "black_height": self.black_height,
+            "has_left_child": self._left is not None,
+            "has_right_child": self._right is not None,
+            "children_count": len(self._children),
+            "metadata": self._metadata.copy() if self._metadata else {},
+        }
+
+        # Ajouter les informations des enfants si présents
+        if self._left is not None:
+            info["left_child"] = {
+                "value": self._left._value,
+                "color": self._left._color.value,
+            }
+        if self._right is not None:
+            info["right_child"] = {
+                "value": self._right._value,
+                "color": self._right._color.value,
+            }
+
+        return info
+
+    def compare_with(self, other: "RedBlackNode[T]") -> dict[str, Any]:
+        """
+        Compare ce nœud avec un autre nœud rouge-noir.
+
+        Cette méthode effectue une comparaison détaillée entre deux nœuds
+        rouge-noir et retourne un rapport de comparaison.
+
+        :param other: Autre nœud rouge-noir à comparer
+        :type other: RedBlackNode[T]
+        :return: Dictionnaire contenant le rapport de comparaison
+        :rtype: dict[str, Any]
+        :raises RedBlackTreeError: Si la comparaison échoue
+        """
+        if not isinstance(other, RedBlackNode):
+            raise RedBlackTreeError(
+                f"Cannot compare with non-RedBlackNode: {type(other).__name__}",
+                "compare_with",
+            )
+
+        comparison = {
+            "values_equal": self._value == other._value,
+            "colors_equal": self._color == other._color,
+            "structures_equal": (
+                (self._left is None) == (other._left is None)
+                and (self._right is None) == (other._right is None)
+            ),
+            "black_heights_equal": self.black_height == other.black_height,
+            "depths_equal": self.get_depth() == other.get_depth(),
+            "heights_equal": self.get_height() == other.get_height(),
+            "is_nil_equal": self._is_nil == other._is_nil,
+            "metadata_equal": self._metadata == other._metadata,
+        }
+
+        # Comparer les valeurs
+        comparison["value_comparison"] = {
+            "self": self._value,
+            "other": other._value,
+            "difference": self._value != other._value,
+        }
+
+        # Comparer les couleurs
+        comparison["color_comparison"] = {
+            "self": self._color.value,
+            "other": other._color.value,
+            "difference": self._color != other._color,
+        }
+
+        # Comparer les structures
+        comparison["structure_comparison"] = {
+            "self_has_left": self._left is not None,
+            "other_has_left": other._left is not None,
+            "self_has_right": self._right is not None,
+            "other_has_right": other._right is not None,
+        }
+
+        return comparison
+
+    def diagnose(self) -> dict[str, Any]:
+        """
+        Effectue un diagnostic complet du nœud.
+
+        Cette méthode analyse le nœud et détecte les problèmes potentiels
+        en validant toutes les propriétés rouge-noir.
+
+        :return: Dictionnaire contenant le rapport de diagnostic
+        :rtype: dict[str, Any]
+        """
+        diagnosis = {
+            "node_info": self.get_node_info(),
+            "validations": {},
+            "issues": [],
+            "recommendations": [],
+        }
+
+        # Valider les propriétés rouge-noir
+        try:
+            diagnosis["validations"]["is_red_black_valid"] = self.is_red_black_valid()
+        except Exception as e:
+            diagnosis["validations"]["is_red_black_valid"] = False
+            diagnosis["issues"].append(f"Red-black validation failed: {str(e)}")
+
+        try:
+            diagnosis["validations"]["validate_colors"] = self.validate_colors()
+        except Exception as e:
+            diagnosis["validations"]["validate_colors"] = False
+            diagnosis["issues"].append(f"Color validation failed: {str(e)}")
+
+        try:
+            diagnosis["validations"]["validate_paths"] = self.validate_paths()
+        except Exception as e:
+            diagnosis["validations"]["validate_paths"] = False
+            diagnosis["issues"].append(f"Path validation failed: {str(e)}")
+
+        try:
+            diagnosis["validations"][
+                "validate_black_height"
+            ] = self.validate_black_height()
+        except Exception as e:
+            diagnosis["validations"]["validate_black_height"] = False
+            diagnosis["issues"].append(f"Black height validation failed: {str(e)}")
+
+        # Analyser les problèmes potentiels
+        if not diagnosis["validations"].get("is_red_black_valid", True):
+            diagnosis["recommendations"].append("Fix red-black property violations")
+
+        if not diagnosis["validations"].get("validate_colors", True):
+            diagnosis["recommendations"].append("Fix color violations")
+
+        if not diagnosis["validations"].get("validate_paths", True):
+            diagnosis["recommendations"].append("Fix path property violations")
+
+        if not diagnosis["validations"].get("validate_black_height", True):
+            diagnosis["recommendations"].append("Recalculate black height")
+
+        # Analyser la couleur
+        if self.is_red():
+            if self._left is not None and self._left.is_red():
+                diagnosis["issues"].append("Red node has red left child")
+            if self._right is not None and self._right.is_red():
+                diagnosis["issues"].append("Red node has red right child")
+
+        return diagnosis
+
+    def to_colored_string(self) -> str:
+        """
+        Retourne une représentation colorée du nœud.
+
+        Cette méthode génère une représentation avec des codes couleur ANSI
+        pour afficher le nœud avec sa couleur réelle.
+
+        :return: Représentation colorée du nœud
+        :rtype: str
+        """
+        # Codes couleur ANSI
+        RED_COLOR = "\033[91m"  # Rouge
+        BLACK_COLOR = "\033[30m"  # Noir
+        RESET_COLOR = "\033[0m"  # Reset
+
+        if self.is_red():
+            color_code = RED_COLOR
+            color_name = "RED"
+        else:
+            color_code = BLACK_COLOR
+            color_name = "BLACK"
+
+        return f"{color_code}{self._value}({color_name}){RESET_COLOR}"
