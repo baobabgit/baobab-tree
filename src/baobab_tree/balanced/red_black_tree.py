@@ -100,7 +100,8 @@ class RedBlackTree(BinarySearchTree):
         if comparison < 0:
             if node.left is None:
                 new_node = self._create_node(value)
-                node.set_left(new_node)
+                node._left = new_node
+                new_node._parent = node
                 self._size += 1
                 # Corriger les violations après insertion
                 self._fix_insertion_violations(new_node)
@@ -110,7 +111,8 @@ class RedBlackTree(BinarySearchTree):
         elif comparison > 0:
             if node.right is None:
                 new_node = self._create_node(value)
-                node.set_right(new_node)
+                node._right = new_node
+                new_node._parent = node
                 self._size += 1
                 # Corriger les violations après insertion
                 self._fix_insertion_violations(new_node)
@@ -235,15 +237,15 @@ class RedBlackTree(BinarySearchTree):
         
         if child is not None:
             # Le nœud a un enfant
-            child.parent = node.parent
+            child._parent = node.parent
             
             if node.parent is None:
                 # Le nœud est la racine
                 self._root = child
             elif node == node.parent.left:
-                node.parent.left = child
+                node.parent._left = child
             else:
-                node.parent.right = child
+                node.parent._right = child
             
             # Si le nœud supprimé était noir, corriger les violations
             if node.is_black():
@@ -260,9 +262,9 @@ class RedBlackTree(BinarySearchTree):
                 
                 # Supprimer la référence du parent
                 if node == node.parent.left:
-                    node.parent.left = None
+                    node.parent._left = None
                 else:
-                    node.parent.right = None
+                    node.parent._right = None
         
         self._size -= 1
 

@@ -151,7 +151,7 @@ class TestRedBlackNode:
             node.validate()
         
         assert "All children must be BinaryTreeNode instances" in str(exc_info.value)
-        assert exc_info.value.validation_rule == "red_black_node_children_type"
+        assert exc_info.value.validation_rule == "binary_tree_node_children_type"
 
     def test_is_red_black_valid_single_node(self):
         """Test de validation rouge-noir pour un nœud seul."""
