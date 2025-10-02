@@ -7,9 +7,9 @@ incluant les tests de base, les tests d'équilibrage et les tests de validation.
 
 import math
 import pytest
-from src.avl_tree import AVLTree
-from src.avl_node import AVLNode
-from src.exceptions import AVLError
+from src.baobab_tree.balanced.avl_tree import AVLTree
+from src.baobab_tree.balanced.avl_node import AVLNode
+from src.baobab_tree.core.exceptions import AVLError
 
 
 class TestAVLTree:

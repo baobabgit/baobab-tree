@@ -10,7 +10,7 @@ from __future__ import annotations
 from typing import Iterator, List, Optional
 
 from .binary_tree_node import BinaryTreeNode
-from .interfaces import T
+from ..core.interfaces import T
 
 
 class BSTIterator:

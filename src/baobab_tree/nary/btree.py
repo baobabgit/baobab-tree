@@ -10,24 +10,14 @@ from __future__ import annotations
 
 from typing import Any, Dict, Iterator, List, Optional, Tuple
 
-try:
-    from .interfaces import Comparable, TreeInterface
-    from .btree_node import BTreeNode
-    from .exceptions import (
-        BTreeError,
-        InvalidOrderError,
-        NodeFullError,
-        NodeUnderflowError,
-    )
-except ImportError:
-    from interfaces import Comparable, TreeInterface
-    from btree_node import BTreeNode
-    from exceptions import (
-        BTreeError,
-        InvalidOrderError,
-        NodeFullError,
-        NodeUnderflowError,
-    )
+from ..core.interfaces import Comparable, TreeInterface
+from .btree_node import BTreeNode
+from ..core.exceptions import (
+    BTreeError,
+    InvalidOrderError,
+    NodeFullError,
+    NodeUnderflowError,
+)
 
 
 class BTree(TreeInterface[Comparable]):

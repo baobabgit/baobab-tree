@@ -8,8 +8,8 @@ exceptionnelles de la classe BinarySearchTree.
 import unittest
 from unittest.mock import patch, MagicMock
 
-from src.binary_search_tree import BinarySearchTree
-from src.exceptions import BSTError, ValueNotFoundError
+from src.baobab_tree.binary.binary_search_tree import BinarySearchTree
+from src.baobab_tree.core.exceptions import BSTError, ValueNotFoundError
 
 
 class TestBSTErrorCases(unittest.TestCase):

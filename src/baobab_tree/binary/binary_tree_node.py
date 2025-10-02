@@ -8,9 +8,9 @@ aux nœuds binaires (gauche/droite).
 
 from typing import Any, List, Optional, TYPE_CHECKING
 
-from .exceptions import InvalidNodeOperationError, NodeValidationError
-from .interfaces import T
-from .tree_node import TreeNode
+from ..core.exceptions import InvalidNodeOperationError, NodeValidationError
+from ..core.interfaces import T
+from ..core.tree_node import TreeNode
 
 if TYPE_CHECKING:
     from .binary_tree_node import BinaryTreeNode

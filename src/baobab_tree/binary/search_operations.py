@@ -11,7 +11,7 @@ from __future__ import annotations
 from typing import Callable, Generic, List, Optional, TYPE_CHECKING
 
 from .binary_tree_node import BinaryTreeNode
-from .interfaces import T
+from ..core.interfaces import T
 
 if TYPE_CHECKING:
     from .binary_tree_node import BinaryTreeNode

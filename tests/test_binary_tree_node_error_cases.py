@@ -8,8 +8,8 @@ exceptionnelles de la classe BinaryTreeNode.
 import unittest
 from unittest.mock import patch, MagicMock
 
-from src.binary_tree_node import BinaryTreeNode
-from src.exceptions import (
+from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
+from src.baobab_tree.core.exceptions import (
     InvalidNodeOperationError,
     NodeValidationError,
     CircularReferenceError,

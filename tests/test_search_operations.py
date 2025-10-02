@@ -6,8 +6,8 @@ et ses méthodes de recherche avancées.
 """
 
 import pytest
-from src.binary_tree_node import BinaryTreeNode
-from src.search_operations import SearchOperations
+from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
+from src.baobab_tree.binary.search_operations import SearchOperations
 
 
 class TestSearchOperations:

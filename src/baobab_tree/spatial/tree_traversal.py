@@ -11,11 +11,11 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Callable, Generic, Iterator, List, Optional, TYPE_CHECKING
 
-from .exceptions import NodeValidationError
-from .interfaces import T
+from ..core.exceptions import NodeValidationError
+from ..core.interfaces import T
 
 if TYPE_CHECKING:
-    from .tree_node import TreeNode
+    from ..core.tree_node import TreeNode
 
 
 class TreeTraversal(ABC, Generic[T]):

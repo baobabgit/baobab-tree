@@ -7,9 +7,9 @@ et ses fonctionnalités de parcours par niveaux.
 
 import pytest
 
-from src.level_order_traversal import LevelOrderTraversal
-from src.binary_tree_node import BinaryTreeNode
-from src.exceptions import NodeValidationError
+from src.baobab_tree.spatial.level_order_traversal import LevelOrderTraversal
+from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
+from src.baobab_tree.core.exceptions import NodeValidationError
 
 
 class TestLevelOrderTraversal:

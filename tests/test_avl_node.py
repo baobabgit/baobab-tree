@@ -6,8 +6,8 @@ incluant les tests de base, les tests de validation et les tests d'erreurs.
 """
 
 import pytest
-from src.avl_node import AVLNode
-from src.exceptions import (
+from src.baobab_tree.balanced.avl_node import AVLNode
+from src.baobab_tree.core.exceptions import (
     AVLNodeError,
     HeightCalculationError,
     HeightMismatchError,
@@ -227,7 +227,7 @@ class TestAVLNode:
         """Test de validation avec un enfant non-AVL."""
         node = AVLNode(50)
         # Créer un BinaryTreeNode au lieu d'un AVLNode
-        from src.binary_tree_node import BinaryTreeNode
+        from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
 
         non_avl_child = BinaryTreeNode(30)
 
@@ -406,7 +406,7 @@ class TestAVLNode:
 
     def test_from_copy_with_non_avl_node(self):
         """Test du constructeur de copie avec un nœud non-AVL."""
-        from src.binary_tree_node import BinaryTreeNode
+        from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
 
         non_avl_node = BinaryTreeNode(42)
 

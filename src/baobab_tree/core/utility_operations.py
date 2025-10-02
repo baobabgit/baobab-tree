@@ -9,12 +9,12 @@ from __future__ import annotations
 
 from typing import Generic, List, Optional, TYPE_CHECKING
 
-from .binary_tree_node import BinaryTreeNode
+from ..binary.binary_tree_node import BinaryTreeNode
 from .interfaces import T
 from .tree_node import TreeNode
 
 if TYPE_CHECKING:
-    from .binary_tree_node import BinaryTreeNode
+    from ..binary.binary_tree_node import BinaryTreeNode
 
 
 class UtilityOperations(Generic[T]):

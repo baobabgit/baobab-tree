@@ -8,7 +8,7 @@ définis dans le module interfaces.
 import pytest
 from typing import Any
 
-from src.interfaces import (
+from src.baobab_tree.core.interfaces import (
     Comparable,
     TreeInterface,
     TreeTraversalInterface,

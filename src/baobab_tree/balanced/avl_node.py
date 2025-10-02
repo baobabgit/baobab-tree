@@ -10,8 +10,8 @@ from __future__ import annotations
 
 from typing import Any, Optional, TYPE_CHECKING
 
-from .binary_tree_node import BinaryTreeNode
-from .exceptions import (
+from ..binary.binary_tree_node import BinaryTreeNode
+from ..core.exceptions import (
     AVLNodeError,
     HeightCalculationError,
     HeightMismatchError,
@@ -19,7 +19,7 @@ from .exceptions import (
     InvalidNodeOperationError,
     NodeValidationError,
 )
-from .interfaces import T
+from ..core.interfaces import T
 
 if TYPE_CHECKING:
     from .avl_node import AVLNode

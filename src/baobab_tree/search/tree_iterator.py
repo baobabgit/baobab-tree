@@ -11,10 +11,10 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Generic, Optional, TYPE_CHECKING
 
-from .interfaces import T
+from ..core.interfaces import T
 
 if TYPE_CHECKING:
-    from .tree_node import TreeNode
+    from ..core.tree_node import TreeNode
 
 
 class TreeIterator(ABC, Generic[T]):

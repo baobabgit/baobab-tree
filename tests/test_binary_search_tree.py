@@ -8,9 +8,9 @@ de la classe BinarySearchTree et de ses méthodes.
 import unittest
 from typing import List
 
-from src.binary_search_tree import BinarySearchTree
-from src.binary_tree_node import BinaryTreeNode
-from src.exceptions import (
+from src.baobab_tree.binary.binary_search_tree import BinarySearchTree
+from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
+from src.baobab_tree.core.exceptions import (
     BSTError,
     DuplicateValueError,
     ValueNotFoundError,

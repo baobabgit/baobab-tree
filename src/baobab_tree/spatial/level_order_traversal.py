@@ -11,10 +11,10 @@ from collections import deque
 from typing import Iterator, List, Optional, TYPE_CHECKING
 
 from .tree_traversal import TreeTraversal
-from .interfaces import T
+from ..core.interfaces import T
 
 if TYPE_CHECKING:
-    from .tree_node import TreeNode
+    from ..core.tree_node import TreeNode
 
 
 class LevelOrderTraversal(TreeTraversal[T]):

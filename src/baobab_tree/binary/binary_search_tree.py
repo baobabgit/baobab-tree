@@ -17,13 +17,13 @@ from .bst_iterators import (
     PostorderIterator,
     PreorderIterator,
 )
-from .exceptions import (
+from ..core.exceptions import (
     BSTError,
     DuplicateValueError,
     InvalidOperationError,
     ValueNotFoundError,
 )
-from .interfaces import T
+from ..core.interfaces import T
 
 
 class BinarySearchTree:

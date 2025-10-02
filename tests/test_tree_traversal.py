@@ -8,10 +8,10 @@ et ses fonctionnalités de base.
 import pytest
 from unittest.mock import Mock, patch
 
-from src.tree_traversal import TreeTraversal
-from src.tree_node import TreeNode
-from src.binary_tree_node import BinaryTreeNode
-from src.exceptions import NodeValidationError
+from src.baobab_tree.spatial.tree_traversal import TreeTraversal
+from src.baobab_tree.core.tree_node import TreeNode
+from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
+from src.baobab_tree.core.exceptions import NodeValidationError
 
 
 class ConcreteTreeTraversal(TreeTraversal):

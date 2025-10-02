@@ -6,9 +6,9 @@ incluant les tests de rotation simple, double et de validation.
 """
 
 import pytest
-from src.avl_node import AVLNode
-from src.avl_rotations import AVLRotations
-from src.exceptions import RotationError
+from src.baobab_tree.balanced.avl_node import AVLNode
+from src.baobab_tree.balanced.avl_rotations import AVLRotations
+from src.baobab_tree.core.exceptions import RotationError
 
 
 class TestAVLRotations:
