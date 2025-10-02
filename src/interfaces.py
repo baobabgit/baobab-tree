@@ -5,7 +5,7 @@ Ce module définit les interfaces et types génériques utilisés dans toute
 la librairie d'arbres pour assurer la cohérence et la type safety.
 """
 
-from typing import Any, Protocol, TypeVar, runtime_checkable
+from typing import Any, Generic, Protocol, TypeVar, runtime_checkable
 
 
 # Type générique pour les valeurs stockées dans les nœuds
@@ -92,7 +92,7 @@ class Comparable(Protocol):
         ...
 
 
-class TreeInterface(Protocol):
+class TreeInterface(Protocol, Generic[T]):
     """
     Interface de base pour tous les types d'arbres.
 

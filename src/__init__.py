@@ -26,6 +26,10 @@ from .exceptions import (
     SplitError,
     MergeError,
     RedistributionError,
+    BalancingError,
+    ImbalanceDetectionError,
+    CorrectionApplicationError,
+    ValidationError,
 )
 
 from .interfaces import (
@@ -42,6 +46,7 @@ from .binary_search_tree import BinarySearchTree
 from .avl_node import AVLNode
 from .avl_tree import AVLTree
 from .avl_rotations import AVLRotations
+from .avl_balancing import AVLBalancing
 from .bst_iterators import (
     PreorderIterator,
     InorderIterator,
@@ -104,6 +109,10 @@ __all__ = [
     "SplitError",
     "MergeError",
     "RedistributionError",
+    "BalancingError",
+    "ImbalanceDetectionError",
+    "CorrectionApplicationError",
+    "ValidationError",
     # Interfaces
     "Comparable",
     "TreeInterface",
@@ -117,6 +126,7 @@ __all__ = [
     "AVLNode",
     "AVLTree",
     "AVLRotations",
+    "AVLBalancing",
     # Classes B-tree
     "BTree",
     "BTreeNode",
