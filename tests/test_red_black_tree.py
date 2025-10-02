@@ -516,3 +516,122 @@ class TestRedBlackTree:
                 assert red_node.left.is_black()
             if red_node.right is not None:
                 assert red_node.right.is_black()
+
+
+class TestRedBlackTreeEdgeCases:
+    """Tests pour les cas limites de RedBlackTree."""
+
+    def test_insert_with_custom_comparator_error(self):
+        """Test d'insertion avec comparateur personnalisé qui génère une erreur."""
+        def bad_comparator(a, b):
+            if a == 42:  # Valeur spéciale qui génère une erreur
+                raise ValueError("Bad value")
+            return 1 if a > b else -1 if a < b else 0
+        
+        tree = RedBlackTree(comparator=bad_comparator)
+        
+        # Insertion normale
+        tree.insert(10)
+        tree.insert(20)
+        
+        # Insertion qui génère une erreur
+        with pytest.raises(RedBlackTreeError) as exc_info:
+            tree.insert(42)
+        
+        assert "Error during insertion" in str(exc_info.value)
+
+    def test_delete_with_custom_comparator_error(self):
+        """Test de suppression avec comparateur personnalisé qui génère une erreur."""
+        def bad_comparator(a, b):
+            if a == 42:  # Valeur spéciale qui génère une erreur
+                raise ValueError("Bad value")
+            return 1 if a > b else -1 if a < b else 0
+        
+        tree = RedBlackTree(comparator=bad_comparator)
+        tree.insert(10)
+        tree.insert(20)
+        # Ne pas insérer 42 car cela génère une erreur
+        
+        # Suppression qui génère une erreur lors de la recherche
+        with pytest.raises(RedBlackTreeError) as exc_info:
+            tree.delete(42)
+        
+        assert "Error during deletion" in str(exc_info.value)
+
+    def test_fix_deletion_violations_empty_tree(self):
+        """Test de correction des violations de suppression sur arbre vide."""
+        tree = RedBlackTree()
+        
+        # Ne devrait pas lever d'exception
+        tree._fix_deletion_violations(None)
+
+    def test_fix_deletion_violations_root_node(self):
+        """Test de correction des violations de suppression sur nœud racine."""
+        tree = RedBlackTree()
+        tree.insert(10)
+        
+        # Ne devrait pas lever d'exception
+        tree._fix_deletion_violations(tree._root)
+
+    def test_rotate_left_with_none_right_child(self):
+        """Test de rotation gauche avec enfant droit None."""
+        tree = RedBlackTree()
+        tree.insert(10)
+        node = tree._root
+        
+        with pytest.raises(RedBlackBalancingError) as exc_info:
+            tree._rotate_left(node)
+        
+        assert "Cannot perform left rotation: no right child" in str(exc_info.value)
+
+    def test_rotate_right_with_none_left_child(self):
+        """Test de rotation droite avec enfant gauche None."""
+        tree = RedBlackTree()
+        tree.insert(10)
+        node = tree._root
+        
+        with pytest.raises(RedBlackBalancingError) as exc_info:
+            tree._rotate_right(node)
+        
+        assert "Cannot perform right rotation: no left child" in str(exc_info.value)
+
+    def test_get_color_analysis_empty_tree(self):
+        """Test d'analyse des couleurs sur arbre vide."""
+        tree = RedBlackTree()
+        analysis = tree.get_color_analysis()
+        
+        assert analysis["total_nodes"] == 0
+        assert analysis["red_count"] == 0
+        assert analysis["black_count"] == 0
+
+    def test_get_performance_analysis_empty_tree(self):
+        """Test d'analyse de performance sur arbre vide."""
+        tree = RedBlackTree()
+        analysis = tree.get_performance_analysis()
+        
+        assert analysis["size"] == 0
+        assert analysis["balancing_stats"]["recolor_count"] == 0
+        assert analysis["balancing_stats"]["rotation_count"] == 0
+
+    def test_find_red_nodes_empty_tree(self):
+        """Test de recherche de nœuds rouges sur arbre vide."""
+        tree = RedBlackTree()
+        red_nodes = tree.find_red_nodes()
+        
+        assert len(red_nodes) == 0
+
+    def test_find_black_nodes_empty_tree(self):
+        """Test de recherche de nœuds noirs sur arbre vide."""
+        tree = RedBlackTree()
+        black_nodes = tree.find_black_nodes()
+        
+        assert len(black_nodes) == 0
+
+    def test_get_structure_analysis_empty_tree(self):
+        """Test d'analyse de structure sur arbre vide."""
+        tree = RedBlackTree()
+        analysis = tree.get_structure_analysis()
+        
+        assert analysis["size"] == 0
+        assert analysis["height"] == -1  # Arbre vide a une hauteur de -1
+        assert analysis["is_balanced"] is True

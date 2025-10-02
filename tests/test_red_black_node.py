@@ -388,3 +388,97 @@ class TestColor:
         assert Color.RED != Color.BLACK
         assert Color.RED == Color.RED
         assert Color.BLACK == Color.BLACK
+
+
+class TestRedBlackNodeEdgeCases:
+    """Tests pour les cas limites de RedBlackNode."""
+
+    def test_validate_invalid_color_type(self):
+        """Test de validation avec couleur de type invalide."""
+        node = RedBlackNode(42)
+        # Simuler une couleur de type invalide
+        node._color = "invalid_color"
+        
+        with pytest.raises(NodeValidationError) as exc_info:
+            node.validate()
+        
+        assert "RedBlackNode color must be Color enum" in str(exc_info.value)
+        assert exc_info.value.validation_rule == "red_black_node_color_type"
+
+    def test_validate_red_black_children_type(self):
+        """Test de validation avec enfants de type invalide pour RedBlackNode."""
+        node = RedBlackNode(42)
+        # Simuler un enfant de type invalide
+        node._children = [RedBlackNode(1), "invalid_child"]
+        
+        with pytest.raises(NodeValidationError) as exc_info:
+            node.validate()
+        
+        assert "All children must be BinaryTreeNode instances" in str(exc_info.value)
+        assert exc_info.value.validation_rule == "binary_tree_node_children_type"
+
+    def test_color_property_setter_invalid_type(self):
+        """Test du setter de couleur avec type invalide."""
+        node = RedBlackNode(42)
+        
+        with pytest.raises(ColorViolationError) as exc_info:
+            node.color = "invalid_color"
+        
+        assert "Invalid color type" in str(exc_info.value)
+
+    def test_validate_colors_with_none_children(self):
+        """Test de validation des couleurs avec enfants None."""
+        node = RedBlackNode(42, Color.RED)
+        node._left = None
+        node._right = None
+        
+        # Ne devrait pas lever d'exception
+        assert node.validate_colors() is True
+
+    def test_validate_paths_with_none_children(self):
+        """Test de validation des chemins avec enfants None."""
+        node = RedBlackNode(42, Color.BLACK)
+        node._left = None
+        node._right = None
+        
+        # Ne devrait pas lever d'exception
+        assert node.validate_paths() is True
+
+    def test_get_color_info_edge_cases(self):
+        """Test des cas limites de get_color_info."""
+        node = RedBlackNode(42, Color.RED)
+        
+        # Test des informations de couleur
+        color_info = node.get_color_info()
+        assert color_info["color"] == "red"
+        assert color_info["is_red"] is True
+        assert color_info["is_black"] is False
+
+    def test_get_black_height_edge_cases(self):
+        """Test des cas limites de get_black_height."""
+        node = RedBlackNode(42, Color.BLACK)
+        
+        # Test avec enfants None
+        node._left = None
+        node._right = None
+        height = node.get_black_height()
+        assert height == 1
+
+    def test_to_dict_with_metadata(self):
+        """Test de sérialisation avec métadonnées."""
+        node = RedBlackNode(42, Color.RED)
+        node._metadata = {"test": "value"}
+        
+        data = node.to_dict()
+        assert data["metadata"]["test"] == "value"
+
+    def test_from_dict_with_metadata(self):
+        """Test de désérialisation avec métadonnées."""
+        data = {
+            "value": 42,
+            "color": "red",
+            "metadata": {"test": "value"}
+        }
+        
+        node = RedBlackNode.from_dict(data)
+        assert node._metadata["test"] == "value"

@@ -418,7 +418,7 @@ performance_analysis = rb_tree.get_performance_analysis()
 - [x] Toutes les propriétés rouge-noir respectées
 - [x] Équilibrage automatique par recoloration et rotation
 - [x] Complexité O(log n) garantie
-- [x] Tests unitaires avec couverture excellente (71 tests au total : 34 pour RedBlackNode, 37 pour RedBlackTree - RedBlackNode: 87%, RedBlackTree: 85%)
+- [x] Tests unitaires avec couverture excellente (91 tests au total : RedBlackNode 88%, RedBlackTree 92% - moyenne: 90%)
 - [x] Tests de stress passés
 - [x] Documentation complète
 - [x] Score Pylint >= 8.5/10

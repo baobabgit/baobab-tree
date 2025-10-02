@@ -338,6 +338,9 @@ class RedBlackTree(BinarySearchTree):
         :raises RedBlackBalancingError: Si la correction échoue
         """
         try:
+            if node is None:
+                return
+                
             while node != self._root and node.is_black():
                 if node == node.parent.left:
                     # Cas 1: Nœud gauche
