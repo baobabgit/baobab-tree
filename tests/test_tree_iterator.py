@@ -14,28 +14,28 @@ from src.binary_tree_node import BinaryTreeNode
 
 class ConcreteTreeIterator(TreeIterator):
     """Classe concrète pour tester TreeIterator."""
-    
+
     def __init__(self, root):
         super().__init__(root)
         self._values = [root.value] if root else []
         self._index = 0
         self._peeked_value = None
-    
+
     def __iter__(self):
         return self
-    
+
     def __next__(self):
         if self._peeked_value is not None:
             value = self._peeked_value
             self._peeked_value = None
             return value
-        
+
         if self._index >= len(self._values):
             raise StopIteration
         value = self._values[self._index]
         self._index += 1
         return value
-    
+
     def _put_back(self, value):
         """Remet une valeur en place pour la prochaine itération."""
         self._peeked_value = value

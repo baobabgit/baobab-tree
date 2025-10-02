@@ -73,23 +73,23 @@ class BSTOperations(BinaryTreeOperations[T]):
         """
         if root is None:
             return None
-        
+
         if not isinstance(root, BinaryTreeNode):
             raise TypeError("Root must be a BinaryTreeNode for BST operations")
-        
+
         binary_root = root
         current = binary_root
-        
+
         while current is not None:
             comparison = self._comparator(value, current.value)
-            
+
             if comparison == 0:
                 return current
             elif comparison < 0:
                 current = current.left
             else:
                 current = current.right
-        
+
         return None
 
     def insert(self, root: Optional[TreeNode[T]], value: T) -> Tuple[TreeNode[T], bool]:
@@ -109,14 +109,16 @@ class BSTOperations(BinaryTreeOperations[T]):
         if root is None:
             new_node = BinaryTreeNode(value)
             return new_node, True
-        
+
         if not isinstance(root, BinaryTreeNode):
             raise TypeError("Root must be a BinaryTreeNode for BST operations")
-        
+
         binary_root = root
         return self._insert_recursive(binary_root, value)
 
-    def _insert_recursive(self, node: BinaryTreeNode[T], value: T) -> Tuple[BinaryTreeNode[T], bool]:
+    def _insert_recursive(
+        self, node: BinaryTreeNode[T], value: T
+    ) -> Tuple[BinaryTreeNode[T], bool]:
         """
         Insère récursivement une valeur dans le BST.
 
@@ -128,7 +130,7 @@ class BSTOperations(BinaryTreeOperations[T]):
         :rtype: Tuple[BinaryTreeNode[T], bool]
         """
         comparison = self._comparator(value, node.value)
-        
+
         if comparison < 0:
             if node.left is None:
                 new_node = BinaryTreeNode(value)
@@ -151,7 +153,9 @@ class BSTOperations(BinaryTreeOperations[T]):
             # Valeur déjà présente
             return node, False
 
-    def delete(self, root: Optional[TreeNode[T]], value: T) -> Tuple[Optional[TreeNode[T]], bool]:
+    def delete(
+        self, root: Optional[TreeNode[T]], value: T
+    ) -> Tuple[Optional[TreeNode[T]], bool]:
         """
         Supprime une valeur du BST.
 
@@ -169,14 +173,16 @@ class BSTOperations(BinaryTreeOperations[T]):
         """
         if root is None:
             return None, False
-        
+
         if not isinstance(root, BinaryTreeNode):
             raise TypeError("Root must be a BinaryTreeNode for BST operations")
-        
+
         binary_root = root
         return self._delete_recursive(binary_root, value)
 
-    def _delete_recursive(self, node: BinaryTreeNode[T], value: T) -> Tuple[Optional[BinaryTreeNode[T]], bool]:
+    def _delete_recursive(
+        self, node: BinaryTreeNode[T], value: T
+    ) -> Tuple[Optional[BinaryTreeNode[T]], bool]:
         """
         Supprime récursivement une valeur du BST.
 
@@ -188,7 +194,7 @@ class BSTOperations(BinaryTreeOperations[T]):
         :rtype: Tuple[Optional[BinaryTreeNode[T]], bool]
         """
         comparison = self._comparator(value, node.value)
-        
+
         if comparison < 0:
             if node.left is None:
                 return node, False
@@ -226,14 +232,14 @@ class BSTOperations(BinaryTreeOperations[T]):
         """
         if not isinstance(root, BinaryTreeNode):
             raise TypeError("Root must be a BinaryTreeNode for BST operations")
-        
+
         binary_root = root
         current = binary_root
-        
+
         # Parcourir vers la gauche pour trouver le minimum
         while current.left is not None:
             current = current.left
-        
+
         return current
 
     def get_max_node(self, root: TreeNode[T]) -> TreeNode[T]:
@@ -247,17 +253,19 @@ class BSTOperations(BinaryTreeOperations[T]):
         """
         if not isinstance(root, BinaryTreeNode):
             raise TypeError("Root must be a BinaryTreeNode for BST operations")
-        
+
         binary_root = root
         current = binary_root
-        
+
         # Parcourir vers la droite pour trouver le maximum
         while current.right is not None:
             current = current.right
-        
+
         return current
 
-    def search_recursive(self, root: Optional[BinaryTreeNode[T]], value: T) -> Optional[BinaryTreeNode[T]]:
+    def search_recursive(
+        self, root: Optional[BinaryTreeNode[T]], value: T
+    ) -> Optional[BinaryTreeNode[T]]:
         """
         Recherche récursive d'une valeur dans le BST.
 
@@ -270,9 +278,9 @@ class BSTOperations(BinaryTreeOperations[T]):
         """
         if root is None:
             return None
-        
+
         comparison = self._comparator(value, root.value)
-        
+
         if comparison == 0:
             return root
         elif comparison < 0:
@@ -280,7 +288,9 @@ class BSTOperations(BinaryTreeOperations[T]):
         else:
             return self.search_recursive(root.right, value)
 
-    def search_iterative(self, root: Optional[BinaryTreeNode[T]], value: T) -> Optional[BinaryTreeNode[T]]:
+    def search_iterative(
+        self, root: Optional[BinaryTreeNode[T]], value: T
+    ) -> Optional[BinaryTreeNode[T]]:
         """
         Recherche itérative d'une valeur dans le BST.
 
@@ -292,20 +302,22 @@ class BSTOperations(BinaryTreeOperations[T]):
         :rtype: Optional[BinaryTreeNode[T]]
         """
         current = root
-        
+
         while current is not None:
             comparison = self._comparator(value, current.value)
-            
+
             if comparison == 0:
                 return current
             elif comparison < 0:
                 current = current.left
             else:
                 current = current.right
-        
+
         return None
 
-    def insert_recursive(self, root: Optional[BinaryTreeNode[T]], value: T) -> Tuple[BinaryTreeNode[T], bool]:
+    def insert_recursive(
+        self, root: Optional[BinaryTreeNode[T]], value: T
+    ) -> Tuple[BinaryTreeNode[T], bool]:
         """
         Insertion récursive d'une valeur dans le BST.
 
@@ -319,10 +331,12 @@ class BSTOperations(BinaryTreeOperations[T]):
         if root is None:
             new_node = BinaryTreeNode(value)
             return new_node, True
-        
+
         return self._insert_recursive(root, value)
 
-    def insert_iterative(self, root: Optional[BinaryTreeNode[T]], value: T) -> Tuple[BinaryTreeNode[T], bool]:
+    def insert_iterative(
+        self, root: Optional[BinaryTreeNode[T]], value: T
+    ) -> Tuple[BinaryTreeNode[T], bool]:
         """
         Insertion itérative d'une valeur dans le BST.
 
@@ -336,12 +350,12 @@ class BSTOperations(BinaryTreeOperations[T]):
         if root is None:
             new_node = BinaryTreeNode(value)
             return new_node, True
-        
+
         current = root
-        
+
         while True:
             comparison = self._comparator(value, current.value)
-            
+
             if comparison < 0:
                 if current.left is None:
                     new_node = BinaryTreeNode(value)
@@ -358,7 +372,9 @@ class BSTOperations(BinaryTreeOperations[T]):
                 # Valeur déjà présente
                 return root, False
 
-    def delete_recursive(self, root: Optional[BinaryTreeNode[T]], value: T) -> Tuple[Optional[BinaryTreeNode[T]], bool]:
+    def delete_recursive(
+        self, root: Optional[BinaryTreeNode[T]], value: T
+    ) -> Tuple[Optional[BinaryTreeNode[T]], bool]:
         """
         Suppression récursive d'une valeur du BST.
 
@@ -371,10 +387,12 @@ class BSTOperations(BinaryTreeOperations[T]):
         """
         if root is None:
             return None, False
-        
+
         return self._delete_recursive(root, value)
 
-    def delete_iterative(self, root: Optional[BinaryTreeNode[T]], value: T) -> Tuple[Optional[BinaryTreeNode[T]], bool]:
+    def delete_iterative(
+        self, root: Optional[BinaryTreeNode[T]], value: T
+    ) -> Tuple[Optional[BinaryTreeNode[T]], bool]:
         """
         Suppression itérative d'une valeur du BST.
 
@@ -387,15 +405,15 @@ class BSTOperations(BinaryTreeOperations[T]):
         """
         if root is None:
             return None, False
-        
+
         # Trouver le nœud à supprimer et son parent
         current = root
         parent = None
         is_left_child = False
-        
+
         while current is not None:
             comparison = self._comparator(value, current.value)
-            
+
             if comparison == 0:
                 # Trouvé le nœud à supprimer
                 break
@@ -407,10 +425,10 @@ class BSTOperations(BinaryTreeOperations[T]):
                 parent = current
                 current = current.right
                 is_left_child = False
-        
+
         if current is None:
             return root, False
-        
+
         # Supprimer le nœud
         if current.left is None and current.right is None:
             # Cas 1: Nœud feuille
@@ -425,11 +443,11 @@ class BSTOperations(BinaryTreeOperations[T]):
             # Cas 3: Deux enfants
             successor = self.get_min_node(current.right)
             current.value = successor.value
-            
+
             # Supprimer le successeur
             current.right, _ = self._delete_recursive(current.right, successor.value)
             return root, True
-        
+
         # Mettre à jour le parent
         if parent is None:
             # Suppression de la racine
@@ -441,7 +459,9 @@ class BSTOperations(BinaryTreeOperations[T]):
                 parent.set_right(replacement)
             return root, True
 
-    def insert_with_validation(self, root: Optional[BinaryTreeNode[T]], value: T) -> Tuple[BinaryTreeNode[T], bool]:
+    def insert_with_validation(
+        self, root: Optional[BinaryTreeNode[T]], value: T
+    ) -> Tuple[BinaryTreeNode[T], bool]:
         """
         Insertion avec validation des propriétés BST.
 
@@ -453,15 +473,17 @@ class BSTOperations(BinaryTreeOperations[T]):
         :rtype: Tuple[BinaryTreeNode[T], bool]
         """
         new_root, inserted = self.insert(root, value)
-        
+
         if inserted and not self.is_valid_bst(new_root):
             # Annuler l'insertion si elle viole les propriétés BST
             new_root, _ = self.delete(new_root, value)
             return new_root, False
-        
+
         return new_root, inserted
 
-    def insert_with_duplicates(self, root: Optional[BinaryTreeNode[T]], value: T) -> Tuple[BinaryTreeNode[T], bool]:
+    def insert_with_duplicates(
+        self, root: Optional[BinaryTreeNode[T]], value: T
+    ) -> Tuple[BinaryTreeNode[T], bool]:
         """
         Insertion permettant les doublons.
 
@@ -477,9 +499,9 @@ class BSTOperations(BinaryTreeOperations[T]):
         if root is None:
             new_node = BinaryTreeNode(value)
             return new_node, True
-        
+
         comparison = self._comparator(value, root.value)
-        
+
         if comparison <= 0:
             # Insérer à gauche (y compris les doublons)
             new_left, inserted = self.insert_with_duplicates(root.left, value)
@@ -503,10 +525,10 @@ class BSTOperations(BinaryTreeOperations[T]):
         return self._is_valid_bst_recursive(root, None, None)
 
     def _is_valid_bst_recursive(
-        self, 
-        node: Optional[BinaryTreeNode[T]], 
-        min_val: Optional[T], 
-        max_val: Optional[T]
+        self,
+        node: Optional[BinaryTreeNode[T]],
+        min_val: Optional[T],
+        max_val: Optional[T],
     ) -> bool:
         """
         Valide récursivement les propriétés BST du sous-arbre.
@@ -522,18 +544,17 @@ class BSTOperations(BinaryTreeOperations[T]):
         """
         if node is None:
             return True
-        
+
         # Vérifier les contraintes min/max
         if min_val is not None and self._comparator(node.value, min_val) <= 0:
             return False
         if max_val is not None and self._comparator(node.value, max_val) >= 0:
             return False
-        
+
         # Valider récursivement les sous-arbres
-        return (
-            self._is_valid_bst_recursive(node.left, min_val, node.value) and
-            self._is_valid_bst_recursive(node.right, node.value, max_val)
-        )
+        return self._is_valid_bst_recursive(
+            node.left, min_val, node.value
+        ) and self._is_valid_bst_recursive(node.right, node.value, max_val)
 
     def get_balance_factor(self, node: BinaryTreeNode[T]) -> int:
         """
@@ -549,5 +570,5 @@ class BSTOperations(BinaryTreeOperations[T]):
         """
         left_height = node.left.get_height() if node.left is not None else -1
         right_height = node.right.get_height() if node.right is not None else -1
-        
+
         return right_height - left_height

@@ -68,15 +68,15 @@ class SearchOperations(Generic[T]):
         if node.right is not None:
             # Le successeur est le minimum du sous-arbre droit
             return self._get_min_node(node.right)
-        
+
         # Remonter jusqu'à trouver un ancêtre dont le fils gauche est aussi un ancêtre
         current = node
         parent = node.parent
-        
+
         while parent is not None and current == parent.right:
             current = parent
             parent = parent.parent
-        
+
         return parent
 
     def find_predecessor(self, node: BinaryTreeNode[T]) -> Optional[BinaryTreeNode[T]]:
@@ -94,15 +94,15 @@ class SearchOperations(Generic[T]):
         if node.left is not None:
             # Le prédécesseur est le maximum du sous-arbre gauche
             return self._get_max_node(node.left)
-        
+
         # Remonter jusqu'à trouver un ancêtre dont le fils droit est aussi un ancêtre
         current = node
         parent = node.parent
-        
+
         while parent is not None and current == parent.left:
             current = parent
             parent = parent.parent
-        
+
         return parent
 
     def find_floor(self, root: Optional[BinaryTreeNode[T]], value: T) -> Optional[T]:
@@ -118,7 +118,9 @@ class SearchOperations(Generic[T]):
         """
         return self._find_floor_recursive(root, value)
 
-    def _find_floor_recursive(self, node: Optional[BinaryTreeNode[T]], value: T) -> Optional[T]:
+    def _find_floor_recursive(
+        self, node: Optional[BinaryTreeNode[T]], value: T
+    ) -> Optional[T]:
         """
         Trouve récursivement la plus grande valeur inférieure ou égale.
 
@@ -131,9 +133,9 @@ class SearchOperations(Generic[T]):
         """
         if node is None:
             return None
-        
+
         comparison = self._comparator(value, node.value)
-        
+
         if comparison == 0:
             return node.value
         elif comparison < 0:
@@ -156,7 +158,9 @@ class SearchOperations(Generic[T]):
         """
         return self._find_ceiling_recursive(root, value)
 
-    def _find_ceiling_recursive(self, node: Optional[BinaryTreeNode[T]], value: T) -> Optional[T]:
+    def _find_ceiling_recursive(
+        self, node: Optional[BinaryTreeNode[T]], value: T
+    ) -> Optional[T]:
         """
         Trouve récursivement la plus petite valeur supérieure ou égale.
 
@@ -169,9 +173,9 @@ class SearchOperations(Generic[T]):
         """
         if node is None:
             return None
-        
+
         comparison = self._comparator(value, node.value)
-        
+
         if comparison == 0:
             return node.value
         elif comparison > 0:
@@ -181,7 +185,9 @@ class SearchOperations(Generic[T]):
             left_result = self._find_ceiling_recursive(node.left, value)
             return left_result if left_result is not None else node.value
 
-    def range_search(self, root: Optional[BinaryTreeNode[T]], min_val: T, max_val: T) -> List[T]:
+    def range_search(
+        self, root: Optional[BinaryTreeNode[T]], min_val: T, max_val: T
+    ) -> List[T]:
         """
         Effectue une recherche de plage sur l'arbre.
 
@@ -196,17 +202,13 @@ class SearchOperations(Generic[T]):
         """
         if self._comparator(min_val, max_val) > 0:
             return []
-        
+
         result = []
         self._range_search_recursive(root, min_val, max_val, result)
         return result
 
     def _range_search_recursive(
-        self, 
-        node: Optional[BinaryTreeNode[T]], 
-        min_val: T, 
-        max_val: T, 
-        result: List[T]
+        self, node: Optional[BinaryTreeNode[T]], min_val: T, max_val: T, result: List[T]
     ) -> None:
         """
         Effectue récursivement la recherche de plage.
@@ -222,21 +224,25 @@ class SearchOperations(Generic[T]):
         """
         if node is None:
             return
-        
+
         # Si la valeur du nœud est dans la plage, l'ajouter
-        if (self._comparator(node.value, min_val) >= 0 and 
-            self._comparator(node.value, max_val) <= 0):
+        if (
+            self._comparator(node.value, min_val) >= 0
+            and self._comparator(node.value, max_val) <= 0
+        ):
             result.append(node.value)
-        
+
         # Explorer le sous-arbre gauche si nécessaire
         if self._comparator(node.value, min_val) > 0:
             self._range_search_recursive(node.left, min_val, max_val, result)
-        
+
         # Explorer le sous-arbre droit si nécessaire
         if self._comparator(node.value, max_val) < 0:
             self._range_search_recursive(node.right, min_val, max_val, result)
 
-    def count_range(self, root: Optional[BinaryTreeNode[T]], min_val: T, max_val: T) -> int:
+    def count_range(
+        self, root: Optional[BinaryTreeNode[T]], min_val: T, max_val: T
+    ) -> int:
         """
         Compte le nombre de valeurs dans une plage.
 
@@ -251,14 +257,11 @@ class SearchOperations(Generic[T]):
         """
         if self._comparator(min_val, max_val) > 0:
             return 0
-        
+
         return self._count_range_recursive(root, min_val, max_val)
 
     def _count_range_recursive(
-        self, 
-        node: Optional[BinaryTreeNode[T]], 
-        min_val: T, 
-        max_val: T
+        self, node: Optional[BinaryTreeNode[T]], min_val: T, max_val: T
     ) -> int:
         """
         Compte récursivement le nombre de valeurs dans la plage.
@@ -274,25 +277,29 @@ class SearchOperations(Generic[T]):
         """
         if node is None:
             return 0
-        
+
         count = 0
-        
+
         # Si la valeur du nœud est dans la plage, l'ajouter au compte
-        if (self._comparator(node.value, min_val) >= 0 and 
-            self._comparator(node.value, max_val) <= 0):
+        if (
+            self._comparator(node.value, min_val) >= 0
+            and self._comparator(node.value, max_val) <= 0
+        ):
             count += 1
-        
+
         # Explorer le sous-arbre gauche si nécessaire
         if self._comparator(node.value, min_val) > 0:
             count += self._count_range_recursive(node.left, min_val, max_val)
-        
+
         # Explorer le sous-arbre droit si nécessaire
         if self._comparator(node.value, max_val) < 0:
             count += self._count_range_recursive(node.right, min_val, max_val)
-        
+
         return count
 
-    def find_kth_smallest(self, root: Optional[BinaryTreeNode[T]], k: int) -> Optional[T]:
+    def find_kth_smallest(
+        self, root: Optional[BinaryTreeNode[T]], k: int
+    ) -> Optional[T]:
         """
         Trouve la k-ième plus petite valeur dans l'arbre.
 
@@ -305,16 +312,18 @@ class SearchOperations(Generic[T]):
         """
         if k <= 0:
             return None
-        
+
         result = []
         self._inorder_traversal(root, result)
-        
+
         if k > len(result):
             return None
-        
+
         return result[k - 1]
 
-    def find_kth_largest(self, root: Optional[BinaryTreeNode[T]], k: int) -> Optional[T]:
+    def find_kth_largest(
+        self, root: Optional[BinaryTreeNode[T]], k: int
+    ) -> Optional[T]:
         """
         Trouve la k-ième plus grande valeur dans l'arbre.
 
@@ -327,16 +336,18 @@ class SearchOperations(Generic[T]):
         """
         if k <= 0:
             return None
-        
+
         result = []
         self._inorder_traversal(root, result)
-        
+
         if k > len(result):
             return None
-        
+
         return result[len(result) - k]
 
-    def _inorder_traversal(self, node: Optional[BinaryTreeNode[T]], result: List[T]) -> None:
+    def _inorder_traversal(
+        self, node: Optional[BinaryTreeNode[T]], result: List[T]
+    ) -> None:
         """
         Effectue un parcours infixe pour obtenir les valeurs triées.
 
@@ -347,7 +358,7 @@ class SearchOperations(Generic[T]):
         """
         if node is None:
             return
-        
+
         self._inorder_traversal(node.left, result)
         result.append(node.value)
         self._inorder_traversal(node.right, result)
@@ -378,7 +389,9 @@ class SearchOperations(Generic[T]):
             node = node.right
         return node
 
-    def find_closest_value(self, root: Optional[BinaryTreeNode[T]], target: T) -> Optional[T]:
+    def find_closest_value(
+        self, root: Optional[BinaryTreeNode[T]], target: T
+    ) -> Optional[T]:
         """
         Trouve la valeur la plus proche de la valeur cible.
 
@@ -391,27 +404,31 @@ class SearchOperations(Generic[T]):
         """
         if root is None:
             return None
-        
+
         closest = root.value
         current = root
-        
+
         while current is not None:
             if self._comparator(current.value, target) == 0:
                 return current.value
-            
+
             # Mettre à jour la valeur la plus proche
-            if abs(self._comparator(current.value, target)) < abs(self._comparator(closest, target)):
+            if abs(self._comparator(current.value, target)) < abs(
+                self._comparator(closest, target)
+            ):
                 closest = current.value
-            
+
             # Naviguer vers la valeur cible
             if self._comparator(current.value, target) > 0:
                 current = current.left
             else:
                 current = current.right
-        
+
         return closest
 
-    def find_all_values(self, root: Optional[BinaryTreeNode[T]], value: T) -> List[BinaryTreeNode[T]]:
+    def find_all_values(
+        self, root: Optional[BinaryTreeNode[T]], value: T
+    ) -> List[BinaryTreeNode[T]]:
         """
         Trouve tous les nœuds contenant une valeur donnée.
 
@@ -429,10 +446,10 @@ class SearchOperations(Generic[T]):
         return result
 
     def _find_all_values_recursive(
-        self, 
-        node: Optional[BinaryTreeNode[T]], 
-        value: T, 
-        result: List[BinaryTreeNode[T]]
+        self,
+        node: Optional[BinaryTreeNode[T]],
+        value: T,
+        result: List[BinaryTreeNode[T]],
     ) -> None:
         """
         Trouve récursivement tous les nœuds contenant une valeur.
@@ -446,9 +463,9 @@ class SearchOperations(Generic[T]):
         """
         if node is None:
             return
-        
+
         comparison = self._comparator(value, node.value)
-        
+
         if comparison == 0:
             result.append(node)
             # Chercher dans les deux sous-arbres pour les doublons

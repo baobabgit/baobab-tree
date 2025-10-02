@@ -54,16 +54,18 @@ class AVLOperations(BSTOperations[T]):
         if root is None:
             new_node = BinaryTreeNode(value)
             return new_node, True
-        
+
         if not isinstance(root, BinaryTreeNode):
             raise TypeError("Root must be a BinaryTreeNode for AVL operations")
-        
+
         binary_root = root
         new_root, inserted = self._insert_avl(binary_root, value)
-        
+
         return new_root, inserted
 
-    def _insert_avl(self, node: BinaryTreeNode[T], value: T) -> Tuple[BinaryTreeNode[T], bool]:
+    def _insert_avl(
+        self, node: BinaryTreeNode[T], value: T
+    ) -> Tuple[BinaryTreeNode[T], bool]:
         """
         Insère une valeur dans l'arbre AVL avec équilibrage.
 
@@ -75,7 +77,7 @@ class AVLOperations(BSTOperations[T]):
         :rtype: Tuple[BinaryTreeNode[T], bool]
         """
         comparison = self._comparator(value, node.value)
-        
+
         if comparison < 0:
             if node.left is None:
                 new_node = BinaryTreeNode(value)
@@ -98,7 +100,9 @@ class AVLOperations(BSTOperations[T]):
             # Valeur déjà présente
             return node, False
 
-    def delete(self, root: Optional[TreeNode[T]], value: T) -> Tuple[Optional[TreeNode[T]], bool]:
+    def delete(
+        self, root: Optional[TreeNode[T]], value: T
+    ) -> Tuple[Optional[TreeNode[T]], bool]:
         """
         Supprime une valeur de l'arbre AVL avec équilibrage automatique.
 
@@ -114,16 +118,18 @@ class AVLOperations(BSTOperations[T]):
         """
         if root is None:
             return None, False
-        
+
         if not isinstance(root, BinaryTreeNode):
             raise TypeError("Root must be a BinaryTreeNode for AVL operations")
-        
+
         binary_root = root
         new_root, deleted = self._delete_avl(binary_root, value)
-        
+
         return new_root, deleted
 
-    def _delete_avl(self, node: BinaryTreeNode[T], value: T) -> Tuple[Optional[BinaryTreeNode[T]], bool]:
+    def _delete_avl(
+        self, node: BinaryTreeNode[T], value: T
+    ) -> Tuple[Optional[BinaryTreeNode[T]], bool]:
         """
         Supprime une valeur de l'arbre AVL avec équilibrage.
 
@@ -135,7 +141,7 @@ class AVLOperations(BSTOperations[T]):
         :rtype: Tuple[Optional[BinaryTreeNode[T]], bool]
         """
         comparison = self._comparator(value, node.value)
-        
+
         if comparison < 0:
             if node.left is None:
                 return node, False
@@ -172,7 +178,7 @@ class AVLOperations(BSTOperations[T]):
         :rtype: BinaryTreeNode[T]
         """
         balance_factor = self.get_balance_factor(node)
-        
+
         # Cas déséquilibré à gauche
         if balance_factor < -1:
             if self.get_balance_factor(node.left) <= 0:
@@ -182,7 +188,7 @@ class AVLOperations(BSTOperations[T]):
                 # Rotation double gauche-droite
                 node.set_left(self._rotate_left(node.left))
                 return self._rotate_right(node)
-        
+
         # Cas déséquilibré à droite
         elif balance_factor > 1:
             if self.get_balance_factor(node.right) >= 0:
@@ -192,7 +198,7 @@ class AVLOperations(BSTOperations[T]):
                 # Rotation double droite-gauche
                 node.set_right(self._rotate_right(node.right))
                 return self._rotate_left(node)
-        
+
         # Le nœud est déjà équilibré
         return node
 
@@ -207,14 +213,14 @@ class AVLOperations(BSTOperations[T]):
         """
         if node.right is None:
             return node
-        
+
         right_child = node.right
         left_subtree = right_child.left
-        
+
         # Effectuer la rotation
         node.set_right(left_subtree)
         right_child.set_left(node)
-        
+
         return right_child
 
     def _rotate_right(self, node: BinaryTreeNode[T]) -> BinaryTreeNode[T]:
@@ -228,14 +234,14 @@ class AVLOperations(BSTOperations[T]):
         """
         if node.left is None:
             return node
-        
+
         left_child = node.left
         right_subtree = left_child.right
-        
+
         # Effectuer la rotation
         node.set_left(right_subtree)
         left_child.set_right(node)
-        
+
         return left_child
 
     def get_balance_factor(self, node: BinaryTreeNode[T]) -> int:
@@ -249,7 +255,7 @@ class AVLOperations(BSTOperations[T]):
         """
         left_height = node.left.get_height() if node.left is not None else -1
         right_height = node.right.get_height() if node.right is not None else -1
-        
+
         return right_height - left_height
 
     def is_avl_tree(self, root: Optional[BinaryTreeNode[T]]) -> bool:
@@ -263,11 +269,11 @@ class AVLOperations(BSTOperations[T]):
         """
         if root is None:
             return True
-        
+
         # Vérifier les propriétés BST
         if not self.is_valid_bst(root):
             return False
-        
+
         # Vérifier l'équilibre AVL
         return self._is_avl_balanced(root)
 
@@ -282,18 +288,19 @@ class AVLOperations(BSTOperations[T]):
         """
         if node is None:
             return True
-        
+
         balance_factor = self.get_balance_factor(node)
-        
+
         # Le facteur d'équilibre doit être entre -1 et 1
         if abs(balance_factor) > 1:
             return False
-        
-        # Vérifier récursivement les enfants
-        return (self._is_avl_balanced(node.left) and 
-                self._is_avl_balanced(node.right))
 
-    def insert_with_avl_validation(self, root: Optional[BinaryTreeNode[T]], value: T) -> Tuple[BinaryTreeNode[T], bool]:
+        # Vérifier récursivement les enfants
+        return self._is_avl_balanced(node.left) and self._is_avl_balanced(node.right)
+
+    def insert_with_avl_validation(
+        self, root: Optional[BinaryTreeNode[T]], value: T
+    ) -> Tuple[BinaryTreeNode[T], bool]:
         """
         Insertion avec validation des propriétés AVL.
 
@@ -305,12 +312,12 @@ class AVLOperations(BSTOperations[T]):
         :rtype: Tuple[BinaryTreeNode[T], bool]
         """
         new_root, inserted = self.insert(root, value)
-        
+
         if inserted and not self.is_avl_tree(new_root):
             # Annuler l'insertion si elle viole les propriétés AVL
             new_root, _ = self.delete(new_root, value)
             return new_root, False
-        
+
         return new_root, inserted
 
     def get_avl_height(self, root: Optional[BinaryTreeNode[T]]) -> int:
@@ -326,7 +333,7 @@ class AVLOperations(BSTOperations[T]):
         """
         if root is None:
             return -1
-        
+
         return root.get_height()
 
     def get_min_avl_height(self, n: int) -> int:
@@ -340,10 +347,11 @@ class AVLOperations(BSTOperations[T]):
         """
         if n <= 0:
             return -1
-        
+
         # Formule pour la hauteur minimale d'un AVL
         # h = floor(log2(n + 1)) - 1
         import math
+
         return int(math.floor(math.log2(n + 1))) - 1
 
     def get_max_avl_height(self, n: int) -> int:
@@ -357,13 +365,16 @@ class AVLOperations(BSTOperations[T]):
         """
         if n <= 0:
             return -1
-        
+
         # Formule pour la hauteur maximale d'un AVL
         # h = floor(1.44 * log2(n + 2)) - 0.328
         import math
+
         return int(math.floor(1.44 * math.log2(n + 2))) - 1
 
-    def balance_tree(self, root: Optional[BinaryTreeNode[T]]) -> Optional[BinaryTreeNode[T]]:
+    def balance_tree(
+        self, root: Optional[BinaryTreeNode[T]]
+    ) -> Optional[BinaryTreeNode[T]]:
         """
         Équilibre complètement un arbre BST pour en faire un AVL.
 
@@ -374,11 +385,11 @@ class AVLOperations(BSTOperations[T]):
         """
         if root is None:
             return None
-        
+
         # Collecter tous les nœuds dans l'ordre infixe
         nodes = []
         self._collect_nodes_inorder(root, nodes)
-        
+
         # Reconstruire l'arbre AVL équilibré
         return self._build_balanced_avl(nodes, 0, len(nodes) - 1)
 
@@ -393,12 +404,14 @@ class AVLOperations(BSTOperations[T]):
         """
         if node is None:
             return
-        
+
         self._collect_nodes_inorder(node.left, nodes)
         nodes.append(node.value)
         self._collect_nodes_inorder(node.right, nodes)
 
-    def _build_balanced_avl(self, values: list, start: int, end: int) -> Optional[BinaryTreeNode[T]]:
+    def _build_balanced_avl(
+        self, values: list, start: int, end: int
+    ) -> Optional[BinaryTreeNode[T]]:
         """
         Construit un arbre AVL équilibré à partir d'une liste triée.
 
@@ -413,11 +426,11 @@ class AVLOperations(BSTOperations[T]):
         """
         if start > end:
             return None
-        
+
         mid = (start + end) // 2
         node = BinaryTreeNode(values[mid])
-        
+
         node.set_left(self._build_balanced_avl(values, start, mid - 1))
         node.set_right(self._build_balanced_avl(values, mid + 1, end))
-        
+
         return node

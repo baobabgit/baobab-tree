@@ -61,7 +61,9 @@ class TreeOperations(ABC, Generic[T]):
         pass
 
     @abstractmethod
-    def delete(self, root: Optional[TreeNode[T]], value: T) -> Tuple[Optional[TreeNode[T]], bool]:
+    def delete(
+        self, root: Optional[TreeNode[T]], value: T
+    ) -> Tuple[Optional[TreeNode[T]], bool]:
         """
         Supprime une valeur de l'arbre.
 
@@ -98,7 +100,7 @@ class TreeOperations(ABC, Generic[T]):
         """
         if root is None:
             return None
-        
+
         min_node = self.get_min_node(root)
         return min_node.value if min_node is not None else None
 
@@ -113,7 +115,7 @@ class TreeOperations(ABC, Generic[T]):
         """
         if root is None:
             return None
-        
+
         max_node = self.get_max_node(root)
         return max_node.value if max_node is not None else None
 
@@ -144,11 +146,11 @@ class TreeOperations(ABC, Generic[T]):
         """
         if root is None:
             return 0
-        
+
         size = 1  # Compter le nœud racine
         for child in root.get_children():
             size += self.get_size(child)
-        
+
         return size
 
     @abstractmethod
@@ -186,14 +188,14 @@ class TreeOperations(ABC, Generic[T]):
         """
         if root is None:
             return []
-        
+
         if root.is_leaf():
             return [root]
-        
+
         leaves = []
         for child in root.get_children():
             leaves.extend(self.get_leaf_nodes(child))
-        
+
         return leaves
 
     def get_internal_nodes(self, root: Optional[TreeNode[T]]) -> List[TreeNode[T]]:
@@ -209,11 +211,11 @@ class TreeOperations(ABC, Generic[T]):
         """
         if root is None or root.is_leaf():
             return []
-        
+
         internal_nodes = [root]
         for child in root.get_children():
             internal_nodes.extend(self.get_internal_nodes(child))
-        
+
         return internal_nodes
 
     def get_depth(self, node: TreeNode[T]) -> int:
@@ -244,7 +246,7 @@ class TreeOperations(ABC, Generic[T]):
         """
         if root is None:
             return True
-        
+
         return self._is_balanced_recursive(root) != -1
 
     def _is_balanced_recursive(self, node: TreeNode[T]) -> int:
@@ -258,28 +260,28 @@ class TreeOperations(ABC, Generic[T]):
         """
         if node.is_leaf():
             return 0
-        
+
         children = node.get_children()
         if len(children) == 0:
             return 0
-        
+
         heights = []
         for child in children:
             height = self._is_balanced_recursive(child)
             if height == -1:
                 return -1
             heights.append(height)
-        
+
         if len(heights) == 1:
             return 1 + heights[0]
-        
+
         # Pour les arbres avec plus d'un enfant, vérifier l'équilibre
         min_height = min(heights)
         max_height = max(heights)
-        
+
         if max_height - min_height > 1:
             return -1
-        
+
         return 1 + max_height
 
     def is_complete(self, root: Optional[TreeNode[T]]) -> bool:
@@ -296,10 +298,12 @@ class TreeOperations(ABC, Generic[T]):
         """
         if root is None:
             return True
-        
+
         return self._is_complete_recursive(root, 0, self.get_size(root))
 
-    def _is_complete_recursive(self, node: TreeNode[T], index: int, total_nodes: int) -> bool:
+    def _is_complete_recursive(
+        self, node: TreeNode[T], index: int, total_nodes: int
+    ) -> bool:
         """
         Vérifie récursivement si l'arbre est complet.
 
@@ -314,33 +318,37 @@ class TreeOperations(ABC, Generic[T]):
         """
         if node is None:
             return True
-        
+
         if index >= total_nodes:
             return False
-        
+
         children = node.get_children()
         if len(children) == 0:
             return True
-        
+
         # Pour un arbre binaire complet
         if len(children) <= 2:
             left_complete = True
             right_complete = True
-            
+
             if len(children) >= 1:
-                left_complete = self._is_complete_recursive(children[0], 2 * index + 1, total_nodes)
-            
+                left_complete = self._is_complete_recursive(
+                    children[0], 2 * index + 1, total_nodes
+                )
+
             if len(children) >= 2:
-                right_complete = self._is_complete_recursive(children[1], 2 * index + 2, total_nodes)
-            
+                right_complete = self._is_complete_recursive(
+                    children[1], 2 * index + 2, total_nodes
+                )
+
             return left_complete and right_complete
-        
+
         # Pour les arbres non-binaires, vérifier tous les enfants
         for i, child in enumerate(children):
             child_index = 2 * index + i + 1
             if not self._is_complete_recursive(child, child_index, total_nodes):
                 return False
-        
+
         return True
 
     def is_full(self, root: Optional[TreeNode[T]]) -> bool:
@@ -357,16 +365,16 @@ class TreeOperations(ABC, Generic[T]):
         """
         if root is None:
             return True
-        
+
         children = root.get_children()
-        
+
         # Si c'est une feuille, c'est plein
         if len(children) == 0:
             return True
-        
+
         # Vérifier récursivement tous les enfants
         for child in children:
             if not self.is_full(child):
                 return False
-        
+
         return True

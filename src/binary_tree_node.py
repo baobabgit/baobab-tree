@@ -209,9 +209,7 @@ class BinaryTreeNode(TreeNode):
             return 0
 
         left_height = self._left.get_height() if self._left is not None else -1
-        right_height = (
-            self._right.get_height() if self._right is not None else -1
-        )
+        right_height = self._right.get_height() if self._right is not None else -1
 
         return 1 + max(left_height, right_height)
 
@@ -373,6 +371,4 @@ class BinaryTreeNode(TreeNode):
         :return: Hash du nœud binaire
         :rtype: int
         """
-        return hash(
-            (self._value, id(self._parent), id(self._left), id(self._right))
-        )
+        return hash((self._value, id(self._parent), id(self._left), id(self._right)))

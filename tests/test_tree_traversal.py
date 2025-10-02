@@ -16,7 +16,7 @@ from src.exceptions import NodeValidationError
 
 class ConcreteTreeTraversal(TreeTraversal):
     """Classe concrète pour tester TreeTraversal."""
-    
+
     def traverse(self, root):
         """Implémentation concrète du parcours."""
         if root is None:
@@ -25,7 +25,7 @@ class ConcreteTreeTraversal(TreeTraversal):
         for child in root.get_children():
             result.extend(self.traverse(child))
         return result
-    
+
     def traverse_iter(self, root):
         """Implémentation concrète du parcours itératif."""
         if root is None:
@@ -99,7 +99,7 @@ class TestTreeTraversal:
         right = BinaryTreeNode(3)
         root.set_left(left)
         root.set_right(right)
-        
+
         assert traversal.validate_tree(root) is True
 
     def test_validate_tree_circular_reference(self):
@@ -107,12 +107,12 @@ class TestTreeTraversal:
         traversal = ConcreteTreeTraversal()
         root = BinaryTreeNode(1)
         child = BinaryTreeNode(2)
-        
+
         # Créer une référence circulaire en utilisant set_left
         root.set_left(child)
         # Créer manuellement une référence circulaire pour tester la validation
         child._left = root
-        
+
         with pytest.raises(NodeValidationError):
             traversal.validate_tree(root)
 
@@ -120,7 +120,7 @@ class TestTreeTraversal:
         """Test de traverse_with_callback avec callback None."""
         traversal = ConcreteTreeTraversal()
         node = BinaryTreeNode(42)
-        
+
         with pytest.raises(ValueError, match="Callback function cannot be None"):
             traversal.traverse_with_callback(node, None)
 
@@ -129,10 +129,10 @@ class TestTreeTraversal:
         traversal = ConcreteTreeTraversal()
         node = BinaryTreeNode(42)
         callback_calls = []
-        
+
         def callback(value):
             callback_calls.append(value)
-        
+
         traversal.traverse_with_callback(node, callback)
         assert callback_calls == [42]
 
@@ -140,10 +140,10 @@ class TestTreeTraversal:
         """Test de traverse_with_callback sur arbre vide."""
         traversal = ConcreteTreeTraversal()
         callback_calls = []
-        
+
         def callback(value):
             callback_calls.append(value)
-        
+
         traversal.traverse_with_callback(None, callback)
         assert callback_calls == []
 
@@ -151,7 +151,7 @@ class TestTreeTraversal:
         """Test de traverse_with_condition avec condition None."""
         traversal = ConcreteTreeTraversal()
         node = BinaryTreeNode(42)
-        
+
         with pytest.raises(ValueError, match="Condition function cannot be None"):
             traversal.traverse_with_condition(node, None)
 
@@ -159,10 +159,10 @@ class TestTreeTraversal:
         """Test de traverse_with_condition avec condition valide."""
         traversal = ConcreteTreeTraversal()
         node = BinaryTreeNode(42)
-        
+
         def condition(value):
             return value > 40
-        
+
         result = traversal.traverse_with_condition(node, condition)
         assert result == [42]
 
@@ -170,20 +170,20 @@ class TestTreeTraversal:
         """Test de traverse_with_condition avec filtrage."""
         traversal = ConcreteTreeTraversal()
         node = BinaryTreeNode(42)
-        
+
         def condition(value):
             return value < 40
-        
+
         result = traversal.traverse_with_condition(node, condition)
         assert result == []
 
     def test_traverse_with_condition_empty_tree(self):
         """Test de traverse_with_condition sur arbre vide."""
         traversal = ConcreteTreeTraversal()
-        
+
         def condition(value):
             return True
-        
+
         result = traversal.traverse_with_condition(None, condition)
         assert result == []
 
@@ -191,7 +191,7 @@ class TestTreeTraversal:
         """Test de traverse_depth_limited avec profondeur négative."""
         traversal = ConcreteTreeTraversal()
         node = BinaryTreeNode(42)
-        
+
         with pytest.raises(ValueError, match="Max depth must be non-negative"):
             traversal.traverse_depth_limited(node, -1)
 
@@ -205,7 +205,7 @@ class TestTreeTraversal:
         """Test de traverse_count_limited avec count négatif."""
         traversal = ConcreteTreeTraversal()
         node = BinaryTreeNode(42)
-        
+
         with pytest.raises(ValueError, match="Max count must be non-negative"):
             traversal.traverse_count_limited(node, -1)
 
@@ -252,7 +252,7 @@ class TestTreeTraversal:
         """Test de get_tree_statistics sur arbre vide."""
         traversal = ConcreteTreeTraversal()
         stats = traversal.get_tree_statistics(None)
-        
+
         expected = {
             "node_count": 0,
             "height": -1,
@@ -267,7 +267,7 @@ class TestTreeTraversal:
         traversal = ConcreteTreeTraversal()
         node = BinaryTreeNode(42)
         stats = traversal.get_tree_statistics(node)
-        
+
         assert stats["node_count"] == 1
         assert stats["height"] == 0
         assert stats["leaf_count"] == 1
@@ -277,16 +277,16 @@ class TestTreeTraversal:
     def test_get_tree_statistics_complex_tree(self):
         """Test de get_tree_statistics sur arbre complexe."""
         traversal = ConcreteTreeTraversal()
-        
+
         # Créer un arbre simple
         root = BinaryTreeNode(1)
         left = BinaryTreeNode(2)
         right = BinaryTreeNode(3)
         root.set_left(left)
         root.set_right(right)
-        
+
         stats = traversal.get_tree_statistics(root)
-        
+
         assert stats["node_count"] == 3
         assert stats["height"] == 1
         assert stats["leaf_count"] == 2
@@ -312,12 +312,12 @@ class TestTreeTraversal:
         traversal = ConcreteTreeTraversal()
         root = BinaryTreeNode(1)
         child = BinaryTreeNode(2)
-        
+
         # Créer une référence circulaire en utilisant set_left
         root.set_left(child)
         # Créer manuellement une référence circulaire pour tester la validation
         child._left = root
-        
+
         with pytest.raises(NodeValidationError):
             traversal._validate_node_recursive(root, set())
 
@@ -327,7 +327,7 @@ class TestTreeTraversal:
         root = BinaryTreeNode(1)
         child = BinaryTreeNode(2)
         root.set_left(child)
-        
+
         result = traversal._validate_node_recursive(root, set())
         assert result is True
 
@@ -339,7 +339,7 @@ class TestTreeTraversal:
         right = BinaryTreeNode(3)
         root.set_left(left)
         root.set_right(right)
-        
+
         stats = {
             "node_count": 0,
             "height": 0,
@@ -347,8 +347,8 @@ class TestTreeTraversal:
             "internal_node_count": 0,
             "is_valid": True,
         }
-        
+
         traversal._count_nodes_recursive(root, stats)
-        
+
         assert stats["leaf_count"] == 2
         assert stats["internal_node_count"] == 1

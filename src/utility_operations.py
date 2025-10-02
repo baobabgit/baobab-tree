@@ -66,11 +66,11 @@ class UtilityOperations(Generic[T]):
         """
         if root is None:
             return 0
-        
+
         size = 1  # Compter le nœud racine
         for child in root.get_children():
             size += self.get_size(child)
-        
+
         return size
 
     def get_balance_factor(self, node: BinaryTreeNode[T]) -> int:
@@ -87,7 +87,7 @@ class UtilityOperations(Generic[T]):
         """
         left_height = node.left.get_height() if node.left is not None else -1
         right_height = node.right.get_height() if node.right is not None else -1
-        
+
         return right_height - left_height
 
     def is_balanced(self, root: Optional[TreeNode[T]]) -> bool:
@@ -104,11 +104,11 @@ class UtilityOperations(Generic[T]):
         """
         if root is None:
             return True
-        
+
         # Pour les arbres binaires, utiliser la méthode spécialisée
         if isinstance(root, BinaryTreeNode):
             return self._is_binary_tree_balanced(root)
-        
+
         return self._is_balanced_recursive(root) != -1
 
     def _is_binary_tree_balanced(self, node: BinaryTreeNode[T]) -> bool:
@@ -122,16 +122,22 @@ class UtilityOperations(Generic[T]):
         """
         if node is None:
             return True
-        
+
         left_height = node.left.get_height() if node.left is not None else -1
         right_height = node.right.get_height() if node.right is not None else -1
-        
+
         if abs(left_height - right_height) > 1:
             return False
-        
-        left_balanced = self._is_binary_tree_balanced(node.left) if node.left is not None else True
-        right_balanced = self._is_binary_tree_balanced(node.right) if node.right is not None else True
-        
+
+        left_balanced = (
+            self._is_binary_tree_balanced(node.left) if node.left is not None else True
+        )
+        right_balanced = (
+            self._is_binary_tree_balanced(node.right)
+            if node.right is not None
+            else True
+        )
+
         return left_balanced and right_balanced
 
     def _is_balanced_recursive(self, node: TreeNode[T]) -> int:
@@ -145,28 +151,28 @@ class UtilityOperations(Generic[T]):
         """
         if node.is_leaf():
             return 0
-        
+
         children = node.get_children()
         if len(children) == 0:
             return 0
-        
+
         heights = []
         for child in children:
             height = self._is_balanced_recursive(child)
             if height == -1:
                 return -1
             heights.append(height)
-        
+
         if len(heights) == 1:
             return 1 + heights[0]
-        
+
         # Pour les arbres avec plus d'un enfant, vérifier l'équilibre
         min_height = min(heights)
         max_height = max(heights)
-        
+
         if max_height - min_height > 1:
             return -1
-        
+
         return 1 + max_height
 
     def is_complete(self, root: Optional[TreeNode[T]]) -> bool:
@@ -183,10 +189,12 @@ class UtilityOperations(Generic[T]):
         """
         if root is None:
             return True
-        
+
         return self._is_complete_recursive(root, 0, self.get_size(root))
 
-    def _is_complete_recursive(self, node: TreeNode[T], index: int, total_nodes: int) -> bool:
+    def _is_complete_recursive(
+        self, node: TreeNode[T], index: int, total_nodes: int
+    ) -> bool:
         """
         Vérifie récursivement si l'arbre est complet.
 
@@ -201,33 +209,37 @@ class UtilityOperations(Generic[T]):
         """
         if node is None:
             return True
-        
+
         if index >= total_nodes:
             return False
-        
+
         children = node.get_children()
         if len(children) == 0:
             return True
-        
+
         # Pour un arbre binaire complet
         if len(children) <= 2:
             left_complete = True
             right_complete = True
-            
+
             if len(children) >= 1:
-                left_complete = self._is_complete_recursive(children[0], 2 * index + 1, total_nodes)
-            
+                left_complete = self._is_complete_recursive(
+                    children[0], 2 * index + 1, total_nodes
+                )
+
             if len(children) >= 2:
-                right_complete = self._is_complete_recursive(children[1], 2 * index + 2, total_nodes)
-            
+                right_complete = self._is_complete_recursive(
+                    children[1], 2 * index + 2, total_nodes
+                )
+
             return left_complete and right_complete
-        
+
         # Pour les arbres non-binaires, vérifier tous les enfants
         for i, child in enumerate(children):
             child_index = 2 * index + i + 1
             if not self._is_complete_recursive(child, child_index, total_nodes):
                 return False
-        
+
         return True
 
     def is_full(self, root: Optional[TreeNode[T]]) -> bool:
@@ -244,18 +256,18 @@ class UtilityOperations(Generic[T]):
         """
         if root is None:
             return True
-        
+
         children = root.get_children()
-        
+
         # Si c'est une feuille, c'est plein
         if len(children) == 0:
             return True
-        
+
         # Vérifier récursivement tous les enfants
         for child in children:
             if not self.is_full(child):
                 return False
-        
+
         return True
 
     def is_perfect(self, root: Optional[TreeNode[T]]) -> bool:
@@ -271,11 +283,11 @@ class UtilityOperations(Generic[T]):
         """
         if root is None:
             return True
-        
+
         height = self.get_height(root)
         expected_nodes = 2 ** (height + 1) - 1
         actual_nodes = self.get_size(root)
-        
+
         return actual_nodes == expected_nodes
 
     def get_leaf_nodes(self, root: Optional[TreeNode[T]]) -> List[TreeNode[T]]:
@@ -289,14 +301,14 @@ class UtilityOperations(Generic[T]):
         """
         if root is None:
             return []
-        
+
         if root.is_leaf():
             return [root]
-        
+
         leaves = []
         for child in root.get_children():
             leaves.extend(self.get_leaf_nodes(child))
-        
+
         return leaves
 
     def get_internal_nodes(self, root: Optional[TreeNode[T]]) -> List[TreeNode[T]]:
@@ -312,14 +324,16 @@ class UtilityOperations(Generic[T]):
         """
         if root is None or root.is_leaf():
             return []
-        
+
         internal_nodes = [root]
         for child in root.get_children():
             internal_nodes.extend(self.get_internal_nodes(child))
-        
+
         return internal_nodes
 
-    def get_nodes_at_level(self, root: Optional[TreeNode[T]], level: int) -> List[TreeNode[T]]:
+    def get_nodes_at_level(
+        self, root: Optional[TreeNode[T]], level: int
+    ) -> List[TreeNode[T]]:
         """
         Récupère tous les nœuds à un niveau donné.
 
@@ -332,14 +346,14 @@ class UtilityOperations(Generic[T]):
         """
         if root is None or level < 0:
             return []
-        
+
         if level == 0:
             return [root]
-        
+
         nodes = []
         for child in root.get_children():
             nodes.extend(self.get_nodes_at_level(child, level - 1))
-        
+
         return nodes
 
     def get_width(self, root: Optional[TreeNode[T]]) -> int:
@@ -355,14 +369,14 @@ class UtilityOperations(Generic[T]):
         """
         if root is None:
             return 0
-        
+
         height = self.get_height(root)
         max_width = 0
-        
+
         for level in range(height + 1):
             width = len(self.get_nodes_at_level(root, level))
             max_width = max(max_width, width)
-        
+
         return max_width
 
     def get_diameter(self, root: Optional[TreeNode[T]]) -> int:
@@ -379,7 +393,7 @@ class UtilityOperations(Generic[T]):
         """
         if root is None:
             return 0
-        
+
         _, diameter = self._get_diameter_recursive(root)
         return diameter
 
@@ -394,28 +408,28 @@ class UtilityOperations(Generic[T]):
         """
         if node.is_leaf():
             return 0, 0
-        
+
         children = node.get_children()
         if len(children) == 0:
             return 0, 0
-        
+
         max_height = 0
         max_diameter = 0
         heights = []
-        
+
         for child in children:
             child_height, child_diameter = self._get_diameter_recursive(child)
             heights.append(child_height)
             max_diameter = max(max_diameter, child_diameter)
-        
+
         if len(heights) >= 2:
             heights.sort(reverse=True)
             max_diameter = max(max_diameter, heights[0] + heights[1] + 2)
         elif len(heights) == 1:
             max_diameter = max(max_diameter, heights[0] + 1)
-        
+
         max_height = max(heights) + 1 if heights else 0
-        
+
         return max_height, max_diameter
 
     def count_nodes_with_value(self, root: Optional[TreeNode[T]], value: T) -> int:
@@ -431,15 +445,17 @@ class UtilityOperations(Generic[T]):
         """
         if root is None:
             return 0
-        
+
         count = 1 if root.value == value else 0
-        
+
         for child in root.get_children():
             count += self.count_nodes_with_value(child, value)
-        
+
         return count
 
-    def get_path_to_node(self, root: Optional[TreeNode[T]], target: TreeNode[T]) -> List[TreeNode[T]]:
+    def get_path_to_node(
+        self, root: Optional[TreeNode[T]], target: TreeNode[T]
+    ) -> List[TreeNode[T]]:
         """
         Récupère le chemin de la racine vers un nœud cible.
 
@@ -452,18 +468,20 @@ class UtilityOperations(Generic[T]):
         """
         if root is None:
             return []
-        
+
         if root is target:
             return [root]
-        
+
         for child in root.get_children():
             path = self.get_path_to_node(child, target)
             if path:
                 return [root] + path
-        
+
         return []
 
-    def get_common_ancestor(self, root: Optional[TreeNode[T]], node1: TreeNode[T], node2: TreeNode[T]) -> Optional[TreeNode[T]]:
+    def get_common_ancestor(
+        self, root: Optional[TreeNode[T]], node1: TreeNode[T], node2: TreeNode[T]
+    ) -> Optional[TreeNode[T]]:
         """
         Trouve l'ancêtre commun le plus proche de deux nœuds.
 
@@ -478,26 +496,28 @@ class UtilityOperations(Generic[T]):
         """
         if root is None:
             return None
-        
+
         path1 = self.get_path_to_node(root, node1)
         path2 = self.get_path_to_node(root, node2)
-        
+
         if not path1 or not path2:
             return None
-        
+
         # Trouver le dernier nœud commun dans les chemins
         common_ancestor = None
         min_length = min(len(path1), len(path2))
-        
+
         for i in range(min_length):
             if path1[i] is path2[i]:
                 common_ancestor = path1[i]
             else:
                 break
-        
+
         return common_ancestor
 
-    def is_subtree(self, root: Optional[TreeNode[T]], subtree_root: Optional[TreeNode[T]]) -> bool:
+    def is_subtree(
+        self, root: Optional[TreeNode[T]], subtree_root: Optional[TreeNode[T]]
+    ) -> bool:
         """
         Vérifie si un arbre est un sous-arbre d'un autre.
 
@@ -510,20 +530,22 @@ class UtilityOperations(Generic[T]):
         """
         if subtree_root is None:
             return True
-        
+
         if root is None:
             return False
-        
+
         if self._are_trees_identical(root, subtree_root):
             return True
-        
+
         for child in root.get_children():
             if self.is_subtree(child, subtree_root):
                 return True
-        
+
         return False
 
-    def _are_trees_identical(self, tree1: Optional[TreeNode[T]], tree2: Optional[TreeNode[T]]) -> bool:
+    def _are_trees_identical(
+        self, tree1: Optional[TreeNode[T]], tree2: Optional[TreeNode[T]]
+    ) -> bool:
         """
         Vérifie si deux arbres sont identiques.
 
@@ -536,21 +558,21 @@ class UtilityOperations(Generic[T]):
         """
         if tree1 is None and tree2 is None:
             return True
-        
+
         if tree1 is None or tree2 is None:
             return False
-        
+
         if tree1.value != tree2.value:
             return False
-        
+
         children1 = tree1.get_children()
         children2 = tree2.get_children()
-        
+
         if len(children1) != len(children2):
             return False
-        
+
         for child1, child2 in zip(children1, children2):
             if not self._are_trees_identical(child1, child2):
                 return False
-        
+
         return True
