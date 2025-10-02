@@ -828,3 +828,43 @@ class RedistributionError(BTreeError):
         """
         base_msg = super().__str__()
         return f"{base_msg} (Target: {self.target_node}, Reason: {self.reason})"
+
+
+class BalancingError(AVLError):
+    """
+    Exception de base pour l'équilibrage AVL.
+
+    Cette exception est levée lors d'erreurs dans les algorithmes d'équilibrage.
+    """
+
+    def __init__(self, message: str, operation: str = None, node=None):
+        super().__init__(message, operation, node)
+
+
+class ImbalanceDetectionError(BalancingError):
+    """
+    Exception levée lors d'erreurs de détection de déséquilibre.
+    """
+
+    def __init__(self, message: str, node=None):
+        super().__init__(message, "imbalance_detection", node)
+
+
+class CorrectionApplicationError(BalancingError):
+    """
+    Exception levée lors d'erreurs d'application de correction.
+    """
+
+    def __init__(self, message: str, correction_type: str, node=None):
+        super().__init__(message, "correction_application", node)
+        self.correction_type = correction_type
+
+
+class ValidationError(BalancingError):
+    """
+    Exception levée lors d'erreurs de validation.
+    """
+
+    def __init__(self, message: str, validation_type: str, node=None):
+        super().__init__(message, "validation", node)
+        self.validation_type = validation_type

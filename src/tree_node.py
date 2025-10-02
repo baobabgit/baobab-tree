@@ -7,7 +7,7 @@ communes à tous les types de nœuds.
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, List, Optional, TYPE_CHECKING
+from typing import Any, Generic, List, Optional, TYPE_CHECKING
 
 from .exceptions import (
     CircularReferenceError,
@@ -20,7 +20,7 @@ if TYPE_CHECKING:
     from .tree_node import TreeNode
 
 
-class TreeNode(ABC):
+class TreeNode(ABC, Generic[T]):
     """
     Classe abstraite de base pour tous les nœuds d'arbres.
 
