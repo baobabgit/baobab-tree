@@ -9,6 +9,10 @@ from .exceptions import (
     InvalidNodeOperationError,
     CircularReferenceError,
     NodeValidationError,
+    BSTError,
+    DuplicateValueError,
+    ValueNotFoundError,
+    InvalidOperationError,
 )
 
 from .interfaces import (
@@ -21,6 +25,13 @@ from .interfaces import (
 
 from .tree_node import TreeNode
 from .binary_tree_node import BinaryTreeNode
+from .binary_search_tree import BinarySearchTree
+from .bst_iterators import (
+    PreorderIterator,
+    InorderIterator,
+    PostorderIterator,
+    LevelOrderIterator,
+)
 
 __version__ = "0.1.0"
 __author__ = "Tree Library Team"
@@ -31,6 +42,10 @@ __all__ = [
     "InvalidNodeOperationError",
     "CircularReferenceError",
     "NodeValidationError",
+    "BSTError",
+    "DuplicateValueError",
+    "ValueNotFoundError",
+    "InvalidOperationError",
     # Interfaces
     "Comparable",
     "TreeInterface",
@@ -40,4 +55,10 @@ __all__ = [
     # Classes principales
     "TreeNode",
     "BinaryTreeNode",
+    "BinarySearchTree",
+    # Itérateurs
+    "PreorderIterator",
+    "InorderIterator",
+    "PostorderIterator",
+    "LevelOrderIterator",
 ]

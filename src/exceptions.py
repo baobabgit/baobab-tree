@@ -162,3 +162,144 @@ class NodeValidationError(TreeNodeError):
         """
         base_msg = super().__str__()
         return f"{base_msg} (Validation rule: {self.validation_rule})"
+
+
+class BSTError(Exception):
+    """
+    Exception de base pour toutes les erreurs liées aux arbres binaires de recherche.
+
+    Cette exception sert de classe de base pour toutes les erreurs spécifiques
+    aux BST, permettant une gestion d'erreurs hiérarchique.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param operation: Opération qui a causé l'erreur (optionnel)
+    :type operation: str, optional
+    """
+
+    def __init__(self, message: str, operation: str = None):
+        """
+        Initialise l'exception BSTError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param operation: Opération qui a causé l'erreur (optionnel)
+        :type operation: str, optional
+        """
+        super().__init__(message)
+        self.message = message
+        self.operation = operation
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur l'opération si disponible
+        :rtype: str
+        """
+        if self.operation is not None:
+            return f"{self.message} (Operation: {self.operation})"
+        return self.message
+
+
+class DuplicateValueError(BSTError):
+    """
+    Exception levée lors de la tentative d'insertion d'une valeur dupliquée.
+
+    Cette exception est levée quand on tente d'insérer une valeur qui existe
+    déjà dans l'arbre binaire de recherche.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param value: Valeur dupliquée
+    :type value: Any
+    :param operation: Opération qui a causé l'erreur
+    :type operation: str
+    """
+
+    def __init__(self, message: str, value, operation: str = "insert"):
+        """
+        Initialise l'exception DuplicateValueError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param value: Valeur dupliquée
+        :type value: Any
+        :param operation: Opération qui a causé l'erreur
+        :type operation: str
+        """
+        super().__init__(message, operation)
+        self.value = value
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur la valeur dupliquée
+        :rtype: str
+        """
+        return f"{self.message} (Value: {self.value})"
+
+
+class ValueNotFoundError(BSTError):
+    """
+    Exception levée lors de la recherche d'une valeur inexistante.
+
+    Cette exception est levée quand on tente d'effectuer une opération
+    sur une valeur qui n'existe pas dans l'arbre binaire de recherche.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param value: Valeur non trouvée
+    :type value: Any
+    :param operation: Opération qui a causé l'erreur
+    :type operation: str
+    """
+
+    def __init__(self, message: str, value, operation: str = "search"):
+        """
+        Initialise l'exception ValueNotFoundError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param value: Valeur non trouvée
+        :type value: Any
+        :param operation: Opération qui a causé l'erreur
+        :type operation: str
+        """
+        super().__init__(message, operation)
+        self.value = value
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur la valeur non trouvée
+        :rtype: str
+        """
+        return f"{self.message} (Value: {self.value})"
+
+
+class InvalidOperationError(BSTError):
+    """
+    Exception levée lors d'une opération invalide sur un BST.
+
+    Cette exception est levée quand une opération est tentée sur un BST
+    dans un état qui ne permet pas cette opération.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param operation: Opération invalide
+    :type operation: str
+    """
+
+    def __init__(self, message: str, operation: str):
+        """
+        Initialise l'exception InvalidOperationError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param operation: Opération invalide
+        :type operation: str
+        """
+        super().__init__(message, operation)
