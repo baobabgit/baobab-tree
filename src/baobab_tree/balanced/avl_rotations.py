@@ -11,8 +11,8 @@ import time
 from typing import Any, Callable, Dict, TYPE_CHECKING
 
 from .avl_node import AVLNode
-from .exceptions import RotationError
-from .interfaces import T
+from ..core.exceptions import RotationError
+from ..core.interfaces import T
 
 if TYPE_CHECKING:
     pass

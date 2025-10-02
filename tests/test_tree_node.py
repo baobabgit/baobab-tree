@@ -8,13 +8,13 @@ Pour tester les méthodes abstraites, nous utilisons une classe concrète de tes
 import pytest
 from typing import List, Optional
 
-from src.exceptions import (
+from src.baobab_tree.core.exceptions import (
     CircularReferenceError,
     InvalidNodeOperationError,
     NodeValidationError,
 )
-from src.interfaces import T
-from src.tree_node import TreeNode
+from src.baobab_tree.core.interfaces import T
+from src.baobab_tree.core.tree_node import TreeNode
 
 
 class ConcreteTreeNode(TreeNode):

@@ -12,14 +12,14 @@ from typing import Any, Callable, Dict, List, Optional, TYPE_CHECKING
 
 from .avl_node import AVLNode
 from .avl_rotations import AVLRotations
-from .exceptions import (
+from ..core.exceptions import (
     AVLError,
     BalancingError,
     CorrectionApplicationError,
     ImbalanceDetectionError,
     ValidationError,
 )
-from .interfaces import T
+from ..core.interfaces import T
 
 if TYPE_CHECKING:
     pass

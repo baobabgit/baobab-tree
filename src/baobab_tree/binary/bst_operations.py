@@ -12,9 +12,10 @@ from __future__ import annotations
 from typing import Callable, List, Optional, Tuple, TYPE_CHECKING
 
 from .binary_tree_node import BinaryTreeNode
+from ..core.tree_operations import TreeOperations
 from .binary_tree_operations import BinaryTreeOperations
-from .interfaces import T
-from .tree_node import TreeNode
+from ..core.interfaces import T
+from ..core.tree_node import TreeNode
 
 if TYPE_CHECKING:
     from .binary_tree_node import BinaryTreeNode

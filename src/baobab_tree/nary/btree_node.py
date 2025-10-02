@@ -10,28 +10,16 @@ from __future__ import annotations
 
 from typing import Any, List, Optional, Tuple, Dict
 
-try:
-    from .tree_node import TreeNode
-    from .interfaces import Comparable
-    from .exceptions import (
-        BTreeError,
-        NodeFullError,
-        NodeUnderflowError,
-        SplitError,
-        MergeError,
-        RedistributionError,
-    )
-except ImportError:
-    from tree_node import TreeNode
-    from interfaces import Comparable
-    from exceptions import (
-        BTreeError,
-        NodeFullError,
-        NodeUnderflowError,
-        SplitError,
-        MergeError,
-        RedistributionError,
-    )
+from ..core.tree_node import TreeNode
+from ..core.interfaces import Comparable
+from ..core.exceptions import (
+    BTreeError,
+    NodeFullError,
+    NodeUnderflowError,
+    SplitError,
+    MergeError,
+    RedistributionError,
+)
 
 
 class BTreeNode(TreeNode[Comparable]):

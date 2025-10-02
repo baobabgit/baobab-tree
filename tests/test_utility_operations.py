@@ -6,8 +6,8 @@ et ses méthodes utilitaires.
 """
 
 import pytest
-from src.binary_tree_node import BinaryTreeNode
-from src.utility_operations import UtilityOperations
+from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
+from src.baobab_tree.core.utility_operations import UtilityOperations
 
 
 class TestUtilityOperations:

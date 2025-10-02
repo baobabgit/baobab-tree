@@ -13,9 +13,9 @@ from typing import Callable, Dict, Optional
 
 from .avl_node import AVLNode
 from .avl_rotations import AVLRotations
-from .binary_search_tree import BinarySearchTree
-from .exceptions import AVLError, RotationError
-from .interfaces import T
+from ..binary.binary_search_tree import BinarySearchTree
+from ..core.exceptions import AVLError, RotationError
+from ..core.interfaces import T
 
 
 class AVLTree(BinarySearchTree):

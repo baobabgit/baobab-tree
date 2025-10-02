@@ -11,9 +11,9 @@ from __future__ import annotations
 from typing import List, Optional, Tuple, TYPE_CHECKING
 
 from .binary_tree_node import BinaryTreeNode
-from .interfaces import T
-from .tree_node import TreeNode
-from .tree_operations import TreeOperations
+from ..core.interfaces import T
+from ..core.tree_node import TreeNode
+from ..core.tree_operations import TreeOperations
 
 if TYPE_CHECKING:
     from .binary_tree_node import BinaryTreeNode

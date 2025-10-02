@@ -6,8 +6,8 @@ et ses méthodes spécialisées pour les arbres AVL.
 """
 
 import pytest
-from src.binary_tree_node import BinaryTreeNode
-from src.avl_operations import AVLOperations
+from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
+from src.baobab_tree.balanced.avl_operations import AVLOperations
 
 
 class TestAVLOperations:
@@ -284,7 +284,7 @@ class TestAVLOperations:
 
     def test_inheritance_from_bst_operations(self):
         """Test que AVLOperations hérite bien de BSTOperations."""
-        from src.bst_operations import BSTOperations
+        from src.baobab_tree.binary.bst_operations import BSTOperations
 
         assert issubclass(AVLOperations, BSTOperations)
 

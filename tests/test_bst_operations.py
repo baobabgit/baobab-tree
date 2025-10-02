@@ -6,8 +6,8 @@ et ses méthodes spécialisées pour les arbres binaires de recherche.
 """
 
 import pytest
-from src.binary_tree_node import BinaryTreeNode
-from src.bst_operations import BSTOperations
+from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
+from src.baobab_tree.binary.bst_operations import BSTOperations
 
 
 class TestBSTOperations:
@@ -272,7 +272,7 @@ class TestBSTOperations:
 
     def test_inheritance_from_binary_tree_operations(self):
         """Test que BSTOperations hérite bien de BinaryTreeOperations."""
-        from src.binary_tree_operations import BinaryTreeOperations
+        from src.baobab_tree.binary_tree_operations import BinaryTreeOperations
 
         assert issubclass(BSTOperations, BinaryTreeOperations)
 

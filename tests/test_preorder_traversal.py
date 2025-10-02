@@ -7,9 +7,9 @@ et ses fonctionnalités de parcours préfixe.
 
 import pytest
 
-from src.preorder_traversal import PreorderTraversal
-from src.binary_tree_node import BinaryTreeNode
-from src.exceptions import NodeValidationError
+from src.baobab_tree.spatial.preorder_traversal import PreorderTraversal
+from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
+from src.baobab_tree.core.exceptions import NodeValidationError
 
 
 class TestPreorderTraversal:

@@ -8,8 +8,8 @@ exceptionnelles de la classe TreeNode.
 import unittest
 from unittest.mock import patch, MagicMock
 
-from src.tree_node import TreeNode
-from src.exceptions import (
+from src.baobab_tree.core.tree_node import TreeNode
+from src.baobab_tree.core.exceptions import (
     CircularReferenceError,
     InvalidNodeOperationError,
     NodeValidationError,

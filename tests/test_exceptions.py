@@ -7,7 +7,7 @@ définies dans le module exceptions.
 
 import unittest
 
-from src.exceptions import (
+from src.baobab_tree.core.exceptions import (
     TreeNodeError,
     InvalidNodeOperationError,
     CircularReferenceError,

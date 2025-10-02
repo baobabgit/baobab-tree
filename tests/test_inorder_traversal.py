@@ -7,9 +7,9 @@ et ses fonctionnalités de parcours infixe.
 
 import pytest
 
-from src.inorder_traversal import InorderTraversal
-from src.binary_tree_node import BinaryTreeNode
-from src.exceptions import NodeValidationError
+from src.baobab_tree.spatial.inorder_traversal import InorderTraversal
+from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
+from src.baobab_tree.core.exceptions import NodeValidationError
 
 
 class TestInorderTraversal:

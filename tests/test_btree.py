@@ -8,9 +8,9 @@ incluant les tests de fonctionnalité, de validation et de gestion d'erreurs.
 import pytest
 from typing import List, Optional
 
-from src.btree import BTree
-from src.btree_node import BTreeNode
-from src.exceptions import (
+from src.baobab_tree.nary.btree import BTree
+from src.baobab_tree.nary.btree_node import BTreeNode
+from src.baobab_tree.core.exceptions import (
     BTreeError,
     InvalidOrderError,
     NodeFullError,

@@ -8,8 +8,8 @@ et ses fonctionnalités de base.
 import pytest
 from unittest.mock import Mock
 
-from src.tree_iterator import TreeIterator
-from src.binary_tree_node import BinaryTreeNode
+from src.baobab_tree.search.tree_iterator import TreeIterator
+from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
 
 
 class ConcreteTreeIterator(TreeIterator):

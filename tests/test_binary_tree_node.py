@@ -6,8 +6,8 @@ Ce module contient tous les tests unitaires pour la classe BinaryTreeNode.
 
 import pytest
 
-from src.exceptions import InvalidNodeOperationError, NodeValidationError
-from src.binary_tree_node import BinaryTreeNode
+from src.baobab_tree.core.exceptions import InvalidNodeOperationError, NodeValidationError
+from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
 
 
 class TestBinaryTreeNode:
@@ -448,7 +448,7 @@ class TestBinaryTreeNode:
 
     def test_inheritance(self):
         """Test que BinaryTreeNode hérite bien de TreeNode."""
-        from src.tree_node import TreeNode
+        from src.baobab_tree.core.tree_node import TreeNode
 
         node = BinaryTreeNode(42)
         assert isinstance(node, TreeNode)

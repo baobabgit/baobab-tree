@@ -8,14 +8,14 @@ LevelOrderIterator et LevelOrderWithLevelIterator.
 
 import pytest
 
-from src.traversal_iterators import (
+from src.baobab_tree.search.traversal_iterators import (
     PreorderIterator,
     InorderIterator,
     PostorderIterator,
     LevelOrderIterator,
     LevelOrderWithLevelIterator,
 )
-from src.binary_tree_node import BinaryTreeNode
+from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
 
 
 class TestPreorderIterator:

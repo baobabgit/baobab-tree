@@ -6,8 +6,8 @@ et ses méthodes communes.
 """
 
 import pytest
-from src.binary_tree_node import BinaryTreeNode
-from src.tree_operations import TreeOperations
+from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
+from src.baobab_tree.core.tree_operations import TreeOperations
 
 
 class ConcreteTreeOperations(TreeOperations[int]):

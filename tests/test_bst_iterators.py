@@ -10,8 +10,8 @@ from __future__ import annotations
 import unittest
 from typing import List
 
-from src.binary_tree_node import BinaryTreeNode
-from src.bst_iterators import (
+from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
+from src.baobab_tree.binary.bst_iterators import (
     InorderIterator,
     LevelOrderIterator,
     PostorderIterator,

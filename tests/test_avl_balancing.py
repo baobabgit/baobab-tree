@@ -9,16 +9,16 @@ import pytest
 import time
 from typing import Any, Dict, List
 
-from src.avl_balancing import (
+from src.baobab_tree.balanced.avl_balancing import (
     AVLBalancing,
     BalancingError,
     CorrectionApplicationError,
     ImbalanceDetectionError,
     ValidationError,
 )
-from src.avl_node import AVLNode
-from src.avl_rotations import AVLRotations
-from src.exceptions import AVLError
+from src.baobab_tree.balanced.avl_node import AVLNode
+from src.baobab_tree.balanced.avl_rotations import AVLRotations
+from src.baobab_tree.core.exceptions import AVLError
 
 
 class TestAVLBalancing:
