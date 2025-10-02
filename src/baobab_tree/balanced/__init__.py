@@ -12,6 +12,15 @@ from .avl_rotations import AVLRotations
 from .avl_balancing import AVLBalancing
 from .red_black_tree import RedBlackTree
 from .red_black_node import Color, RedBlackNode
+from .rotations import (
+    TreeRotation,
+    LeftRotation,
+    RightRotation,
+    LeftRightRotation,
+    RightLeftRotation,
+    RotationFactory,
+    RotationSelector,
+)
 
 __all__ = [
     "AVLTree",
@@ -22,4 +31,11 @@ __all__ = [
     "RedBlackTree",
     "RedBlackNode",
     "Color",
+    "TreeRotation",
+    "LeftRotation",
+    "RightRotation",
+    "LeftRightRotation",
+    "RightLeftRotation",
+    "RotationFactory",
+    "RotationSelector",
 ]

@@ -1040,3 +1040,176 @@ class RedBlackBalancingError(RedBlackTreeError):
         """
         base_msg = super().__str__()
         return f"{base_msg} (Balancing operation: {self.balancing_operation})"
+
+
+class TreeRotationError(Exception):
+    """
+    Exception de base pour toutes les erreurs liées aux rotations d'arbres.
+
+    Cette exception sert de classe de base pour toutes les erreurs spécifiques
+    aux rotations d'arbres, permettant une gestion d'erreurs hiérarchique.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param rotation_type: Type de rotation qui a causé l'erreur (optionnel)
+    :type rotation_type: str, optional
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: BinaryTreeNode, optional
+    """
+
+    def __init__(self, message: str, rotation_type: str = None, node=None):
+        """
+        Initialise l'exception TreeRotationError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param rotation_type: Type de rotation qui a causé l'erreur (optionnel)
+        :type rotation_type: str, optional
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: BinaryTreeNode, optional
+        """
+        super().__init__(message)
+        self.message = message
+        self.rotation_type = rotation_type
+        self.node = node
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur le type de rotation et le nœud si disponibles
+        :rtype: str
+        """
+        result = self.message
+        if self.rotation_type is not None:
+            result += f" (Rotation type: {self.rotation_type})"
+        if self.node is not None:
+            result += f" (Node: {self.node})"
+        return result
+
+
+class InvalidRotationError(TreeRotationError):
+    """
+    Exception levée lors d'une rotation invalide.
+
+    Cette exception est levée quand une rotation ne peut pas être effectuée
+    ou quand elle produit un résultat invalide.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param rotation_type: Type de rotation invalide
+    :type rotation_type: str
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: BinaryTreeNode, optional
+    """
+
+    def __init__(self, message: str, rotation_type: str, node=None):
+        """
+        Initialise l'exception InvalidRotationError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param rotation_type: Type de rotation invalide
+        :type rotation_type: str
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: BinaryTreeNode, optional
+        """
+        super().__init__(message, rotation_type, node)
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur le type de rotation invalide
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        return f"{base_msg} (Invalid rotation: {self.rotation_type})"
+
+
+class MissingChildError(TreeRotationError):
+    """
+    Exception levée lors d'un enfant manquant pour une rotation.
+
+    Cette exception est levée quand une rotation nécessite un enfant
+    qui n'existe pas ou qui est None.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param rotation_type: Type de rotation qui nécessite l'enfant
+    :type rotation_type: str
+    :param child_type: Type d'enfant manquant ('left' ou 'right')
+    :type child_type: str
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: BinaryTreeNode, optional
+    """
+
+    def __init__(self, message: str, rotation_type: str, child_type: str, node=None):
+        """
+        Initialise l'exception MissingChildError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param rotation_type: Type de rotation qui nécessite l'enfant
+        :type rotation_type: str
+        :param child_type: Type d'enfant manquant ('left' ou 'right')
+        :type child_type: str
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: BinaryTreeNode, optional
+        """
+        super().__init__(message, rotation_type, node)
+        self.child_type = child_type
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur l'enfant manquant
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        return f"{base_msg} (Missing child: {self.child_type})"
+
+
+class RotationValidationError(TreeRotationError):
+    """
+    Exception levée lors de l'échec de validation d'une rotation.
+
+    Cette exception est levée quand une rotation ne passe pas les validations
+    pré-rotation ou post-rotation.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param rotation_type: Type de rotation qui a échoué la validation
+    :type rotation_type: str
+    :param validation_phase: Phase de validation ('before' ou 'after')
+    :type validation_phase: str
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: BinaryTreeNode, optional
+    """
+
+    def __init__(self, message: str, rotation_type: str, validation_phase: str, node=None):
+        """
+        Initialise l'exception RotationValidationError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param rotation_type: Type de rotation qui a échoué la validation
+        :type rotation_type: str
+        :param validation_phase: Phase de validation ('before' ou 'after')
+        :type validation_phase: str
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: BinaryTreeNode, optional
+        """
+        super().__init__(message, rotation_type, node)
+        self.validation_phase = validation_phase
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur la phase de validation
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        return f"{base_msg} (Validation phase: {self.validation_phase})"
