@@ -477,3 +477,57 @@ class HeightMismatchError(AVLError):
         """
         base_msg = super().__str__()
         return f"{base_msg} (Calculated: {self.calculated_height}, Cached: {self.cached_height})"
+
+
+class AVLNodeError(AVLError):
+    """
+    Exception de base pour toutes les erreurs liées aux nœuds AVL.
+
+    Cette exception sert de classe de base pour toutes les erreurs spécifiques
+    aux nœuds AVL, permettant une gestion d'erreurs hiérarchique.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param operation: Opération qui a causé l'erreur (optionnel)
+    :type operation: str, optional
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: AVLNode, optional
+    """
+
+    def __init__(self, message: str, operation: str = None, node=None):
+        """
+        Initialise l'exception AVLNodeError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param operation: Opération qui a causé l'erreur (optionnel)
+        :type operation: str, optional
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: AVLNode, optional
+        """
+        super().__init__(message, operation, node)
+
+
+class HeightCalculationError(AVLNodeError):
+    """
+    Exception levée lors d'une erreur de calcul de hauteur.
+
+    Cette exception est levée quand il y a une erreur dans le calcul
+    de la hauteur d'un nœud AVL ou de ses sous-arbres.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: AVLNode, optional
+    """
+
+    def __init__(self, message: str, node=None):
+        """
+        Initialise l'exception HeightCalculationError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: AVLNode, optional
+        """
+        super().__init__(message, "height_calculation", node)

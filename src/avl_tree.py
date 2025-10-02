@@ -18,7 +18,7 @@ from .exceptions import AVLError, RotationError
 from .interfaces import T
 
 
-class AVLTree(BinarySearchTree[T]):
+class AVLTree(BinarySearchTree):
     """
     Arbre AVL auto-équilibré.
 
