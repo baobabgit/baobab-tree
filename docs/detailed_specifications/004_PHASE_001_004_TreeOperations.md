@@ -329,13 +329,13 @@ assert size == 5
 - `is_balanced()`: O(n)
 
 ## Critères d'acceptation
-- [ ] Classe TreeOperations implémentée
-- [ ] Toutes les opérations de base implémentées
-- [ ] Opérations spécialisées par type d'arbre
-- [ ] Tests unitaires avec couverture >= 95%
-- [ ] Documentation complète
-- [ ] Score Pylint >= 8.5/10
-- [ ] Performance validée
+- [x] Classe TreeOperations implémentée
+- [x] Toutes les opérations de base implémentées
+- [x] Opérations spécialisées par type d'arbre
+- [x] Tests unitaires avec couverture >= 95%
+- [x] Documentation complète
+- [x] Score Pylint >= 8.5/10
+- [x] Performance validée
 
 ## Notes pour l'agent de développement
 - Les opérations sont fondamentales pour tous les arbres

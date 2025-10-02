@@ -50,6 +50,14 @@ from .traversal_iterators import (
     LevelOrderWithLevelIterator,
 )
 
+# Classes d'opérations sur les arbres
+from .tree_operations import TreeOperations
+from .binary_tree_operations import BinaryTreeOperations
+from .bst_operations import BSTOperations
+from .avl_operations import AVLOperations
+from .search_operations import SearchOperations
+from .utility_operations import UtilityOperations
+
 __version__ = "0.1.0"
 __author__ = "Tree Library Team"
 
@@ -91,4 +99,11 @@ __all__ = [
     "TraversalPostorderIterator",
     "TraversalLevelOrderIterator",
     "LevelOrderWithLevelIterator",
+    # Classes d'opérations sur les arbres
+    "TreeOperations",
+    "BinaryTreeOperations",
+    "BSTOperations",
+    "AVLOperations",
+    "SearchOperations",
+    "UtilityOperations",
 ]
