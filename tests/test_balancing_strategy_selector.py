@@ -14,14 +14,14 @@ from src.baobab_tree.core.exceptions import InvalidStrategyError
 from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
 
 
-class MockAVLNode(BinaryTreeNode[int]):
+class MockAVLNode(BinaryTreeNode):
     """Nœud AVL mock pour les tests."""
     
     def __init__(self, value: int):
         super().__init__(value)
 
 
-class MockRedBlackNode(BinaryTreeNode[int]):
+class MockRedBlackNode(BinaryTreeNode):
     """Nœud rouge-noir mock pour les tests."""
     
     def __init__(self, value: int):
@@ -268,8 +268,8 @@ class TestBalancingStrategySelector:
         left = BinaryTreeNode(3)
         right = BinaryTreeNode(7)
         
-        root.left_child = left
-        root.right_child = right
+        root.set_left(left)
+        root.set_right(right)
         
         node_count = selector._analyze_node_count(root, {})
         

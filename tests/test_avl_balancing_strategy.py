@@ -13,7 +13,7 @@ from src.baobab_tree.core.exceptions import BalancingStrategyError, StrategyAppl
 from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
 
 
-class MockAVLNode(BinaryTreeNode[int]):
+class MockAVLNode(BinaryTreeNode):
     """Nœud AVL mock pour les tests."""
     
     def __init__(self, value: int, balance_factor: int = 0, height: int = 1):
@@ -48,10 +48,8 @@ class TestAVLBalancingStrategy:
         left = MockAVLNode(3, balance_factor=1)
         right = MockAVLNode(7, balance_factor=0)
         
-        root.left_child = left
-        root.right_child = right
-        left.parent = root
-        right.parent = root
+        root.set_left(left)
+        root.set_right(right)
         
         with patch.object(strategy, '_calculate_balance_factor') as mock_calc:
             mock_calc.side_effect = [2, 1, 0]  # root, left, right
@@ -70,10 +68,8 @@ class TestAVLBalancingStrategy:
         left = MockAVLNode(3, balance_factor=0)
         right = MockAVLNode(7, balance_factor=-1)
         
-        root.left_child = left
-        root.right_child = right
-        left.parent = root
-        right.parent = root
+        root.set_left(left)
+        root.set_right(right)
         
         with patch.object(strategy, '_calculate_balance_factor') as mock_calc:
             mock_calc.side_effect = [-2, 0, -1]  # root, left, right
@@ -92,10 +88,8 @@ class TestAVLBalancingStrategy:
         left = MockAVLNode(3, balance_factor=-1)
         right = MockAVLNode(7, balance_factor=0)
         
-        root.left_child = left
-        root.right_child = right
-        left.parent = root
-        right.parent = root
+        root.set_left(left)
+        root.set_right(right)
         
         with patch.object(strategy, '_calculate_balance_factor') as mock_calc:
             mock_calc.side_effect = [2, -1, 0]  # root, left, right
@@ -114,10 +108,8 @@ class TestAVLBalancingStrategy:
         left = MockAVLNode(3, balance_factor=0)
         right = MockAVLNode(7, balance_factor=1)
         
-        root.left_child = left
-        root.right_child = right
-        left.parent = root
-        right.parent = root
+        root.set_left(left)
+        root.set_right(right)
         
         with patch.object(strategy, '_calculate_balance_factor') as mock_calc:
             mock_calc.side_effect = [-2, 0, 1]  # root, left, right
@@ -214,8 +206,8 @@ class TestAVLBalancingStrategy:
         left = MockAVLNode(3, balance_factor=0)
         right = MockAVLNode(7, balance_factor=0)
         
-        root.left_child = left
-        root.right_child = right
+        root.set_left(left)
+        root.set_right(right)
         
         result = strategy._validate_resulting_structure(root)
         
@@ -237,8 +229,8 @@ class TestAVLBalancingStrategy:
         left = MockAVLNode(3, height=2)
         right = MockAVLNode(7, height=1)
         
-        root.left_child = left
-        root.right_child = right
+        root.set_left(left)
+        root.set_right(right)
         
         with patch.object(strategy, '_get_height') as mock_height:
             mock_height.side_effect = [2, 1]  # left_height, right_height
@@ -274,8 +266,8 @@ class TestAVLBalancingStrategy:
         left = BinaryTreeNode(3)
         right = BinaryTreeNode(7)
         
-        root.left_child = left
-        root.right_child = right
+        root.set_left(left)
+        root.set_right(right)
         
         height = strategy._get_height(root)
         
@@ -288,7 +280,7 @@ class TestAVLBalancingStrategy:
         right = MockAVLNode(7)
         right_left = MockAVLNode(6)
         
-        root.right_child = right
+        root.set_right(right)
         right.left_child = right_left
         right.parent = root
         right_left.parent = right
@@ -321,7 +313,7 @@ class TestAVLBalancingStrategy:
         left = MockAVLNode(3)
         left_right = MockAVLNode(4)
         
-        root.left_child = left
+        root.set_left(left)
         left.right_child = left_right
         left.parent = root
         left_right.parent = left
@@ -386,8 +378,8 @@ class TestAVLBalancingStrategy:
         left = MockAVLNode(3)
         right = MockAVLNode(7)
         
-        root.left_child = left
-        root.right_child = right
+        root.set_left(left)
+        root.set_right(right)
         
         with patch.object(strategy, '_get_height') as mock_height:
             mock_height.side_effect = [1, 1]  # left_height, right_height
@@ -405,7 +397,7 @@ class TestAVLBalancingStrategy:
         root = MockAVLNode(5)
         left = MockAVLNode(3)
         
-        root.left_child = left
+        root.set_left(left)
         left.parent = root
         
         # Ajouter au cache

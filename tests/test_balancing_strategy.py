@@ -13,14 +13,14 @@ from src.baobab_tree.core.exceptions import BalancingStrategyError, StrategyAppl
 from src.baobab_tree.binary.binary_tree_node import BinaryTreeNode
 
 
-class ConcreteBalancingStrategy(BalancingStrategy[int]):
+class ConcreteBalancingStrategy(BalancingStrategy):
     """Implémentation concrète pour les tests."""
     
-    def balance(self, node: BinaryTreeNode[int]) -> BinaryTreeNode[int] | None:
+    def balance(self, node: BinaryTreeNode) -> BinaryTreeNode | None:
         """Implémentation de test."""
         return node
     
-    def can_balance(self, node: BinaryTreeNode[int]) -> bool:
+    def can_balance(self, node: BinaryTreeNode) -> bool:
         """Implémentation de test."""
         return node is not None
     
@@ -226,10 +226,8 @@ class TestBalancingStrategy:
         left = BinaryTreeNode(3)
         right = BinaryTreeNode(7)
         
-        root.left_child = left
-        root.right_child = right
-        left.parent = root
-        right.parent = root
+        root.set_left(left)
+        root.set_right(right)
         
         result = strategy._validate_references(root)
         
@@ -241,7 +239,7 @@ class TestBalancingStrategy:
         root = BinaryTreeNode(5)
         left = BinaryTreeNode(3)
         
-        root.left_child = left
+        root.set_left(left)
         # left.parent n'est pas défini (violation)
         
         result = strategy._validate_references(root)
@@ -281,8 +279,8 @@ class TestBalancingStrategy:
         left = BinaryTreeNode(3)
         right = BinaryTreeNode(7)
         
-        root.left_child = left
-        root.right_child = right
+        root.set_left(left)
+        root.set_right(right)
         
         count = strategy._count_subtree_nodes(root)
         
@@ -302,7 +300,7 @@ class TestBalancingStrategy:
         root = BinaryTreeNode(5)
         left = BinaryTreeNode(3)
         
-        root.left_child = left
+        root.set_left(left)
         
         state = strategy._analyze_current_state(root)
         
