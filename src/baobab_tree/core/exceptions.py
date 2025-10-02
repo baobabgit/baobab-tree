@@ -1403,3 +1403,169 @@ class StrategyValidationError(BalancingStrategyError):
         """
         base_msg = super().__str__()
         return f"{base_msg} (Validation phase: {self.validation_phase}, Rule: {self.validation_rule})"
+
+
+class AVLOptimizationError(AVLError):
+    """
+    Exception de base pour toutes les erreurs d'optimisation AVL.
+
+    Cette exception sert de classe de base pour toutes les erreurs spécifiques
+    aux optimisations AVL, permettant une gestion d'erreurs hiérarchique.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param operation: Opération qui a échoué
+    :type operation: str
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: AVLNode, optional
+    """
+
+    def __init__(self, message: str, operation: str, node=None):
+        """
+        Initialise l'exception AVLOptimizationError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param operation: Opération qui a échoué
+        :type operation: str
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: AVLNode, optional
+        """
+        super().__init__(message, operation, node)
+        self.operation = operation
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur l'opération et le nœud
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        return f"{base_msg} (Operation: {self.operation})"
+
+
+class CacheError(AVLOptimizationError):
+    """
+    Exception levée lors d'une erreur de cache.
+
+    Cette exception est levée lorsque les opérations de cache
+    rencontrent une erreur inattendue.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param operation: Opération qui a échoué
+    :type operation: str
+    :param cache_key: Clé de cache concernée (optionnel)
+    :type cache_key: str, optional
+    """
+
+    def __init__(self, message: str, operation: str, cache_key: str = None):
+        """
+        Initialise l'exception CacheError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param operation: Opération qui a échoué
+        :type operation: str
+        :param cache_key: Clé de cache concernée (optionnel)
+        :type cache_key: str, optional
+        """
+        super().__init__(message, operation)
+        self.cache_key = cache_key
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur l'opération et la clé de cache
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        if self.cache_key is not None:
+            return f"{base_msg} (Cache Key: {self.cache_key})"
+        return base_msg
+
+
+class MemoryOptimizationError(AVLOptimizationError):
+    """
+    Exception levée lors d'une erreur d'optimisation mémoire.
+
+    Cette exception est levée lorsque les optimisations mémoire
+    rencontrent une erreur inattendue.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param operation: Opération qui a échoué
+    :type operation: str
+    :param memory_usage: Utilisation mémoire au moment de l'erreur (optionnel)
+    :type memory_usage: int, optional
+    """
+
+    def __init__(self, message: str, operation: str, memory_usage: int = None):
+        """
+        Initialise l'exception MemoryOptimizationError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param operation: Opération qui a échoué
+        :type operation: str
+        :param memory_usage: Utilisation mémoire au moment de l'erreur (optionnel)
+        :type memory_usage: int, optional
+        """
+        super().__init__(message, operation)
+        self.memory_usage = memory_usage
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur l'opération et l'utilisation mémoire
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        if self.memory_usage is not None:
+            return f"{base_msg} (Memory Usage: {self.memory_usage} bytes)"
+        return base_msg
+
+
+class PerformanceOptimizationError(AVLOptimizationError):
+    """
+    Exception levée lors d'une erreur d'optimisation de performance.
+
+    Cette exception est levée lorsque les optimisations de performance
+    rencontrent une erreur inattendue.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param operation: Opération qui a échoué
+    :type operation: str
+    :param performance_metric: Métrique de performance concernée (optionnel)
+    :type performance_metric: str, optional
+    """
+
+    def __init__(self, message: str, operation: str, performance_metric: str = None):
+        """
+        Initialise l'exception PerformanceOptimizationError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param operation: Opération qui a échoué
+        :type operation: str
+        :param performance_metric: Métrique de performance concernée (optionnel)
+        :type performance_metric: str, optional
+        """
+        super().__init__(message, operation)
+        self.performance_metric = performance_metric
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur l'opération et la métrique
+        :rtype: str
+        """
+        base_msg = super().__str__()
+        if self.performance_metric is not None:
+            return f"{base_msg} (Performance Metric: {self.performance_metric})"
+        return base_msg
