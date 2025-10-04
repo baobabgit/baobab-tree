@@ -86,6 +86,16 @@ from .nary.btree_node import BTreeNode
 # Opérations utilitaires
 from .core.utility_operations import UtilityOperations
 
+# Performance profiling
+from .performance import (
+    PerformanceProfiler,
+    PerformanceMetrics,
+    PerformanceAnalyzer,
+    PerformanceReporter,
+    PerformanceMonitor,
+    PerformanceVisualizer,
+)
+
 __all__ = [
     # Version et métadonnées
     "__version__",
@@ -154,4 +164,12 @@ __all__ = [
     "BTree",
     "BTreeNode",
     "UtilityOperations",
+    
+    # Performance profiling
+    "PerformanceProfiler",
+    "PerformanceMetrics",
+    "PerformanceAnalyzer",
+    "PerformanceReporter",
+    "PerformanceMonitor",
+    "PerformanceVisualizer",
 ]
