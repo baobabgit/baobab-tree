@@ -302,3 +302,90 @@ std::vector<int> elements = tree.inorder();
 - Code lisible et documenté
 - Tests compréhensibles
 - Documentation complète
+
+## Livrables
+
+### Classes principales
+- [x] **SplayTree** - Classe principale de l'arbre auto-ajustable
+- [x] **SplayNode** - Nœud spécialisé avec métadonnées de performance
+
+### Exceptions spécialisées
+- [x] **SplayTreeError** - Exception de base pour les erreurs SplayTree
+- [x] **SplayOperationError** - Exception pour les erreurs d'opérations de splay
+- [x] **SplayNodeError** - Exception pour les erreurs de nœuds Splay
+- [x] **SplayValidationError** - Exception pour les erreurs de validation
+
+### Opérations de base
+- [x] **insert(value)** - Insertion avec splay automatique
+- [x] **search(value)** - Recherche avec splay automatique
+- [x] **delete(value)** - Suppression avec splay automatique
+- [x] **find(value)** - Recherche et retour de valeur avec splay
+
+### Opérations d'accès
+- [x] **get_min()** - Récupération du minimum avec splay
+- [x] **get_max()** - Récupération du maximum avec splay
+- [x] **remove_min()** - Suppression et retour du minimum
+- [x] **remove_max()** - Suppression et retour du maximum
+
+### Opérations de parcours
+- [x] **inorder()** - Parcours infixe (hérité de BinarySearchTree)
+- [x] **preorder()** - Parcours préfixe (hérité de BinarySearchTree)
+- [x] **postorder()** - Parcours postfixe (hérité de BinarySearchTree)
+- [x] **level_order()** - Parcours par niveaux (hérité de BinarySearchTree)
+
+### Opérations de maintenance
+- [x] **clear()** - Vidage de l'arbre (hérité de BinarySearchTree)
+- [x] **empty()** - Vérification si l'arbre est vide (hérité de BinarySearchTree)
+- [x] **get_size()** - Taille de l'arbre (hérité de BinarySearchTree)
+- [x] **is_valid()** - Validation de l'arbre Splay
+
+### Opérations spécialisées
+- [x] **merge(other)** - Fusion de deux arbres Splay
+- [x] **split(value)** - Division de l'arbre selon une valeur
+
+### Algorithmes de splay
+- [x] **_splay(node)** - Opération de splay principale
+- [x] **_zig(node)** - Rotation simple (zig)
+- [x] **_zig_zig(node)** - Rotation double zig-zig
+- [x] **_zig_zag(node)** - Rotation double zig-zag
+- [x] **_is_zig_zig(node)** - Détection du cas zig-zig
+
+### Méthodes de diagnostic et performance
+- [x] **get_splay_count()** - Nombre total d'opérations de splay
+- [x] **get_total_accesses()** - Nombre total d'accès
+- [x] **get_performance_metrics()** - Métriques de performance complètes
+
+### Méthodes de debug
+- [x] **print()** - Affichage de l'arbre
+- [x] **get_height()** - Hauteur de l'arbre (hérité de BinarySearchTree)
+
+### Tests unitaires
+- [x] **TestSplayTree** - 42 tests pour la classe SplayTree
+- [x] **TestSplayNode** - 17 tests pour la classe SplayNode
+- [x] **Tests de fonctionnalité de base** - Insertion, recherche, suppression
+- [x] **Tests d'opérations avancées** - Min, max, merge, split
+- [x] **Tests de performance** - Compteurs et métriques
+- [x] **Tests de comportement splay** - Vérification de l'auto-ajustement
+
+### Documentation
+- [x] **Documentation complète** - Docstrings reStructuredText pour toutes les méthodes
+- [x] **Exemples d'utilisation** - Exemples dans les docstrings
+- [x] **Types et annotations** - Annotations de type complètes
+- [x] **Gestion d'erreurs** - Messages d'erreur informatifs
+
+### Intégration
+- [x] **Exports dans __init__.py** - Classes exportées dans le module principal
+- [x] **Héritage de BinarySearchTree** - Réutilisation des fonctionnalités de base
+- [x] **Compatibilité avec les interfaces** - Respect des interfaces existantes
+
+### Métadonnées de performance (SplayNode)
+- [x] **access_count** - Compteur d'accès au nœud
+- [x] **splay_count** - Compteur de splay du nœud
+- [x] **last_accessed** - Timestamp du dernier accès
+- [x] **Méthodes de gestion** - increment_access, increment_splay, reset_metrics
+- [x] **Méthodes de diagnostic** - get_metrics, get_rotation_type, get_splay_path
+
+### Fonctionnalités avancées (SplayNode)
+- [x] **Détection de cas de rotation** - is_zig_case, is_zig_zig_case, is_zig_zag_case
+- [x] **Analyse de structure** - get_splay_depth, get_splay_path
+- [x] **Représentation** - to_string, __str__, __repr__
