@@ -445,14 +445,14 @@ class SplayTree(BinarySearchTree):
         :raises SplayTreeError: Si la fusion échoue
         """
         try:
-            if other is None or other.root is None:
+            if other is None or other._root is None:
                 return
 
             if self._root is None:
-                self._root = other.root
-                self._size = other.size
-                other.root = None
-                other.size = 0
+                self._root = other._root
+                self._size = other._size
+                other._root = None
+                other._size = 0
                 return
 
             # Trouver le maximum de cet arbre
@@ -464,13 +464,13 @@ class SplayTree(BinarySearchTree):
             self._root = self._splay(max_node)
 
             # Attacher l'autre arbre comme sous-arbre droit
-            self._root.set_right(other.root)
-            if other.root is not None:
-                other.root.parent = self._root
+            self._root.set_right(other._root)
+            if other._root is not None:
+                other._root._parent = self._root
 
-            self._size += other.size
-            other.root = None
-            other.size = 0
+            self._size += other._size
+            other._root = None
+            other._size = 0
         except Exception as e:
             raise SplayTreeError(f"Failed to merge trees: {e}")
 
@@ -517,9 +517,9 @@ class SplayTree(BinarySearchTree):
             # Créer le nouvel arbre avec le sous-arbre droit
             new_tree = SplayTree(self._comparator)
             if self._root.right is not None:
-                new_tree.root = self._root.right
-                new_tree.root.parent = None
-                new_tree.size = self._count_nodes(new_tree.root)
+                new_tree._root = self._root.right
+                new_tree._root._parent = None
+                new_tree._size = self._count_nodes(new_tree._root)
 
             # Supprimer le sous-arbre droit de cet arbre
             self._root.set_right(None)
