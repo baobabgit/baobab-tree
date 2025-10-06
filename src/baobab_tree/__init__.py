@@ -50,6 +50,10 @@ from .core.exceptions import (
     InvalidStrategyError,
     StrategyApplicationError,
     StrategyValidationError,
+    SplayTreeError,
+    SplayOperationError,
+    SplayNodeError,
+    SplayValidationError,
 )
 from .core.tree_node import TreeNode
 
@@ -96,6 +100,9 @@ from .performance import (
     PerformanceVisualizer,
 )
 
+# Arbres spécialisés
+from .specialized import SplayTree, SplayNode
+
 __all__ = [
     # Version et métadonnées
     "__version__",
@@ -137,6 +144,10 @@ __all__ = [
     "InvalidStrategyError",
     "StrategyApplicationError",
     "StrategyValidationError",
+    "SplayTreeError",
+    "SplayOperationError",
+    "SplayNodeError",
+    "SplayValidationError",
     
     # Classes principales
     "TreeNode",
@@ -172,4 +183,8 @@ __all__ = [
     "PerformanceReporter",
     "PerformanceMonitor",
     "PerformanceVisualizer",
+    
+    # Arbres spécialisés
+    "SplayTree",
+    "SplayNode",
 ]
