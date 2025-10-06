@@ -1569,3 +1569,124 @@ class PerformanceOptimizationError(AVLOptimizationError):
         if self.performance_metric is not None:
             return f"{base_msg} (Performance Metric: {self.performance_metric})"
         return base_msg
+
+
+# =============================================================================
+# Exceptions SplayTree
+# =============================================================================
+
+class SplayTreeError(TreeNodeError):
+    """
+    Exception de base pour toutes les erreurs liées aux arbres Splay.
+
+    Cette exception sert de classe de base pour toutes les erreurs spécifiques
+    aux arbres Splay, permettant une gestion d'erreurs hiérarchique.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param tree: Arbre Splay concerné par l'erreur (optionnel)
+    :type tree: SplayTree, optional
+    """
+
+    def __init__(self, message: str, tree=None):
+        """
+        Initialise l'exception SplayTreeError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param tree: Arbre Splay concerné par l'erreur (optionnel)
+        :type tree: SplayTree, optional
+        """
+        super().__init__(message)
+        self.tree = tree
+
+    def __str__(self) -> str:
+        """
+        Retourne la représentation string de l'exception.
+
+        :return: Message d'erreur avec informations sur l'arbre si disponible
+        :rtype: str
+        """
+        if self.tree is not None:
+            return f"{self.message} (Tree: {self.tree})"
+        return self.message
+
+
+class SplayOperationError(SplayTreeError):
+    """
+    Exception levée lors d'une erreur d'opération Splay.
+
+    Cette exception est levée quand une opération de splay ne peut pas être
+    exécutée correctement, généralement à cause d'un nœud invalide ou d'une
+    structure d'arbre corrompue.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param node: Nœud concerné par l'erreur (optionnel)
+    :type node: SplayNode, optional
+    """
+
+    def __init__(self, message: str, node=None):
+        """
+        Initialise l'exception SplayOperationError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param node: Nœud concerné par l'erreur (optionnel)
+        :type node: SplayNode, optional
+        """
+        super().__init__(message)
+        self.node = node
+
+
+class SplayNodeError(TreeNodeError):
+    """
+    Exception de base pour toutes les erreurs liées aux nœuds Splay.
+
+    Cette exception sert de classe de base pour toutes les erreurs spécifiques
+    aux nœuds Splay, permettant une gestion d'erreurs hiérarchique.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param node: Nœud Splay concerné par l'erreur (optionnel)
+    :type node: SplayNode, optional
+    """
+
+    def __init__(self, message: str, node=None):
+        """
+        Initialise l'exception SplayNodeError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param node: Nœud Splay concerné par l'erreur (optionnel)
+        :type node: SplayNode, optional
+        """
+        super().__init__(message, node)
+        self.node = node
+
+
+class SplayValidationError(SplayTreeError):
+    """
+    Exception levée lors d'une erreur de validation d'arbre Splay.
+
+    Cette exception est levée quand un arbre Splay ne peut pas être validé
+    correctement, généralement à cause de propriétés invalides ou de
+    contraintes non respectées.
+
+    :param message: Message d'erreur descriptif
+    :type message: str
+    :param tree: Arbre Splay concerné par l'erreur (optionnel)
+    :type tree: SplayTree, optional
+    """
+
+    def __init__(self, message: str, tree=None):
+        """
+        Initialise l'exception SplayValidationError.
+
+        :param message: Message d'erreur descriptif
+        :type message: str
+        :param tree: Arbre Splay concerné par l'erreur (optionnel)
+        :type tree: SplayTree, optional
+        """
+        super().__init__(message, tree)
+        self.tree = tree
